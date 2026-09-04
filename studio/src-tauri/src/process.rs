@@ -1501,7 +1501,7 @@ pub(crate) fn find_unsloth_binary_in_studio_dir(
 
 pub fn find_unsloth_binary() -> Option<std::path::PathBuf> {
     let home = dirs::home_dir()?;
-    let studio = home.join(".unsloth").join("studio");
+    let studio = home.join(".toughcustomer").join("studio");
 
     find_unsloth_binary_in_studio_dir(&studio)
 }
@@ -1739,7 +1739,7 @@ fn working_dir_under(
     let home = usable_home_dir(home, windirs, require_existing_home)?;
 
     // Where the installer already runs, so ~/.unsloth stays the one working root.
-    let work_dir = home.join(".unsloth");
+    let work_dir = home.join(".toughcustomer");
     if !work_dir.exists() {
         std::fs::create_dir_all(&work_dir)
             .map_err(|e| format!("Failed to create {}: {}", work_dir.display(), e))?;
@@ -4755,7 +4755,7 @@ mod managed_cli_working_dir_tests {
         let home = scratch("cwd-normal-home");
         let resolved = managed_cli_working_dir_from(Some(home.clone()), &[])
             .expect("a normal home must resolve");
-        assert_eq!(resolved, home.join(".unsloth"));
+        assert_eq!(resolved, home.join(".toughcustomer"));
         assert!(resolved.is_dir(), "the working directory must exist");
         fs::remove_dir_all(&home).ok();
     }
@@ -4763,9 +4763,9 @@ mod managed_cli_working_dir_tests {
     #[test]
     fn an_existing_working_directory_is_reused() {
         let home = scratch("cwd-existing");
-        fs::create_dir_all(home.join(".unsloth")).unwrap();
+        fs::create_dir_all(home.join(".toughcustomer")).unwrap();
         let resolved = managed_cli_working_dir_from(Some(home.clone()), &[]).unwrap();
-        assert_eq!(resolved, home.join(".unsloth"));
+        assert_eq!(resolved, home.join(".toughcustomer"));
         fs::remove_dir_all(&home).ok();
     }
 
@@ -4775,7 +4775,7 @@ mod managed_cli_working_dir_tests {
         let home = base.join("Jane O'Brien ünïcode");
         fs::create_dir_all(&home).unwrap();
         let resolved = managed_cli_working_dir_from(Some(home.clone()), &[]).unwrap();
-        assert_eq!(resolved, home.join(".unsloth"));
+        assert_eq!(resolved, home.join(".toughcustomer"));
         fs::remove_dir_all(&base).ok();
     }
 
@@ -4885,9 +4885,9 @@ mod managed_cli_working_dir_tests {
         assert!(error.contains("not reachable"), "unexpected error: {error}");
         assert_eq!(
             install_working_dir(Some(missing.clone())).unwrap(),
-            missing.join(".unsloth")
+            missing.join(".toughcustomer")
         );
-        assert!(missing.join(".unsloth").is_dir());
+        assert!(missing.join(".toughcustomer").is_dir());
         fs::remove_dir_all(missing.parent().unwrap()).ok();
     }
 

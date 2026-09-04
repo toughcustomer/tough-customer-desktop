@@ -1,6 +1,6 @@
 {
-  "productName": "Unsloth",
-  "identifier": "ai.unsloth.studio",
+  "productName": "Tough Customer",
+  "identifier": "ai.toughcustomer.desktop",
   "build": {
     "beforeDevCommand": {
       "cwd": "../frontend",
@@ -21,7 +21,7 @@
     "windows": [
       {
         "label": "main",
-        "title": "Unsloth",
+        "title": "Tough Customer",
         "width": 760,
         "height": 560,
         "center": true,
@@ -37,13 +37,13 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": ["unsloth"]
+        "schemes": ["toughcustomer"]
       }
     },
     "updater": {
-      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IDFBQzA4RjczODM0RjE1QjcKUldTM0ZVK0RjNC9BR2t4R0RVaFR5cTkyUlRVQ1FwaGV0Nk04eWNwWXBhZnlzalJydllmZm1QTS8K",
+      "pubkey": "dW50cnVzdGVkIGNvbW1lbnQ6IG1pbmlzaWduIHB1YmxpYyBrZXk6IEQ4NkRFM0QwNDkxMzJBODEKUldTQktoTkowT050MkpzbmRHbmRVRnhHUk1telFxUUMxZi9yeWw1YUw1WEFvaXR3Y1VmN2Y3WGIK",
       "endpoints": [
-        "https://github.com/unslothai/unsloth/releases/latest/download/latest.json"
+        "https://github.com/toughcustomer/tough-customer-desktop/releases/latest/download/latest.json"
       ],
       "windows": {
         "installMode": "passive"
@@ -53,9 +53,9 @@
   "bundle": {
     "active": true,
     "createUpdaterArtifacts": true,
-    "publisher": "Unsloth AI",
-    "homepage": "https://unsloth.ai/",
-    "copyright": "© 2026 Unsloth AI. All rights reserved.",
+    "publisher": "Tough Customer",
+    "homepage": "https://toughcustomer.ai/",
+    "copyright": "© 2026 Tough Customer. Based on Unsloth Studio (AGPL-3.0).",
     "license": "AGPL-3.0-only",
     "targets": ["app", "appimage", "deb", "dmg", "nsis"],
     "icon": [

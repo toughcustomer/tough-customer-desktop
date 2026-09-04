@@ -764,7 +764,7 @@ mod tests {
             .map(PathBuf::from)
             .or_else(dirs::home_dir)
             .unwrap()
-            .join(".unsloth")
+            .join(".toughcustomer")
             .join("studio")
             .join("desktop_capability_cache.json")
     }

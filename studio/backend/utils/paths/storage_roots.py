@@ -60,7 +60,9 @@ def studio_root() -> Path:
     inferred = _infer_studio_home_from_venv()
     if inferred is not None:
         return inferred
-    return Path.home() / ".unsloth" / "studio"
+    # Tough Customer keeps its own runtime root so a stock Unsloth install on
+    # the same machine is never touched.
+    return Path.home() / ".toughcustomer" / "studio"
 
 
 def cache_root() -> Path:

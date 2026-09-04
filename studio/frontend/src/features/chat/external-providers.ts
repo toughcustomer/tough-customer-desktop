@@ -112,6 +112,7 @@ const VISION_CAPABLE_PROVIDER_TYPES = new Set<string>([
   "anthropic",
   "gemini",
   "openrouter",
+  "toughcustomer",
 ]);
 
 // false = known text-only, true = known vision, null = unknown (default-allow).

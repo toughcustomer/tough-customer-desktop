@@ -6904,9 +6904,37 @@ def _error_sse_line(
         "code": str(status_code),
         "provider": provider_type,
     }
+    # Tough Customer Cloud returns actionable error codes the UI renders as
+    # native actions (top up, sign in again, back off). Preserve them instead
+    # of collapsing to the HTTP status; the status stays available separately.
+    upstream_code = _actionable_upstream_error_code(message)
+    if upstream_code:
+        error["code"] = upstream_code
+        error["status"] = str(status_code)
     if retry_after:
         error["retry_after"] = retry_after
     return f"data: {json.dumps({'error': error})}"
+
+
+_ACTIONABLE_ERROR_CODES = frozenset(
+    {"credit_exhausted", "rate_limited", "reauth_required"}
+)
+
+
+def _actionable_upstream_error_code(message: str) -> str | None:
+    """Return an actionable `error.code` from an upstream JSON error body, if any."""
+    import json
+
+    try:
+        payload = json.loads(message)
+    except (json.JSONDecodeError, TypeError, ValueError):
+        return None
+    if not isinstance(payload, dict):
+        return None
+    error = payload.get("error")
+    source = error if isinstance(error, dict) else payload
+    code = source.get("code")
+    return code if isinstance(code, str) and code in _ACTIONABLE_ERROR_CODES else None
 
 
 def _build_usage_chunk(

@@ -781,7 +781,7 @@ fn setup_logging() {
 
     // Try to set up file logging to ~/.unsloth/studio/tauri.log
     if let Some(home) = dirs::home_dir() {
-        let log_dir = home.join(".unsloth").join("studio");
+        let log_dir = home.join(".toughcustomer").join("studio");
         if fs::create_dir_all(&log_dir).is_ok() {
             let log_path = log_dir.join("tauri.log");
             let rotated_path = log_dir.join("tauri.log.1");

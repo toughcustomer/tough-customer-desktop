@@ -297,14 +297,14 @@ fn capability_cache_path() -> Option<PathBuf> {
     if let Some(home) = std::env::var_os("UNSLOTH_TEST_DESKTOP_CAPABILITY_CACHE_HOME") {
         return Some(
             PathBuf::from(home)
-                .join(".unsloth")
+                .join(".toughcustomer")
                 .join("studio")
                 .join("desktop_capability_cache.json"),
         );
     }
 
     dirs::home_dir().map(|home| {
-        home.join(".unsloth")
+        home.join(".toughcustomer")
             .join("studio")
             .join("desktop_capability_cache.json")
     })

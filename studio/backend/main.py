@@ -212,9 +212,9 @@ except Exception:  # noqa: BLE001
     pass
 
 try:
-    _LEGACY_STUDIO_ROOT = (_Path.home() / ".unsloth" / "studio").resolve()
+    _LEGACY_STUDIO_ROOT = (_Path.home() / ".toughcustomer" / "studio").resolve()
 except (OSError, ValueError):
-    _LEGACY_STUDIO_ROOT = _Path.home() / ".unsloth" / "studio"
+    _LEGACY_STUDIO_ROOT = _Path.home() / ".toughcustomer" / "studio"
 try:
     _STUDIO_ROOT_RESOLVED = _studio_root().resolve()
 except (OSError, ValueError):

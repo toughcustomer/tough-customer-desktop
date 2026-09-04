@@ -175,14 +175,14 @@ pub(crate) fn parse_studio_root_id(value: &str) -> Option<String> {
 }
 
 pub(crate) fn managed_studio_root_id_path(home: &Path) -> PathBuf {
-    home.join(".unsloth")
+    home.join(".toughcustomer")
         .join("studio")
         .join("share")
         .join("studio_install_id")
 }
 
 fn managed_run_dir(home: &Path) -> PathBuf {
-    home.join(".unsloth").join("studio").join("run")
+    home.join(".toughcustomer").join("studio").join("run")
 }
 
 fn metadata_path_for_home(home: &Path) -> PathBuf {
@@ -190,7 +190,7 @@ fn metadata_path_for_home(home: &Path) -> PathBuf {
 }
 
 fn auth_secret_path_for_home(home: &Path) -> PathBuf {
-    home.join(".unsloth")
+    home.join(".toughcustomer")
         .join("studio")
         .join("auth")
         .join(".desktop_secret")

@@ -1389,9 +1389,9 @@ def _abort_already_running(pid: int, port: int) -> "NoReturn":
 # picks up the custom build. Skip legacy-default to avoid flipping
 # default-mode installs into env-override.
 try:
-    _LEGACY_STUDIO_ROOT = (Path.home() / ".unsloth" / "studio").resolve()
+    _LEGACY_STUDIO_ROOT = (Path.home() / ".toughcustomer" / "studio").resolve()
 except (OSError, ValueError):
-    _LEGACY_STUDIO_ROOT = Path.home() / ".unsloth" / "studio"
+    _LEGACY_STUDIO_ROOT = Path.home() / ".toughcustomer" / "studio"
 try:
     _STUDIO_ROOT_RESOLVED = _studio_root().resolve()
 except (OSError, ValueError):
@@ -1738,7 +1738,7 @@ def _iter_frontend_fallback_candidates() -> "list[Path]":
     home_str = (
         os.environ.get("UNSLOTH_STUDIO_HOME")
         or os.environ.get("STUDIO_HOME")
-        or str(Path.home() / ".unsloth" / "studio")
+        or str(Path.home() / ".toughcustomer" / "studio")
     )
     venv_dir = Path(home_str).expanduser() / "unsloth_studio"
     # Installer venv site-packages.
@@ -2021,7 +2021,7 @@ def _setup_server_disk_logging():
         home = (
             os.environ.get("UNSLOTH_STUDIO_HOME")
             or os.environ.get("STUDIO_HOME")
-            or os.path.join(os.path.expanduser("~"), ".unsloth", "studio")
+            or os.path.join(os.path.expanduser("~"), ".toughcustomer", "studio")
         )
         log_dir = Path(home) / "logs" / "server"
     try:
@@ -2661,7 +2661,7 @@ def run_server(
             home_str = (
                 os.environ.get("UNSLOTH_STUDIO_HOME")
                 or os.environ.get("STUDIO_HOME")
-                or str(Path.home() / ".unsloth" / "studio")
+                or str(Path.home() / ".toughcustomer" / "studio")
             )
             # Windows shim: $STUDIO_HOME/bin/unsloth.exe; Linux/macOS venv binary:
             # $STUDIO_HOME/unsloth_studio/bin/unsloth.

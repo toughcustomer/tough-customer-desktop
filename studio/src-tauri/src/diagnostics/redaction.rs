@@ -168,7 +168,7 @@ fn windows_home_re() -> &'static Regex {
 
 fn unix_studio_re() -> &'static Regex {
     static RE: OnceLock<Regex> = OnceLock::new();
-    RE.get_or_init(|| Regex::new(r"(?i)(?:/Users|/home)/[A-Za-z0-9._-]+/\.unsloth/studio").unwrap())
+    RE.get_or_init(|| Regex::new(r"(?i)(?:/Users|/home)/[A-Za-z0-9._-]+/\.(?:unsloth|toughcustomer)/studio").unwrap())
 }
 
 fn unix_home_re() -> &'static Regex {

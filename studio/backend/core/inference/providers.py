@@ -437,6 +437,27 @@ PROVIDER_REGISTRY: dict[str, dict[str, Any]] = {
         "notes": "Unified gateway to 300+ models across all major providers. HTTP-Referer and X-Title headers sent for attribution.",
         "model_list_mode": "curated",
     },
+    # Tough Customer Cloud: the product's first-class metered provider. Fixed
+    # base URL (env override only for local development against the mock),
+    # server-controlled model catalog via /v1/models, routing not editable.
+    "toughcustomer": {
+        "display_name": "Tough Customer",
+        "base_url": (
+            os.environ.get("TOUGHCUSTOMER_CLOUD_URL", "").strip().rstrip("/")
+            or "https://api.toughcustomer.ai/v1"
+        ),
+        "default_models": ["tc/best", "tc/fast"],
+        "supports_streaming": True,
+        "supports_vision": True,
+        "supports_tool_calling": True,
+        "studio_tools": True,
+        "auth_header": "Authorization",
+        "auth_prefix": "Bearer ",
+        "base_url_editable": False,
+        "model_ids_editable": False,
+        "model_list_mode": "remote",
+        "notes": "Pay-as-you-go access to the best model for each sales job. Billed in dollars from your Tough Customer balance.",
+    },
 }
 
 

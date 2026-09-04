@@ -845,7 +845,7 @@ fn ensure_artifact_root(kind: NativeArtifactKind, canonical_path: &Path) -> Resu
     let Some(home) = dirs::home_dir() else {
         return Err("Could not determine home directory.".to_string());
     };
-    let studio = home.join(".unsloth").join("studio");
+    let studio = home.join(".toughcustomer").join("studio");
     let allowed_root = match kind {
         NativeArtifactKind::TrainingOutput => studio.join("outputs"),
         NativeArtifactKind::Export => studio.join("exports"),
@@ -946,7 +946,7 @@ pub(crate) fn reject_sensitive_document_folder(path: &Path) -> Result<(), String
                 "The entire home folder cannot be linked as a document source.".to_string(),
             );
         }
-        for relative in [".unsloth"] {
+        for relative in [".toughcustomer"] {
             sensitive_roots.push(home.join(relative));
         }
     }
@@ -1399,7 +1399,7 @@ mod tests {
         assert!(reject_sensitive_document_folder(&home.join(".huggingface")).is_err());
         assert!(reject_sensitive_document_folder(&home.join("work").join(".local")).is_err());
         assert!(reject_sensitive_document_folder(&home.join("work").join("keyrings")).is_err());
-        assert!(reject_sensitive_document_folder(&home.join(".unsloth").join("studio")).is_err());
+        assert!(reject_sensitive_document_folder(&home.join(".toughcustomer").join("studio")).is_err());
     }
 
     #[cfg(target_os = "linux")]

@@ -48,8 +48,8 @@ export function parseUnslothDeepLink(
   const queryIndex = rawUrl.indexOf("?");
   const target = queryIndex === -1 ? rawUrl : rawUrl.slice(0, queryIndex);
   if (
-    target !== "unsloth://open_from_hf" &&
-    target !== "unsloth://open_from_hf/"
+    target !== "toughcustomer://open_from_hf" &&
+    target !== "toughcustomer://open_from_hf/"
   ) {
     return null;
   }

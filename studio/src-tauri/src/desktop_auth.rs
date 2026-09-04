@@ -55,7 +55,7 @@ impl AuthError {
 }
 
 fn auth_secret_path(home: &Path, filename: &str) -> PathBuf {
-    home.join(".unsloth")
+    home.join(".toughcustomer")
         .join("studio")
         .join("auth")
         .join(filename)
