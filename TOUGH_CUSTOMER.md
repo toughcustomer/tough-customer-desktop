@@ -93,6 +93,35 @@ Not yet: Tough Customer auto-selected as the default model after sign-in, and si
   Developer ID signing + notarization is M4. Version comes from
   `tauri.conf.json` (`0.1.0`), not upstream's Cargo version.
 
+## Installer: how the desktop gets *this* backend
+
+The Tauri app installs the Python runtime at first launch by running the
+bundled `install.sh` (`Resources/install.sh`, mapped in
+`tauri.macos.conf.json`). Upstream's script installs the **PyPI `unsloth`**
+package into `~/.unsloth/studio`, which is why the first Tough Customer build
+installed Unsloth's backend and then reported "binary not found" (the Rust
+side looks under `~/.toughcustomer/studio`). Fixed by:
+
+- `install.sh` / `install.ps1` / `studio/setup.sh` / `setup.ps1` default root
+  → `~/.toughcustomer/studio` (Rust strips `UNSLOTH_STUDIO_HOME` in Tauri
+  mode, so the script default is what counts); LaunchAgent label
+  `ai.toughcustomer.studio`; banners rebranded.
+- `tc-build-dmg.sh` builds this fork as a wheel (`pip wheel --no-deps` →
+  `dist-backend/unsloth-<ver>-py3-none-any.whl`, ~30 MB; the package name
+  stays `unsloth` because the whole runtime imports it) and the macOS/Linux
+  Tauri configs bundle it at `Resources/backend/`.
+- `install.rs` passes `TOUGHCUSTOMER_BACKEND_DIR` (that resource dir) to the
+  installer; after the base install, `install.sh` overlays the wheel with
+  `uv pip install --no-deps --reinstall-package unsloth <wheel>` — the same
+  shape as upstream's `--local` editable overlay. The base PyPI install is kept
+  because it resolves the entire dependency stack (torch, MLX, unsloth-zoo…).
+- Default backend port is **8890** (scan 8890–8910) so Tough Customer can run
+  next to an Unsloth install on 8888.
+
+Known leftovers: `llama.cpp`/`whisper.cpp` prebuilts still download from
+`unslothai` GitHub releases; the installer's `.unsloth-studio-owned` marker
+file name and docs.unsloth.ai links in AMD warnings are internal.
+
 ## Local development
 
 ```sh

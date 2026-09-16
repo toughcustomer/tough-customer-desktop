@@ -121,7 +121,7 @@ def _windows_paths_equal(left: str, right: str) -> bool:
 def uses_tauri_managed_root(studio_home: Path) -> bool:
     if sys.platform != "win32":
         return False
-    managed_root = _windows_profile_path() / ".unsloth" / "studio"
+    managed_root = _windows_profile_path() / ".toughcustomer" / "studio"
     return _windows_paths_equal(
         _resolved_windows_path(studio_home),
         _resolved_windows_path(managed_root),

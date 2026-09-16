@@ -255,3 +255,4 @@ Speech_12dB_s16.flac
 
 # Tough Customer local dev venv
 .venv-tc/
+dist-backend/

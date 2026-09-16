@@ -1169,7 +1169,7 @@ mod tests {
 
     async fn command_test_backend(health_body: String) -> u16 {
         let mut listener = None;
-        for port in 8888u16..=8908 {
+        for port in 8890u16..=8910 {
             if let Ok(bound) = TcpListener::bind(("127.0.0.1", port)).await {
                 listener = Some(bound);
                 break;

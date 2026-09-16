@@ -506,7 +506,7 @@ function Get-CanonicalDir {
 # Compare canonical homes so path spelling does not change ownership policy.
 function Test-StudioHomeIsCustom {
     return ((Get-CanonicalDir -Path $StudioHome) -ne
-        (Get-CanonicalDir -Path (Join-Path $env:USERPROFILE ".unsloth\studio")))
+        (Get-CanonicalDir -Path (Join-Path $env:USERPROFILE ".toughcustomer\studio")))
 }
 
 # Is this bin\unsloth.cmd one install.ps1 wrote? Only then does it prove the root is
@@ -1197,7 +1197,7 @@ function Get-ProbableStudioVenvDir {
     }
     if (-not $root) {
         if ([string]::IsNullOrWhiteSpace($env:USERPROFILE)) { return $null }
-        $root = Join-Path $env:USERPROFILE ".unsloth\studio"
+        $root = Join-Path $env:USERPROFILE ".toughcustomer\studio"
     }
     $venv = Join-Path $root "unsloth_studio"
     if (Test-Path -LiteralPath $venv -PathType Container) { return $venv }
@@ -1964,7 +1964,7 @@ if ($_studioOverride) {
         Exit-SetupFailure "$_studioOverrideVar=$_studioOverride does not exist"
     }
 } else {
-    $StudioHome = Join-Path $env:USERPROFILE ".unsloth\studio"
+    $StudioHome = Join-Path $env:USERPROFILE ".toughcustomer\studio"
 }
 $StageRoot = if (-not [string]::IsNullOrWhiteSpace($env:UNSLOTH_STUDIO_STAGE_ROOT)) { $env:UNSLOTH_STUDIO_STAGE_ROOT.Trim() } else { $null }
 $RuntimeRoot = if ($StageRoot) { $StageRoot } else { $StudioHome }
@@ -1972,7 +1972,7 @@ $VenvDir = Join-Path $RuntimeRoot "unsloth_studio"
 $StudioOwnedMarker = ".unsloth-studio-owned"
 # Mirrors install_manifest.NO_TORCH_MARKER; keep the two in step.
 $NoTorchMarker = ".unsloth-no-torch"
-$LegacyStudioHome = Join-Path $env:USERPROFILE ".unsloth\studio"
+$LegacyStudioHome = Join-Path $env:USERPROFILE ".toughcustomer\studio"
 $StudioHomeIsCustom = Test-StudioHomeIsCustom
 $LlamaCppDir = Get-ManagedLlamaCppDir -StagingRoot $StageRoot
 $UnslothHome = Split-Path -Parent $LlamaCppDir
@@ -2280,7 +2280,7 @@ if (-not $HasNvidiaSmi) {
         if ($env:UNSLOTH_SETUP_PYTHON) {
             try { $venvRoots += (Split-Path -Parent (Split-Path -Parent $env:UNSLOTH_SETUP_PYTHON)) } catch {}
         }
-        if ($env:USERPROFILE) { $venvRoots += (Join-Path $env:USERPROFILE ".unsloth\studio\unsloth_studio") }
+        if ($env:USERPROFILE) { $venvRoots += (Join-Path $env:USERPROFILE ".toughcustomer\studio\unsloth_studio") }
         # A custom Unsloth home (UNSLOTH_STUDIO_HOME / STUDIO_HOME alias) moves the
         # venv off the default path; seed it too or its hipInfo escapes the filter.
         $studioHomeEnv = if (-not [string]::IsNullOrWhiteSpace($env:UNSLOTH_STUDIO_HOME)) { $env:UNSLOTH_STUDIO_HOME.Trim() } elseif (-not [string]::IsNullOrWhiteSpace($env:STUDIO_HOME)) { $env:STUDIO_HOME.Trim() } else { $null }
@@ -3342,8 +3342,8 @@ if (-not $IsPipInstall) {
                 Exit-SetupFailure "UNSLOTH_STUDIO_HOME/STUDIO_HOME=$NodeOverride does not exist"
             }
             $NodeParent = (Resolve-Path -LiteralPath $NodeOverride).Path
-            # legacy default overrides map to ~/.unsloth/node, matching runtime resolution.
-            $_legacyStudio = Join-Path $env:USERPROFILE ".unsloth\studio"
+            # legacy default overrides map to ~/.toughcustomer/node, matching runtime resolution.
+            $_legacyStudio = Join-Path $env:USERPROFILE ".toughcustomer\studio"
             if (Test-Path -LiteralPath $_legacyStudio -PathType Container) {
                 $_legacyStudio = (Resolve-Path -LiteralPath $_legacyStudio).Path
             }
@@ -3411,7 +3411,7 @@ function Resolve-ReusedSetupPython {
     # the venv python from the studio root, mirroring the resolver below.
     $root = if (-not [string]::IsNullOrWhiteSpace($env:UNSLOTH_STUDIO_HOME)) { $env:UNSLOTH_STUDIO_HOME.Trim() }
             elseif (-not [string]::IsNullOrWhiteSpace($env:STUDIO_HOME)) { $env:STUDIO_HOME.Trim() }
-            else { Join-Path $env:USERPROFILE ".unsloth\studio" }
+            else { Join-Path $env:USERPROFILE ".toughcustomer\studio" }
     if ($root -eq "~") {
         # Join-Path with an empty child throws on Windows PowerShell 5.1.
         $root = $env:USERPROFILE
@@ -4257,7 +4257,7 @@ if ((Test-Path -LiteralPath $VenvDir -PathType Container) -and -not $NoTorchMode
     # venv" does not by itself mean this run put it there: the migrated-venv arm (install.ps1's
     # `if ($_Migrated)`) installs unsloth alone and never touches torch, and install.ps1's flavor
     # repair no-ops whenever its expected tag is 'cpu' or unrecognised. So an ordinary upgrade off
-    # the legacy ~/.unsloth/studio/.venv layout can hand setup a +cu118 wheel from a previous
+    # the legacy ~/.toughcustomer/studio/.venv layout can hand setup a +cu118 wheel from a previous
     # install on different hardware; preserving THAT would leave the environment permanently wrong
     # and, on a mapped AMD host, the kept cu* tag also blocks the ROCm reroute below (it needs
     # $CuTag -eq "cpu"). Those repair in place, as they did before this guard existed.
@@ -6358,7 +6358,7 @@ if ($NeedLlamaSourceBuild) {
 # ==========================================================================
 #  PHASE 4: Build llama.cpp with CUDA for GGUF inference + export
 # ==========================================================================
-# Builds at ~/.unsloth/llama.cpp — a single shared location under the user's
+# Builds at ~/.toughcustomer/llama.cpp — a single shared location under the user's
 # home directory. This is used by both the inference server and the GGUF
 # export pipeline (unsloth-zoo).
 # We build:

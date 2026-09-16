@@ -8,7 +8,7 @@
 # beforehand (UNSLOTH_NO_TORCH, UNSLOTH_SKIP_AUTOSTART, UNSLOTH_PYTHON, UNSLOTH_STUDIO_HOME); a
 # local run takes the equivalent flags (--no-torch, --skip-autostart, --python, --local).
 #
-# Install dir priority: UNSLOTH_STUDIO_HOME > STUDIO_HOME (alias) > $USERPROFILE\.unsloth\studio
+# Install dir priority: UNSLOTH_STUDIO_HOME > STUDIO_HOME (alias) > $USERPROFILE\.toughcustomer\studio
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
@@ -1155,7 +1155,7 @@ public static class UnslothStudioFinalPathV2
         try {
             $_tauriOverride = Get-StudioFinalPath -Path $_tauriOverride
         } catch {}
-        $_legacyTauriRoot = Join-Path $tauriProfile ".unsloth\studio"
+        $_legacyTauriRoot = Join-Path $tauriProfile ".toughcustomer\studio"
         try {
             $_legacyTauriRoot = Get-StudioFinalPath -Path $_legacyTauriRoot
         } catch {}
@@ -1168,7 +1168,7 @@ public static class UnslothStudioFinalPathV2
         $_legacyTauriRoot = $_legacyTauriRoot.TrimEnd($_trimSeps)
         if ($_tauriOverride -ne $_legacyTauriRoot) {
             Write-StudioLine "ERROR: $envOverrideVar is not supported with --tauri." -ForegroundColor Red
-            Write-StudioLine "       The desktop app uses the Windows profile .unsloth\studio root." -ForegroundColor Red
+            Write-StudioLine "       The desktop app uses the Windows profile .toughcustomer\studio root." -ForegroundColor Red
             Write-StudioLine "       Run install.ps1 without --tauri for custom-root shell installs," -ForegroundColor Yellow
             Write-StudioLine "       or unset the env var for default desktop installs." -ForegroundColor Yellow
             # Resolving the roots above can redirect TMP/TEMP, and this throw is well
@@ -1215,11 +1215,11 @@ public static class UnslothStudioFinalPathV2
         $StudioDataDir = Join-Path $StudioHome "share"
         $StudioRedirectMode = 'env'
     } elseif ($defaultProfile -and $env:USERPROFILE -and ($env:USERPROFILE -ne $defaultProfile)) {
-        $StudioHome = Join-Path $env:USERPROFILE ".unsloth\studio"
+        $StudioHome = Join-Path $env:USERPROFILE ".toughcustomer\studio"
         $StudioDataDir = $defaultDataDir
         $StudioRedirectMode = 'profile'
     } else {
-        $StudioHome = Join-Path $env:USERPROFILE ".unsloth\studio"
+        $StudioHome = Join-Path $env:USERPROFILE ".toughcustomer\studio"
         $StudioDataDir = $defaultDataDir
         $StudioRedirectMode = 'default'
     }
@@ -1593,7 +1593,7 @@ public static class UnslothStudioFinalPathV2
     # Compare canonical homes so path spelling does not change ownership policy.
     function Test-StudioHomeIsCustom {
         return ((Get-CanonicalDir -Path $StudioHome) -ne
-            (Get-CanonicalDir -Path (Join-Path $env:USERPROFILE ".unsloth\studio")))
+            (Get-CanonicalDir -Path (Join-Path $env:USERPROFILE ".toughcustomer\studio")))
     }
 
     # Explicit staging root, shared default cache, or the custom Unsloth home's tree.
@@ -3110,7 +3110,7 @@ exit 0
 
     $studioRuntimeMutexes = @()
     $tauriManagedStudioHome = if ($tauriProfile) {
-        Join-Path $tauriProfile ".unsloth\studio"
+        Join-Path $tauriProfile ".toughcustomer\studio"
     } else { $null }
     $studioTauriRootMatch = if ($tauriManagedStudioHome) {
         Test-StudioPathEqual -Left $StudioHome -Right $tauriManagedStudioHome
@@ -4291,7 +4291,7 @@ exit 0
         $studioUsesLegacyLayout `
         -and (Test-Path -LiteralPath (Join-Path $StudioHome ".venv\Scripts\python.exe"))
     ) {
-        # Old layout (~/.unsloth/studio/.venv) exists -- validate before migrating.
+        # Old layout (~/.toughcustomer/studio/.venv) exists -- validate before migrating.
         # Skip custom-root env-mode installs so we do not replace an unrelated
         # project .venv; an override of the managed default root still migrates.
         $OldVenv = Join-Path $StudioHome ".venv"
@@ -4339,7 +4339,7 @@ exit 0
             return (Exit-InstallFailure "Could not clear $VenvDir for the environment migration")
         }
         Move-Item -LiteralPath $CwdVenv -Destination $VenvDir -Force
-        substep "moved ~/unsloth_studio -> ~/.unsloth/studio/unsloth_studio"
+        substep "moved ~/unsloth_studio -> ~/.toughcustomer/studio/unsloth_studio"
         $_Migrated = $true
     }
 
@@ -4517,7 +4517,7 @@ exit 0
             if ($env:UNSLOTH_SETUP_PYTHON) {
                 try { $venvRoots += (Split-Path -Parent (Split-Path -Parent $env:UNSLOTH_SETUP_PYTHON)) } catch {}
             }
-            if ($env:USERPROFILE) { $venvRoots += (Join-Path $env:USERPROFILE ".unsloth\studio\unsloth_studio") }
+            if ($env:USERPROFILE) { $venvRoots += (Join-Path $env:USERPROFILE ".toughcustomer\studio\unsloth_studio") }
             # A custom Unsloth home (UNSLOTH_STUDIO_HOME / STUDIO_HOME alias) moves the
             # venv off the default path; seed it too or its hipInfo escapes the filter.
             $studioHomeEnv = if (-not [string]::IsNullOrWhiteSpace($env:UNSLOTH_STUDIO_HOME)) { $env:UNSLOTH_STUDIO_HOME.Trim() } elseif (-not [string]::IsNullOrWhiteSpace($env:STUDIO_HOME)) { $env:STUDIO_HOME.Trim() } else { $null }

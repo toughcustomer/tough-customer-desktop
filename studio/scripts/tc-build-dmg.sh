@@ -17,6 +17,11 @@ if [ -z "${TAURI_SIGNING_PRIVATE_KEY:-}" ] && [ -f "$HOME/.tauri/toughcustomer-u
   export TAURI_SIGNING_PRIVATE_KEY_PASSWORD="${TAURI_SIGNING_PRIVATE_KEY_PASSWORD:-}"
 fi
 
+# Bundle this fork's backend as a wheel; install.sh overlays it on the PyPI base install.
+rm -rf "$HERE/../dist-backend" && mkdir -p "$HERE/../dist-backend"
+"$HERE/../.venv-tc/bin/pip" wheel --no-deps -q -w "$HERE/../dist-backend" "$HERE/.."
+ls "$HERE/../dist-backend"/*.whl
+
 cd "$HERE"
 npx tauri build --bundles app
 

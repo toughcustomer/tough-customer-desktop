@@ -24,7 +24,7 @@ import os as _os
 DESKTOP_MANAGED_ENV = "UNSLOTH_DESKTOP_MANAGED"
 
 # The directory process.rs pins, so an older desktop lands in the same place.
-WORK_DIR_NAME = ".unsloth"
+WORK_DIR_NAME = ".toughcustomer"
 
 
 def windows_root(

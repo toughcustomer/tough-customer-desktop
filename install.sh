@@ -13,7 +13,7 @@
 # the pipe would be read as an option to sh itself; a local run takes the equivalent flags
 # (--no-torch, --python, --local).
 #
-# Install dir priority: UNSLOTH_STUDIO_HOME > STUDIO_HOME (alias) > $HOME/.unsloth/studio
+# Install dir priority: UNSLOTH_STUDIO_HOME > STUDIO_HOME (alias) > $HOME/.toughcustomer/studio
 #
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
@@ -108,7 +108,7 @@ if [ "$_VERBOSE" = true ]; then
 fi
 
 # Custom Unsloth roots are not supported with --tauri (desktop app still
-# resolves ~/.unsloth/studio). Pass through if the override == legacy default.
+# resolves ~/.toughcustomer/studio). Pass through if the override == legacy default.
 if [ "$TAURI_MODE" = true ]; then
     _tauri_override_var=""
     _tauri_override="${UNSLOTH_STUDIO_HOME:-}"
@@ -138,10 +138,10 @@ if [ "$TAURI_MODE" = true ]; then
             && [ "${_tauri_override_abs%/}" != "$_tauri_override_abs" ]; do
             _tauri_override_abs=${_tauri_override_abs%/}
         done
-        _tauri_legacy_root="$HOME/.unsloth/studio"
+        _tauri_legacy_root="$HOME/.toughcustomer/studio"
         if [ -d "$_tauri_legacy_root" ]; then
             _tauri_legacy_root=$(CDPATH= cd -P -- "$_tauri_legacy_root" 2>/dev/null && pwd -P) \
-                || _tauri_legacy_root="$HOME/.unsloth/studio"
+                || _tauri_legacy_root="$HOME/.toughcustomer/studio"
         fi
         while [ "$_tauri_legacy_root" != "/" ] \
             && [ "${_tauri_legacy_root%/}" != "$_tauri_legacy_root" ]; do
@@ -149,7 +149,7 @@ if [ "$TAURI_MODE" = true ]; then
         done
         if [ "$_tauri_override_abs" != "$_tauri_legacy_root" ]; then
             echo "ERROR: $_tauri_override_var is not supported with --tauri." >&2
-            echo "       The desktop app still uses the legacy ~/.unsloth/studio root." >&2
+            echo "       The desktop app still uses the legacy ~/.toughcustomer/studio root." >&2
             echo "       Run install.sh without --tauri for custom-root shell installs," >&2
             echo "       or unset the env var for default desktop installs." >&2
             exit 1
@@ -635,14 +635,14 @@ _resolve_studio_destinations() {
         _default_home_canon=$(CDPATH= cd -P -- "$_default_home_canon" 2>/dev/null && pwd -P) || _default_home_canon="$_default_home"
     fi
     if [ -n "$_default_home_canon" ] && [ "$_home_canon" != "$_default_home_canon" ]; then
-        STUDIO_HOME="$HOME/.unsloth/studio"
+        STUDIO_HOME="$HOME/.toughcustomer/studio"
         DATA_DIR="$HOME/.local/share/unsloth"
         _LOCAL_BIN="$HOME/.local/bin"
         _STUDIO_HOME_REDIRECT=home
         substep "HOME redirected ($HOME); install follows \$HOME"
         return 0
     fi
-    STUDIO_HOME="$HOME/.unsloth/studio"
+    STUDIO_HOME="$HOME/.toughcustomer/studio"
     DATA_DIR="$HOME/.local/share/unsloth"
     _LOCAL_BIN="$HOME/.local/bin"
     _STUDIO_HOME_REDIRECT=default
@@ -1576,13 +1576,13 @@ LAUNCHER_EOF
         printf '%s\n' "UNSLOTH_EXE='$_css_quoted_exe'"
         if [ "$_STUDIO_HOME_REDIRECT" = "env" ]; then
             # When an override resolves to the legacy default, llama.cpp
-            # still lives at ~/.unsloth/llama.cpp (one shared build).
+            # still lives at ~/.toughcustomer/llama.cpp (one shared build).
             # Canonicalize the legacy side so a symlinked $HOME doesn't
             # break the comparison.
-            _css_legacy_studio="$HOME/.unsloth/studio"
+            _css_legacy_studio="$HOME/.toughcustomer/studio"
             if [ -d "$_css_legacy_studio" ]; then
                 _css_legacy_studio=$(CDPATH= cd -P -- "$_css_legacy_studio" 2>/dev/null && pwd -P) \
-                    || _css_legacy_studio="$HOME/.unsloth/studio"
+                    || _css_legacy_studio="$HOME/.toughcustomer/studio"
             fi
             if [ "$STUDIO_HOME" = "$_css_legacy_studio" ]; then
                 _css_llama_path="$HOME/.unsloth/llama.cpp"
@@ -1760,7 +1760,7 @@ DESKTOP_EOF
 <plist version="1.0">
 <dict>
     <key>CFBundleIdentifier</key>
-    <string>ai.unsloth.studio</string>
+    <string>ai.toughcustomer.studio</string>
     <key>CFBundleName</key>
     <string>Unsloth Studio</string>
     <key>CFBundleDisplayName</key>
@@ -1981,7 +1981,7 @@ WSLPS1_EOF
 }
 
 echo ""
-printf "  ${C_TITLE}%s${C_RST}\n" "🦥 Unsloth Studio Installer"
+printf "  ${C_TITLE}%s${C_RST}\n" "Tough Customer Installer"
 printf "  ${C_DIM}%s${C_RST}\n" "$RULE"
 echo ""
 
@@ -2935,7 +2935,7 @@ torch.testing.assert_close(torch.unique(E), torch.tensor((20,), device=E.device,
             exit 1
         fi
         mv "$STUDIO_HOME/.venv" "$VENV_DIR"
-        echo "   Moved ~/.unsloth/studio/.venv → $VENV_DIR"
+        echo "   Moved ~/.toughcustomer/studio/.venv → $VENV_DIR"
         _MIGRATED=true
     else
         echo "⚠️  Legacy environment failed validation — creating fresh environment"
@@ -5744,8 +5744,8 @@ elif [ -n "$TORCH_INDEX_URL" ]; then
     fi
     _gfx906_bnb_snapshot
     # Fresh: Step 2 - install unsloth, preserving the torch Step 1 installed
-    tauri_log "STEP" "Installing Unsloth"
-    substep "installing unsloth (this may take a few minutes)..."
+    tauri_log "STEP" "Installing runtime"
+    substep "installing the runtime (this may take a few minutes)..."
     _build_unsloth_torch_overrides
     if [ "$SKIP_TORCH" = true ]; then
         # No-torch: install unsloth + unsloth-zoo with --no-deps, then
@@ -5801,8 +5801,8 @@ elif [ -n "$TORCH_INDEX_URL" ]; then
     fi
 else
     # Fallback: GPU detection failed to produce a URL -- let uv resolve torch
-    tauri_log "STEP" "Installing Unsloth"
-    substep "installing unsloth (this may take a few minutes)..."
+    tauri_log "STEP" "Installing runtime"
+    substep "installing the runtime (this may take a few minutes)..."
     if [ "$STUDIO_LOCAL_INSTALL" = true ]; then
         run_install_cmd_retry "install unsloth (auto torch backend)" uv pip install --python "$_VENV_PY" "unsloth-zoo>=2026.9.1" "$_unsloth_release_install_spec" --torch-backend=auto
         substep "overlaying local repo (editable)..."
@@ -5931,7 +5931,20 @@ if [ -n "${UNSLOTH_CI_SOURCE_OVERLAY:-}" ]; then
 fi
 
 # ── Run studio setup ──
-tauri_log "STEP" "Running Unsloth setup"
+# Tough Customer: the desktop bundles this fork's backend as a wheel and overlays it on
+# top of the PyPI base install (same shape as the --local editable overlay).
+if [ -n "${TOUGHCUSTOMER_BACKEND_DIR:-}" ]; then
+    _tc_wheel=$(ls "$TOUGHCUSTOMER_BACKEND_DIR"/*.whl 2>/dev/null | head -n 1)
+    if [ -n "$_tc_wheel" ]; then
+        tauri_log "STEP" "Installing Tough Customer backend"
+        substep "overlaying the Tough Customer backend (bundled wheel)..."
+        run_install_cmd "overlay Tough Customer backend" uv pip install --python "$_VENV_PY" --no-deps --reinstall-package unsloth "$_tc_wheel"
+    else
+        substep "[WARN] TOUGHCUSTOMER_BACKEND_DIR is set but holds no wheel; keeping the base backend" "$C_WARN"
+    fi
+fi
+
+tauri_log "STEP" "Running Tough Customer setup"
 # When --local, use the repo's own setup.sh directly.
 # Otherwise, find it inside the installed package.
 SETUP_SH=""
@@ -5970,7 +5983,7 @@ if ! command -v bash >/dev/null 2>&1; then
     exit 1
 fi
 
-step "setup" "running unsloth studio update..."
+step "setup" "running setup..."
 _SKIP_BASE=1
 _SETUP_EXIT=0
 # Tauri desktop app bundles its own frontend — skip Node/npm/frontend build

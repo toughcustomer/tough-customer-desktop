@@ -24,7 +24,7 @@ const STUDIO_INSTALL_ID_HEX_LEN: usize = 64;
 const STUDIO_INSTALL_ID_BYTES: usize = STUDIO_INSTALL_ID_HEX_LEN / 2;
 const STUDIO_INSTALL_ID_LOCK_FILE: &str = ".studio_install_id.lock";
 const OWNER_TOKEN_BYTES: usize = 32;
-const DESKTOP_PORT_START: u16 = 8888;
+const DESKTOP_PORT_START: u16 = 8890; // Tough Customer: coexist with an Unsloth install on 8888
 const DESKTOP_PORT_END: u16 = 8908;
 const LOCAL_HTTP_TIMEOUT: Duration = Duration::from_secs(2);
 

@@ -819,7 +819,7 @@ print_installed_llama_prebuilt_release() {
 
 # ── Banner ──
 echo ""
-printf "  ${C_TITLE}%s${C_RST}\n" "🦥 Unsloth Studio Setup"
+printf "  ${C_TITLE}%s${C_RST}\n" "Tough Customer Setup"
 printf "  ${C_DIM}%s${C_RST}\n" "$RULE"
 verbose_substep "verbose diagnostics enabled"
 _LLAMA_ONLY="${UNSLOTH_STUDIO_LLAMA_ONLY:-0}"
@@ -935,7 +935,7 @@ if [ -n "$_studio_override" ]; then
     STUDIO_HOME="$(CDPATH= cd -P -- "$_studio_override" && pwd -P)" ||
         setup_fail 1 "Could not resolve $_studio_override_var=$_studio_override"
 else
-    STUDIO_HOME="$HOME/.unsloth/studio"
+    STUDIO_HOME="$HOME/.toughcustomer/studio"
 fi
 
 STAGE_ROOT="${UNSLOTH_STUDIO_STAGE_ROOT:-}"
@@ -954,7 +954,7 @@ if [ -z "$STAGE_ROOT" ] && [ -x "$VENV_DIR/bin/python" ]; then
 fi
 
 _STUDIO_OWNED_MARKER=".unsloth-studio-owned"
-_LEGACY_STUDIO_HOME="$HOME/.unsloth/studio"
+_LEGACY_STUDIO_HOME="$HOME/.toughcustomer/studio"
 _studio_home_canon="$STUDIO_HOME"
 if [ -d "$_studio_home_canon" ]; then
     _studio_home_canon=$(CDPATH= cd -P -- "$_studio_home_canon" 2>/dev/null && pwd -P) \
@@ -962,7 +962,7 @@ if [ -d "$_studio_home_canon" ]; then
 fi
 if [ -d "$_LEGACY_STUDIO_HOME" ]; then
     _LEGACY_STUDIO_HOME=$(CDPATH= cd -P -- "$_LEGACY_STUDIO_HOME" 2>/dev/null && pwd -P) \
-        || _LEGACY_STUDIO_HOME="$HOME/.unsloth/studio"
+        || _LEGACY_STUDIO_HOME="$HOME/.toughcustomer/studio"
 fi
 _STUDIO_HOME_IS_CUSTOM=false
 if [ "$_studio_home_canon" != "$_LEGACY_STUDIO_HOME" ]; then
@@ -2483,7 +2483,7 @@ fi
 
 # ── 7. Prefer prebuilt llama.cpp bundles before any source build path ──
 # Nest llama.cpp under $STUDIO_HOME only for real env-overrides; legacy
-# default keeps ~/.unsloth/llama.cpp so pre-PR builds are still discovered.
+# default keeps ~/.toughcustomer/llama.cpp so pre-PR builds are still discovered.
 if [ -n "$STAGE_ROOT" ]; then
     UNSLOTH_HOME="$RUNTIME_ROOT"
 elif [ "$_STUDIO_HOME_IS_CUSTOM" = true ]; then
@@ -2929,7 +2929,7 @@ if [ "$_NEED_LLAMA_SOURCE_BUILD" = true ] && grep -qi microsoft /proc/version 2>
 fi
 
 # ── 9. Build llama.cpp binaries for GGUF inference + export when prebuilt install fails ──
-# Builds at ~/.unsloth/llama.cpp — a single shared location under the user's
+# Builds at ~/.toughcustomer/llama.cpp — a single shared location under the user's
 # home directory. This is used by both the inference server and the GGUF
 # export pipeline (unsloth-zoo).
 #   - llama-server: for GGUF model inference
@@ -3561,9 +3561,9 @@ elif [ "$IS_COLAB" = true ]; then
     echo ""
     printf "  ${C_DIM}%s${C_RST}\n" "$RULE"
     if [ "$_LLAMA_CPP_DEGRADED" = true ]; then
-        printf "  ${C_WARN}%s${C_RST}\n" "Unsloth Studio Setup Complete (limited: llama.cpp unavailable)"
+        printf "  ${C_WARN}%s${C_RST}\n" "Tough Customer Setup Complete (limited: llama.cpp unavailable)"
     else
-        printf "  ${C_TITLE}%s${C_RST}\n" "Unsloth Studio Setup Complete"
+        printf "  ${C_TITLE}%s${C_RST}\n" "Tough Customer Setup Complete"
     fi
     printf "  ${C_DIM}%s${C_RST}\n" "$RULE"
     substep "from colab import start"
@@ -3571,9 +3571,9 @@ elif [ "$IS_COLAB" = true ]; then
 else
     printf "  ${C_DIM}%s${C_RST}\n" "$RULE"
     if [ "$_LLAMA_CPP_DEGRADED" = true ]; then
-        printf "  ${C_WARN}%s${C_RST}\n" "Unsloth Studio Installed (limited: llama.cpp unavailable)"
+        printf "  ${C_WARN}%s${C_RST}\n" "Tough Customer Installed (limited: llama.cpp unavailable)"
     else
-        printf "  ${C_TITLE}%s${C_RST}\n" "Unsloth Studio Installed"
+        printf "  ${C_TITLE}%s${C_RST}\n" "Tough Customer Installed"
     fi
     printf "  ${C_DIM}%s${C_RST}\n" "$RULE"
     if [ "$_LLAMA_CPP_DEGRADED" = true ]; then

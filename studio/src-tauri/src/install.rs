@@ -440,6 +440,10 @@ fn powershell_exe() -> PathBuf {
     }
 }
 
+// Tough Customer: resolved once from the app resources; install.sh overlays the
+// bundled backend wheel found here on top of the base install.
+static TC_BACKEND_DIR: std::sync::OnceLock<Option<PathBuf>> = std::sync::OnceLock::new();
+
 // ── Script Resolution ──
 
 /// Returns (script_path, args) depending on dev vs production mode.
@@ -478,6 +482,11 @@ fn resolve_install_script(app: &AppHandle) -> Result<(PathBuf, Vec<String>), Str
             .resolve(name, tauri::path::BaseDirectory::Resource)
             .map_err(|e| format!("Failed to resolve bundled {}: {}", name, e))?;
         info!("Production: using bundled script at {}", script.display());
+        let _ = TC_BACKEND_DIR.set(
+            app.path()
+                .resolve("backend", tauri::path::BaseDirectory::Resource)
+                .ok(),
+        );
         Ok((script, args))
     }
 }
@@ -586,6 +595,10 @@ fn spawn_script(
         "UNSLOTH_DESKTOP_BACKEND_VERSION",
         crate::preflight::expected_backend_version(),
     );
+    // Tough Customer: bundled backend wheel that install.sh overlays on the base install.
+    if let Some(Some(dir)) = TC_BACKEND_DIR.get() {
+        cmd.env("TOUGHCUSTOMER_BACKEND_DIR", dir);
+    }
 
     // We decode this child as UTF-8 below, so its Python descendants must emit
     // UTF-8 or the log fills with U+FFFD. The .ps1 entry points set these too;
