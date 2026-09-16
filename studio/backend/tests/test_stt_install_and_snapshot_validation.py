@@ -4,7 +4,7 @@
 """Regressions for the second review pass on the local STT dictation feature:
 
 1. scripts/build_whisper_cpp.sh must not rm -rf a whisper.cpp/src tree under a
-   custom Unsloth home unless Unsloth itself created it (ownership marker), the
+   custom Tough Customer home unless Tough Customer itself created it (ownership marker), the
    same policy studio/setup.sh applies before its destructive replacements.
 2. _snapshot_is_complete must reject pickle (pytorch_model.bin) checkpoints
    outright; only safetensors weights count as a usable snapshot.
@@ -83,7 +83,7 @@ def test_build_script_refuses_unowned_dir_in_custom_studio_home(tmp_path):
     result = _run_build_script(env)
 
     assert result.returncode != 0
-    assert "not marked as an Unsloth-owned" in result.stderr
+    assert "not marked as a Tough Customer-owned" in result.stderr
     # The unowned tree, and the user's file inside it, survived untouched.
     assert user_file.read_text() == "precious"
 
@@ -99,7 +99,7 @@ def test_build_script_proceeds_when_marker_present(tmp_path):
     result = _run_build_script(env)
 
     # Past the guard: it fails later at the stubbed git clone, not the gate.
-    assert "not marked as an Unsloth-owned" not in result.stderr
+    assert "not marked as a Tough Customer-owned" not in result.stderr
     assert "stub-git-invoked" in result.stderr
 
 
@@ -126,8 +126,8 @@ def test_build_script_keeps_legacy_home_behavior(tmp_path):
     env["HOME"] = str(fake_home)
     result = _run_build_script(env)
 
-    # The legacy managed dir is always Unsloth-owned; no gate, straight to git.
-    assert "not marked as an Unsloth-owned" not in result.stderr
+    # The legacy managed dir is always Tough Customer-owned; no gate, straight to git.
+    assert "not marked as a Tough Customer-owned" not in result.stderr
     assert "stub-git-invoked" in result.stderr
 
 

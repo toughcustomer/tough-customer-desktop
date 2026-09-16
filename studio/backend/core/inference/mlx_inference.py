@@ -62,11 +62,11 @@ def _temporary_mlx_adapter_state(model, use_adapter):
         return
     if isinstance(use_adapter, str):
         raise NotImplementedError(
-            "Unsloth MLX: named adapter selection is not supported; use True for "
+            "Tough Customer MLX: named adapter selection is not supported; use True for "
             "the loaded adapter or False for the base model."
         )
     if use_adapter is not True and use_adapter is not False:
-        raise TypeError("Unsloth MLX: use_adapter must be None, True, False, or a string.")
+        raise TypeError("Tough Customer MLX: use_adapter must be None, True, False, or a string.")
 
     adapters, unsupported = _mlx_adapter_modules(model)
     if use_adapter is True:
@@ -76,7 +76,7 @@ def _temporary_mlx_adapter_state(model, use_adapter):
         return
     if unsupported:
         raise RuntimeError(
-            "Unsloth MLX: cannot disable adapter layers without their base modules: "
+            "Tough Customer MLX: cannot disable adapter layers without their base modules: "
             + ", ".join(unsupported[:5])
         )
     if not adapters:
@@ -558,7 +558,7 @@ def _mlx_rng_key_words():
         return None
     if len(words) != 2:
         logger.warning(
-            "MLX exposes a %d-word random key; Unsloth can only rewind the "
+            "MLX exposes a %d-word random key; Tough Customer can only rewind the "
             "two-word form, so the KV quantization probe will not restore the "
             "PRNG and sampling after a load may differ from an unprobed run.",
             len(words),
@@ -1727,12 +1727,12 @@ class MLXInferenceBackend:
         )
         if is_distributed and parallel_mode not in ("pipeline", "tensor"):
             raise ValueError(
-                "Unsloth: distributed MLX inference requires parallel_mode='pipeline' "
+                "Tough Customer: distributed MLX inference requires parallel_mode='pipeline' "
                 "or parallel_mode='tensor'."
             )
         if is_distributed and is_lora:
             raise ValueError(
-                "Unsloth: distributed MLX inference for LoRA adapter repos "
+                "Tough Customer: distributed MLX inference for LoRA adapter repos "
                 "is not supported yet. Merge/export the adapter into an MLX model "
                 "before distributed inference."
             )
@@ -1741,7 +1741,7 @@ class MLXInferenceBackend:
             from unsloth_zoo.mlx.loader import FastMLXModel
         except ImportError as e:
             raise ImportError(
-                "Unsloth: MLX inference requires unsloth-zoo with the MLX modules "
+                "Tough Customer: MLX inference requires unsloth-zoo with the MLX modules "
                 "(unsloth_zoo.mlx.loader). Reinstall via install.sh on Apple Silicon."
             ) from e
 

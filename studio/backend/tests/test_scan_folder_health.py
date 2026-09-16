@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""A registered folder Unsloth cannot read must say so, not look empty.
+"""A registered folder Tough Customer cannot read must say so, not look empty.
 
 Covers the add-time probe (os.access alone passes paths macOS TCC still
 refuses), the status the scan records when a folder stops being readable, and
@@ -395,7 +395,7 @@ def test_the_hub_scan_probes_off_the_event_loop(tmp_path: Path):
     Every other filesystem step in ``_collect_models_from_default_sources`` is
     already wrapped in ``asyncio.to_thread``. This one opens up to 64 directories
     per registered folder, and on a stalled network mount ``scandir`` sits in the
-    kernel with nothing to yield to, so the whole Unsloth server stops answering.
+    kernel with nothing to yield to, so the whole Tough Customer server stops answering.
     """
     import asyncio as _asyncio
 

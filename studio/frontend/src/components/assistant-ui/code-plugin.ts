@@ -413,7 +413,7 @@ export function createCodePlugin(
     try {
       result = tokenize(fence, highlighter, code, language, themes);
     } catch (error) {
-      console.error("[Unsloth Code] Failed to highlight code:", error);
+      console.error("[Tough Customer Code] Failed to highlight code:", error);
       resetFence(fence);
       // A fence that never produced tokens has no anchor to match on, so a
       // block that keeps failing would strand a new one on every render.
@@ -468,7 +468,7 @@ export function createCodePlugin(
         resume(highlighter);
       })
       .catch((error) => {
-        console.error("[Unsloth Code] Failed to highlight code:", error);
+        console.error("[Tough Customer Code] Failed to highlight code:", error);
         highlighters.delete(key);
         // Failed callbacks must not pin fences or fire after a later retry.
         for (const waiting of fences) {

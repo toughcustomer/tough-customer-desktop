@@ -279,7 +279,7 @@ class TestNoPersistentStateChanged:
 class TestTheInjectedToolCatalogueIsCharged:
     """The regression that a live run caught and every unit test missed.
 
-    ``payload.tools`` is what the CLIENT sent. Unsloth's own tool loop resolves Web Search
+    ``payload.tools`` is what the CLIENT sent. Tough Customer's own tool loop resolves Web Search
     and the rest server-side and renders them into the prompt AFTER admission has priced
     the request, so pricing from the payload alone undercounts by the whole catalogue.
     Measured on Qwen3.5-4B-MTP-GGUF, the same user turn is 1716 prompt tokens with tools

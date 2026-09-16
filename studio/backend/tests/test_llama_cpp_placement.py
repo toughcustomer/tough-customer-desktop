@@ -257,7 +257,7 @@ def test_dspark_composed_argv_respects_placement_fit_decision(tmp_path, use_fit)
 
 def test_dspark_keeps_a_user_fit_flag(tmp_path):
     """A caller's --fit is theirs to set: the sidecar loads under either value,
-    so Unsloth has no reason to rewrite it."""
+    so Tough Customer has no reason to rewrite it."""
     backend, gguf = _backend(tmp_path, vulkan = False, memory = [(0, 24_000, 24_000)])
     sidecar = tmp_path / "dspark-model-Q8_0.gguf"
     sidecar.write_bytes(b"draft")
@@ -866,8 +866,8 @@ def test_a_pass_through_drafter_pays_the_rollback_its_type_calls_for(
 def test_a_pass_through_spec_block_budgets_the_depth_the_build_defaults_to(
     tmp_path, requested_depth
 ):
-    # Unsloth emits no --spec-draft-n-max when the extras own the spec block, so
-    # the child runs at the build's own default. Budgeting Unsloth's 2 instead
+    # Tough Customer emits no --spec-draft-n-max when the extras own the spec block, so
+    # the child runs at the build's own default. Budgeting Tough Customer's 2 instead
     # under-reserves the rollback copies, which scale directly with it -- and a
     # request field carries no further than the platform default does, since
     # neither is emitted.
@@ -959,7 +959,7 @@ def test_a_post_rename_build_ignores_the_legacy_depth_variable(tmp_path, monkeyp
 
 def test_an_unreadable_help_budgets_the_deepest_shipped_draft_depth(tmp_path):
     # The probe timed out, or the help line carries no default. The child is still
-    # drafting at whatever the build defaults to, so Unsloth's own explicit-mode 2
+    # drafting at whatever the build defaults to, so Tough Customer's own explicit-mode 2
     # would under-reserve the rollback copies by up to eight times.
     backend, gguf, _sidecar = _hybrid_reserve_backend(
         tmp_path,
@@ -2214,7 +2214,7 @@ def test_the_override_keeps_a_lock_rather_than_dropping_it(tmp_path, monkeypatch
 
 def test_the_override_reaches_the_env_twin_llama_cpp_reads_first(tmp_path, monkeypatch):
     """llama.cpp resolves LLAMA_ARG_* before argv, so an inherited selector survives
-    stripping the tokens. Unsloth emits no load-mode flag of its own here, so without
+    stripping the tokens. Tough Customer emits no load-mode flag of its own here, so without
     the env half the child would still load unmapped with nothing in the argv to show
     it."""
     backend, gguf = _offload_backend(
@@ -2395,7 +2395,7 @@ def test_the_route_precheck_refuses_before_the_gpu_handoff(tmp_path, monkeypatch
 
 
 def test_the_route_precheck_credits_capacity_the_handoff_is_about_to_reclaim(tmp_path, monkeypatch):
-    """The resident llama-server, Unsloth model and media pipeline hold VRAM, and through a
+    """The resident llama-server, Tough Customer model and media pipeline hold VRAM, and through a
     host KV cache, CPU-offloaded weights and locked mappings they hold RAM too. The route and
     load_model reclaim all of it after this runs, so pricing against either free reading
     refused a switch the reclaimed machine handles outright and made switching on a busy
@@ -2488,7 +2488,7 @@ def test_an_unprobed_pool_still_abstains_when_nothing_was_masked(tmp_path, monke
 
 
 def test_a_gpu_less_host_running_a_cpu_only_build_still_abstains(tmp_path, monkeypatch):
-    """Unsloth installs a CPU-only prebuilt on a host with no GPU, so that host probes an
+    """Tough Customer installs a CPU-only prebuilt on a host with no GPU, so that host probes an
     empty pool AND reports a build with no GPU backend. Letting the build state alone
     charge the whole model refused a 7.5 GB GGUF with 9 GB of RAM, which loads on main,
     and blamed GPU memory on a machine that has no GPU."""
@@ -2809,7 +2809,7 @@ def test_an_unknown_kv_type_is_still_refused_in_tensor_mode(tmp_path):
 def test_tensor_mode_keeps_an_inherited_quantized_kv_env(tmp_path, monkeypatch):
     """The tensor-branch env scrub owns the split, not the cache type: an
     LLAMA_ARG_CACHE_TYPE_K/_V reaches the child untouched, while the tensor split
-    Unsloth emits itself is still cleared. The inherited type also reaches tensor
+    Tough Customer emits itself is still cleared. The inherited type also reaches tensor
     placement accounting -- priced as banded/f16 instead, an Inkling child's dense
     fallback OOMs an auto context the plan advertised as fitting."""
     monkeypatch.setenv("LLAMA_ARG_CACHE_TYPE_K", "q8_0")
@@ -2921,7 +2921,7 @@ def _host_guard_spy(backend):
 def test_the_override_note_reaches_the_warning_the_route_returns(tmp_path, monkeypatch, extra_args):
     """When BOTH guards warn, the APU preflight recorded first and first notice wins,
     so appending the override note to the launch guard's message alone wrote it onto a
-    string _record_load_warning then discards. The user was told nothing about Unsloth
+    string _record_load_warning then discards. The user was told nothing about Tough Customer
     undoing the non-mmap mode they chose, on a load whose argv really did change."""
     backend, gguf = _apu_and_discrete_shortfall_backend(tmp_path, monkeypatch, avail_mib = 10_000)
     seen = _host_guard_spy(backend)
@@ -3465,7 +3465,7 @@ def test_an_unmapped_load_is_priced_against_the_cards_the_pin_left_it(
 ):
     """VRAM on a card this launch pinned away is not VRAM the child can spend.
 
-    Two 24 GB cards, and Unsloth pins the child to one of them. A 25 GB model is
+    Two 24 GB cards, and Tough Customer pins the child to one of them. A 25 GB model is
     smaller than the pair and larger than the card it actually gets, so the spill
     is real and the 3 GB host cannot hold it. Summing both cards prices that spill
     at zero, leaves the unmapped request standing, and the child then allocates the

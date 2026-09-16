@@ -450,7 +450,7 @@ def test_runtime_recovery_fires_for_user_env_mtp(monkeypatch):
     # MTP driven by user extra_args / LLAMA_ARG_SPEC_TYPE leaves _speculative_type
     # unset, but the launch flag still gates recovery on (pass-through MTP).
     b = _recovery_backend()
-    b._speculative_type = None  # Unsloth stepped back; user/env owns the spec
+    b._speculative_type = None  # Tough Customer stepped back; user/env owns the spec
     done = threading.Event()
     captured = {}
 
@@ -1804,7 +1804,7 @@ def test_load_model_reserves_pipeline_per_device_overhead():
 
 def test_load_model_does_not_gate_the_kv_cache_on_tensor_mode():
     # llama.cpp runs a quantized KV cache under --split-mode tensor (ggml-org/
-    # llama.cpp#23792), so Unsloth must not carry its own whitelist.
+    # llama.cpp#23792), so Tough Customer must not carry its own whitelist.
     assert not hasattr(LlamaCppBackend, "_TENSOR_PARALLEL_KV_TYPES")
 
 
@@ -1812,7 +1812,7 @@ def test_load_model_does_not_gate_the_kv_cache_on_tensor_mode():
 
 
 class TestLegacyBuildQuantizedKvInTensorMode:
-    """Unsloth stopped pre-emptively rewriting a quantized KV cache for the tensor
+    """Tough Customer stopped pre-emptively rewriting a quantized KV cache for the tensor
     attempt (ggml-org/llama.cpp#23792, b9455), so an older binary now refuses the
     load itself. That refusal is a clean LLAMA_LOG_ERROR + return nullptr, not a
     GGML_ASSERT, so nothing in the #6415 path can see it -- these pin the marker's

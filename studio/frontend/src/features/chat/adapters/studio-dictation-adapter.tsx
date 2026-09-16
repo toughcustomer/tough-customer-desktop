@@ -133,7 +133,7 @@ export function notifyStudioDictationUnavailable(
   if (typeof window !== "undefined" && !window.isSecureContext) {
     toast.error("Voice typing needs a secure connection.", {
       description:
-        "Open Unsloth at http://127.0.0.1 (localhost) or over HTTPS to dictate.",
+        "Open Tough Customer at http://127.0.0.1 (localhost) or over HTTPS to dictate.",
     });
     return;
   }
@@ -168,7 +168,7 @@ async function offerLocalDictation(): Promise<void> {
     if (engine && !engine.available) {
       toast.error("Local transcription isn't installed on this server.", {
         description:
-          "Run `unsloth studio update` to install it, then choose a model in Voice settings.",
+          "use the Update action in Settings to install it, then choose a model in Voice settings.",
       });
       return;
     }

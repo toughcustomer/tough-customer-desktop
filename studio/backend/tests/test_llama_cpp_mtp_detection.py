@@ -525,7 +525,7 @@ def test_windows_full_offload_flags_use_current_llama_server_args():
     assert stale_checkpoint_flag not in src
 
 
-# Backend-wide guard: Unsloth must never inject --no-cache-prompt into a llama-server
+# Backend-wide guard: Tough Customer must never inject --no-cache-prompt into a llama-server
 # command. It disables in-VRAM prompt-prefix reuse, re-prefilling every repeated prompt
 # (#5692 only needed --cache-ram / --ctx-checkpoints off; #7260 dropped the stray flag).
 # Detecting it (_is_real) or honouring a user-supplied one (_prompt_cache_off) is fine.
@@ -569,7 +569,7 @@ def test_unsloth_never_injects_no_cache_prompt_into_any_command():
             continue
     assert files, "no backend source files were scanned"
     assert violations == [], (
-        "Unsloth must never add --no-cache-prompt to a llama-server command "
+        "Tough Customer must never add --no-cache-prompt to a llama-server command "
         "(it disables prompt-prefix reuse); detecting or honouring a user-supplied "
         f"one is fine. Offending sites: {violations}"
     )
@@ -710,7 +710,7 @@ def test_already_in_target_state_vision_off_matches_vision_backend():
 @pytest.mark.parametrize(
     "arch, nextn",
     [
-        # Verified against real Unsloth MTP GGUFs (qwen35 / qwen35moe).
+        # Verified against real Tough Customer MTP GGUFs (qwen35 / qwen35moe).
         ("qwen35", 1),
         ("qwen35moe", 1),
         # Future-proofing: any arch + n>0 should match.
@@ -1134,7 +1134,7 @@ def test_probe_detects_post_rename_ngram_mod_flavor(tmp_path):
     assert caps["supports_ngram_mod"] is True
     assert caps["spec_draft_n_max_flag"] == "--spec-draft-n-max"
     # The build's own depth, off the same line: a pass-through --spec-type makes
-    # the child run on this rather than on anything Unsloth emits, and the Hybrid
+    # the child run on this rather than on anything Tough Customer emits, and the Hybrid
     # Mamba rollback reserve scales by it.
     assert caps["spec_draft_n_max_default"] == 16
 
@@ -1515,7 +1515,7 @@ def test_already_in_target_state_2b_falls_back_to_ngram_below_threshold(monkeypa
     )
 
 
-# usage backfill from timings (Unsloth UI t/s widget fix).
+# usage backfill from timings (Tough Customer UI t/s widget fix).
 
 
 def test_backfill_usage_from_timings_fills_when_completion_tokens_zero():
@@ -2490,7 +2490,7 @@ def test_glm5next_target_kv_excludes_nextn():
     assert "glm5-next" in _TARGET_KV_EXCLUDES_NEXTN_ARCHS
 
 
-# ── Full named-repo resolver matrix (the shipping Unsloth families) ─────
+# ── Full named-repo resolver matrix (the shipping Tough Customer families) ─────
 #
 # Locks auto / off / forced-mtp routing for every Qwen3.5 (MTP + plain) and
 # gemma-4 (regular + QAT) GGUF repo, including the giant MoEs that stay
@@ -3283,7 +3283,7 @@ def test_a_hanging_binary_is_probed_once_per_model_load(tmp_path, monkeypatch):
 def test_a_missing_binary_is_not_cached_so_it_is_seen_as_soon_as_it_lands(tmp_path):
     """The found:False early return sits above the cache and costs a stat rather than a
     subprocess, so it must stay uncached: an install finishing mid-session has to be
-    picked up without an Unsloth restart."""
+    picked up without a Tough Customer restart."""
     binary = tmp_path / "llama-server"
     _clear_caps_cache()
 

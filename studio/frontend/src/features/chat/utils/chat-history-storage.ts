@@ -262,7 +262,7 @@ export function isExpectedBackgroundChatStorageError(error: unknown): boolean {
     (error.message === "Invalid or expired token" ||
       error.message === "Not authenticated" ||
       error.message === "Request failed (401)" ||
-      error.message === "Unsloth isn't running -- please relaunch it.")
+      error.message === "Tough Customer isn't running -- please relaunch it.")
   );
 }
 
@@ -489,7 +489,7 @@ async function importLegacyChatsIfNeeded(): Promise<void> {
   if (legacyChatImportPromise) return legacyChatImportPromise;
 
   legacyChatImportPromise = (async () => {
-    // Fast-path: no Dexie DB -- new user, never had browser-only Unsloth.
+    // Fast-path: no Dexie DB -- new user, never had browser-only Tough Customer.
     if (await dexieDbAbsent()) {
       markLegacyChatImportDone();
       return;

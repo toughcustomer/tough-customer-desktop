@@ -1,5 +1,5 @@
-# Unsloth Zoo - Utilities for Unsloth
-# Copyright 2023-present Daniel Han-Chen, Michael Han-Chen & the Unsloth team. All rights reserved.
+# Tough Customer Zoo - Utilities for Tough Customer
+# Copyright 2023-present Daniel Han-Chen, Michael Han-Chen & the Tough Customer team. All rights reserved.
 #
 # This program is free software: you can redistribute it and/or modify
 # it under the terms of the GNU Affero General Public License as published
@@ -17,7 +17,7 @@
 """Native Transformers/Diffusers audio generation backends.
 
 This module intentionally has no ML imports at module import time. The worker uses
-``is_native_audio_model`` before choosing its MLX or Unsloth runtime, including on
+``is_native_audio_model`` before choosing its MLX or Tough Customer runtime, including on
 Apple Silicon, and imports torch/transformers only after the normal version and
 remote-code security gates have run.
 """

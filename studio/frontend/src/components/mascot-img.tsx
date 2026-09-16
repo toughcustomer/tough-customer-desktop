@@ -31,10 +31,15 @@ type Stage = "primary" | "retry" | "fallback";
 // Decorative mascot that degrades gracefully: a failed load retries once with
 // a cache-buster (transient blips, stale caches), then swaps to the bundled
 // fallback sloth. Empty alt by default so a broken image never paints text.
-function MascotImgInner({ src, alt = "", ...rest }: MascotImgProps) {
+// Tough Customer: every mascot slot renders the brand mark. `src` is kept in
+// the props contract so upstream call sites need no changes, but the sloth
+// artwork is Tough Customer's trademark and never ships in this fork.
+const BRAND_MARK = "tc-mark.png";
+
+function MascotImgInner({ src: _upstreamSrc, alt = "", ...rest }: MascotImgProps) {
   const [stage, setStage] = useState<Stage>("primary");
 
-  const url = publicAssetUrl(src);
+  const url = publicAssetUrl(BRAND_MARK);
   const effectiveSrc =
     stage === "primary"
       ? url

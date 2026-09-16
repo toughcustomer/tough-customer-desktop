@@ -57,7 +57,7 @@ def _require_a_credential_of_its_own(what: str):
         if no_credential:
             raise HTTPException(
                 status_code = status.HTTP_403_FORBIDDEN,
-                detail = f"{what} can only be done from the Unsloth UI or with an existing API key.",
+                detail = f"{what} can only be done from the Tough Customer UI or with an existing API key.",
             )
 
     return dependency
@@ -103,7 +103,7 @@ def _reset_password_command() -> str:
     same as runnable: an Application Control policy leaves the generated,
     unsigned unsloth.exe on disk and denies it at CreateProcess (issue #8490),
     and a bare `unsloth` resolves to that same file because PATHEXT puts .EXE
-    ahead of the .cmd shim. Whoever is locked out of Unsloth is exactly who needs
+    ahead of the .cmd shim. Whoever is locked out of Tough Customer is exactly who needs
     this command to work, so it must not be the one a policy refuses. Preference
     order is therefore the interpreter's module entry, which needs no quoting in
     cmd or PowerShell, then `unsloth.cmd` -- spelling the extension is what stops
@@ -393,11 +393,11 @@ def _clear_login_bucket(key: tuple[str, str]) -> None:
 # so FastAPI runs it in the threadpool rather than blocking the event loop.
 @router.get("/identity")
 def identity(nonce: str, request: Request) -> dict:
-    """Challenge-response proof this is the real local Unsloth: caller sends a nonce,
+    """Challenge-response proof this is the real local Tough Customer: caller sends a nonce,
     gets HMAC(install identity secret, nonce, connection address + port).
     Unauthenticated and side-effect free; a process that can't read the same-user
     secret can't forge a proof, and binding to the address/port the connection
-    landed on stops a squatter relaying a proof from the real Unsloth elsewhere."""
+    landed on stops a squatter relaying a proof from the real Tough Customer elsewhere."""
     try:
         raw = base64.urlsafe_b64decode(nonce)
     except Exception:
@@ -562,7 +562,7 @@ async def set_desktop_initial_password(
     if not is_desktop:
         raise HTTPException(
             status_code = status.HTTP_403_FORBIDDEN,
-            detail = "This action requires the Unsloth desktop app.",
+            detail = "This action requires the Tough Customer desktop app.",
         )
 
     record = storage.get_user_and_secret(current_subject)

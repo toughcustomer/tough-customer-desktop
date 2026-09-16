@@ -61,7 +61,7 @@ def anonymous_and_offline(hf_token) -> bool:
 
 
 def canonical_model_repo_id(model_name: str) -> str:
-    """Normalize a Hugging Face model repository ID selected in Unsloth."""
+    """Normalize a Hugging Face model repository ID selected in Tough Customer."""
     return model_name.strip()
 
 

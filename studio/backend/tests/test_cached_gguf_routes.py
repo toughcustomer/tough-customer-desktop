@@ -4277,7 +4277,7 @@ def test_failed_hub_context_follows_the_cache_the_variants_were_read_from(monkey
 
 
 def test_switching_cache_storage_does_not_join_a_stuck_scan(monkeypatch, tmp_path):
-    """Pointing Unsloth at another cache has to start a fresh scan. Coalescing on the request
+    """Pointing Tough Customer at another cache has to start a fresh scan. Coalescing on the request
     alone made the new request wait on the scan wedged against the old volume."""
     import storage.studio_db as studio_db
     import utils.hf_cache_settings as hf_cache_settings
@@ -5596,7 +5596,7 @@ def test_a_pipeline_index_this_listing_cannot_read_leaves_the_model_untagged(tmp
 def test_a_remote_code_pipeline_class_is_not_read_out_of_its_list_form(tmp_path):
     """A community pipeline whose code ships in its own repo writes
     ``["<module stem>", "<ClassName>"]`` here, which diffusers treats as remote code (it resolves
-    the class with ``getattr`` only ``if isinstance(cls_name, str)``). Unsloth declines models that
+    the class with ``getattr`` only ``if isinstance(cls_name, str)``). Tough Customer declines models that
     need ``trust_remote_code``, so tagging one would advertise a model the load path refuses, after
     the chat model has been evicted."""
     from core.inference.diffusion_families import pipeline_class_from_index
@@ -6222,7 +6222,7 @@ def test_repo_model_can_chat_still_reads_a_metadata_only_snapshot(tmp_path):
 def test_cached_model_rows_skips_a_weights_only_snapshot(monkeypatch, tmp_path):
     """Weights without metadata are as unloadable as metadata without weights.
 
-    Unsloth's base-model pre-warm fetches the shards plus index and no config.json, so a
+    Tough Customer's base-model pre-warm fetches the shards plus index and no config.json, so a
     weights-only commit lands beside the complete snapshot and sorts first. Pinning it
     raises "Unrecognized model ... should have a model_type key".
     """
@@ -6703,7 +6703,7 @@ def test_cached_model_rows_flag_a_diffusion_repo_this_backend_cannot_load(monkey
     rows = {row["repo_id"]: row for row in models_route.cached_model_rows()}
     row = rows["someuser/my-sdxl-finetune"]
 
-    # Still listed, since Unsloth's Images picker consumes these rows; only chat excludes it.
+    # Still listed, since Tough Customer's Images picker consumes these rows; only chat excludes it.
     assert row["diffusers"] is True
     # The trust rule leaves task None on purpose, which is why the flag is needed.
     assert row.get("task") is None

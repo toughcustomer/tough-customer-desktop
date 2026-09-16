@@ -1,5 +1,6 @@
 {
   "productName": "Tough Customer",
+  "version": "0.1.0",
   "identifier": "ai.toughcustomer.desktop",
   "build": {
     "beforeDevCommand": {
@@ -29,7 +30,10 @@
         "resizable": false,
         "decorations": true,
         "titleBarStyle": "Overlay",
-        "trafficLightPosition": { "x": 14, "y": 26 },
+        "trafficLightPosition": {
+          "x": 14,
+          "y": 26
+        },
         "hiddenTitle": true
       }
     ]
@@ -37,7 +41,9 @@
   "plugins": {
     "deep-link": {
       "desktop": {
-        "schemes": ["toughcustomer"]
+        "schemes": [
+          "toughcustomer"
+        ]
       }
     },
     "updater": {
@@ -57,7 +63,13 @@
     "homepage": "https://toughcustomer.ai/",
     "copyright": "© 2026 Tough Customer. Based on Unsloth Studio (AGPL-3.0).",
     "license": "AGPL-3.0-only",
-    "targets": ["app", "appimage", "deb", "dmg", "nsis"],
+    "targets": [
+      "app",
+      "appimage",
+      "deb",
+      "dmg",
+      "nsis"
+    ],
     "icon": [
       "icons/32x32.png",
       "icons/128x128.png",
@@ -76,7 +88,9 @@
         "headerImage": "./windows/branding/nsis-header.bmp",
         "sidebarImage": "./windows/branding/nsis-sidebar.bmp",
         "installMode": "currentUser",
-        "languages": ["English"],
+        "languages": [
+          "English"
+        ],
         "displayLanguageSelector": false
       }
     },
@@ -89,11 +103,18 @@
       },
       "deb": {
         "desktopTemplate": "./linux/unsloth.desktop",
-        "provides": ["unsloth-studio-desktop"],
-        "conflicts": ["unsloth-studio-desktop"],
-        "replaces": ["unsloth-studio-desktop"],
+        "provides": [
+          "tough-customer-desktop"
+        ],
+        "conflicts": [
+          "tough-customer-desktop"
+        ],
+        "replaces": [
+          "tough-customer-desktop"
+        ],
         "postRemoveScript": "./linux/postremove.sh"
       }
     }
-  }
+  },
+  "mainBinaryName": "tough-customer"
 }

@@ -43,7 +43,7 @@ export interface PerModelConfig {
   chatTemplateOverride: string | null;
   /**
    * Pass-through llama-server args, one argv token per entry, appended after
-   * Unsloth's own flags.
+   * Tough Customer's own flags.
    *
    * Three states, and the difference is load-bearing. `undefined` means this copy
    * never read the stored value, so a save must leave the server's alone: the

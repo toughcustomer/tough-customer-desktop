@@ -19,7 +19,7 @@ from typing import Iterator, Optional, Tuple
 from utils.paths import auth_db_path, ensure_dir
 
 DB_PATH = auth_db_path()
-DEFAULT_ADMIN_USERNAME = "unsloth"
+DEFAULT_ADMIN_USERNAME = "toughcustomer"
 
 # Single source for the password policy; models/auth.py ChangePasswordRequest and the terminal
 # prompt both enforce it. Keep the unsloth_cli mirror in sync.
@@ -460,8 +460,8 @@ def get_or_create_credential_encryption_key() -> bytes:
 def compute_identity_proof(nonce: bytes, host: str, port: int) -> str:
     """HMAC-SHA256 proof that the caller holds this install's identity secret,
     bound to the loopback address and port the connection landed on. A proof
-    relayed from an Unsloth on a different address/port (a squatter proxying to the
-    real one, e.g. localhost resolving to ::1 while Unsloth is on 127.0.0.1) was
+    relayed from a Tough Customer on a different address/port (a squatter proxying to the
+    real one, e.g. localhost resolving to ::1 while Tough Customer is on 127.0.0.1) was
     computed for that other endpoint and won't match the one the client dialed."""
     try:
         host = ipaddress.ip_address(host).compressed
@@ -1130,8 +1130,8 @@ def revoke_internal_api_key(key_id: int) -> bool:
 def is_internal_api_key(raw_key: str) -> bool:
     """Whether *raw_key* is a workflow-minted internal key rather than a user's own.
 
-    Lets request-scoped code (the API monitor) tell Unsloth's own background work from a
-    third party using Unsloth as an API server. The answer is memoized because this runs on
+    Lets request-scoped code (the API monitor) tell Tough Customer's own background work from a
+    third party using Tough Customer as an API server. The answer is memoized because this runs on
     the event loop for every API-key request and a key's origin is fixed when it is minted.
     """
     if not raw_key.startswith(API_KEY_PREFIX):
@@ -1164,7 +1164,7 @@ def is_internal_api_key(raw_key: str) -> bool:
 def internal_api_key_name(raw_key: str) -> Optional[str]:
     """The workflow name *raw_key* was minted under, or ``None`` if it is not internal.
 
-    ``is_internal_api_key`` answers "is this Unsloth's own key", which is the right
+    ``is_internal_api_key`` answers "is this Tough Customer's own key", which is the right
     question for a monitor label but far too coarse for authorization: a
     data-recipe key runs inside a recipe the user authored, so treating it as
     equal to the Deep Research hop would let that recipe spend any saved cloud

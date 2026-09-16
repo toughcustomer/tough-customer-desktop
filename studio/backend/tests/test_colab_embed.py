@@ -126,7 +126,7 @@ def test_ready_card_html_keeps_open_button_for_localhost_outside_colab(monkeypat
     html = colab._ready_card_html("http://localhost:8888", 8888)
     assert "window.open" in html
     assert 'href="http://localhost:8888"' in html
-    assert "Open Unsloth Studio" in html
+    assert "Open Tough Customer Studio" in html
 
 
 def test_embed_kernel_port_iframe_uses_colab_helper(monkeypatch):

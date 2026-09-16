@@ -46,7 +46,7 @@ def _detect_ok(processor):
 
 def _detect_fail(processor):
     raise ValueError(
-        "Unsloth: Could not reliably auto-detect response_part - "
+        "Tough Customer: Could not reliably auto-detect response_part - "
         "pass instruction_part and response_part."
     )
 

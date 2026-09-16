@@ -81,8 +81,8 @@ _GITHUB_PAGE = f"""<!DOCTYPE html>
       <tr><td><a href="/unslothai/unsloth/tree/main/unsloth">unsloth</a></td><td></td></tr>
     </table>
     <article class="markdown-body entry-content container-lg" itemprop="text">
-      <h1>Unsloth Studio</h1>
-      <p>Unsloth Studio lets you run and train models locally. Fine-tune and
+      <h1>Tough Customer Studio</h1>
+      <p>Tough Customer Studio lets you run and train models locally. Fine-tune and
       run LLMs on Windows, Linux and macOS with a single install command,
       then export to GGUF, Ollama, vLLM or Hugging Face when you are done.</p>
       <h2>Install</h2>
@@ -284,7 +284,7 @@ def test_visible_void_hr_still_renders():
 def test_github_page_main_content_keeps_readme_only():
     out = html_to_markdown(_GITHUB_PAGE, main_content = True)
     # README content survives.
-    assert "Unsloth Studio" in out
+    assert "Tough Customer Studio" in out
     assert "install.sh" in out
     assert "documentation" in out
     # Client-side error placeholders and page furniture are gone.
@@ -456,7 +456,7 @@ def test_fetch_page_text_prefers_github_readme(monkeypatch):
     ):
         calls.append((url, extra_headers))
         assert url == "https://api.github.com/repos/unslothai/unsloth/readme"
-        return None, "# Unsloth\n\nFine-tune LLMs faster.", "text/plain"
+        return None, "# Tough Customer\n\nFine-tune LLMs faster.", "text/plain"
 
     monkeypatch.setattr("core.inference.tools._fetch_url_raw", fake_fetch)
     out = _fetch_page_text("https://github.com/unslothai/unsloth")
@@ -514,7 +514,7 @@ def test_fetch_page_text_falls_back_to_html_when_readme_api_fails(monkeypatch):
     monkeypatch.setattr("core.inference.tools._fetch_url_raw", fake_fetch)
     out = _fetch_page_text("https://github.com/unslothai/unsloth")
     # Fallback converts the HTML page with the main-content heuristic.
-    assert "Unsloth Studio" in out
+    assert "Tough Customer Studio" in out
     assert "Uh oh!" not in out
     assert "There was an error while loading" not in out
 
@@ -549,7 +549,7 @@ def test_fetch_page_text_html_conversion(monkeypatch):
 
     monkeypatch.setattr("core.inference.tools._fetch_url_raw", fake_fetch)
     out = _fetch_page_text("https://github.com/unslothai/unsloth/tree/main")
-    assert "Unsloth Studio" in out
+    assert "Tough Customer Studio" in out
     assert "Uh oh!" not in out
 
 
@@ -940,7 +940,7 @@ def test_fetch_page_text_missing_content_type_html_sniffed(monkeypatch):
 
     monkeypatch.setattr("core.inference.tools._fetch_url_raw", fake_fetch)
     out = _fetch_page_text("https://example.com/no-content-type")
-    assert "Unsloth Studio" in out
+    assert "Tough Customer Studio" in out
     assert "<html" not in out
     assert "Uh oh!" not in out
 
@@ -998,7 +998,7 @@ def test_fetch_page_text_mislabeled_text_plain_html_converted(monkeypatch):
 
     monkeypatch.setattr("core.inference.tools._fetch_url_raw", fake_fetch)
     out = _fetch_page_text("https://example.com/mislabeled")
-    assert "Unsloth Studio" in out
+    assert "Tough Customer Studio" in out
     assert "<html" not in out
 
 

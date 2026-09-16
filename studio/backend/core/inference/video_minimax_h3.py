@@ -310,7 +310,7 @@ H3_REF_VIDEO_MAX_SECONDS = 15.0
 # a container reports its longest track, so a file whose audio outruns its video reads as longer than it can show
 # How far a trim may reach past the video track before it is refused. A container reports its longest track, so a file
 # whose audio outruns its video reads as longer than it can show, and a client picking an interval from that duration
-# (HTMLMediaElement.duration, in Unsloth's case) asks for slightly more video than exists. Within this margin the last
+# (HTMLMediaElement.duration, in Tough Customer's case) asks for slightly more video than exists. Within this margin the last
 # frame is held instead.
 H3_REF_TRIM_COVERAGE_SLACK_SECONDS = 0.5
 H3_FPS = 24
@@ -1122,7 +1122,7 @@ class MiniMaxH3NativeRuntime:
 def transcode_video_to_mp4(source: Path, *, fps: int) -> bytes:
     """Convert an sd.cpp WebM into a gallery-compatible H.264/AAC MP4.
 
-    The native backend is available in Unsloth's no-torch runtime, so keep this
+    The native backend is available in Tough Customer's no-torch runtime, so keep this
     export entirely in PyAV rather than routing decoded frames through Diffusers.
     """
     import av

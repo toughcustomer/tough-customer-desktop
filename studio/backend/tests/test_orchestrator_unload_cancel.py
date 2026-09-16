@@ -1670,7 +1670,7 @@ def test_unload_cancels_loading_gguf_off_gate(monkeypatch):
 
     class _Unsloth:
         def get_loading_model(self):
-            return None  # no Unsloth load in flight -> Unsloth fast path skipped
+            return None  # no Tough Customer load in flight -> Tough Customer fast path skipped
 
     monkeypatch.setattr(ri, "get_llama_cpp_backend", lambda: llama)
     monkeypatch.setattr(ri, "get_inference_backend", lambda: _Unsloth())
@@ -1772,7 +1772,7 @@ def test_unload_of_mismatched_loading_gguf_skips_off_gate_fast_path(monkeypatch)
 
     class _Unsloth:
         def get_loading_model(self):
-            return None  # no Unsloth load in flight -> Unsloth fast path skipped
+            return None  # no Tough Customer load in flight -> Tough Customer fast path skipped
 
     monkeypatch.setattr(ri, "get_llama_cpp_backend", lambda: llama)
     monkeypatch.setattr(ri, "get_inference_backend", lambda: _Unsloth())

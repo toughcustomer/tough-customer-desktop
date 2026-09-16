@@ -1,6 +1,29 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
+/**
+ * A provider error delivered inside the SSE stream. Carries the upstream
+ * `code` (e.g. Tough Customer's credit_exhausted / reauth_required /
+ * rate_limited) so the UI can offer a native action instead of a generic toast.
+ */
+export class StreamProviderError extends Error {
+  code: string | null;
+  provider: string | null;
+  retryAfter: string | null;
+  topUpUrl: string | null;
+  balanceMicros: number | null;
+
+  constructor(message: string, raw: Record<string, unknown> = {}) {
+    super(message);
+    this.name = "StreamProviderError";
+    this.code = typeof raw.code === "string" ? raw.code : null;
+    this.provider = typeof raw.provider === "string" ? raw.provider : null;
+    this.retryAfter = typeof raw.retry_after === "string" ? raw.retry_after : null;
+    this.topUpUrl = typeof raw.top_up_url === "string" ? raw.top_up_url : null;
+    this.balanceMicros = typeof raw.balance_micros === "number" ? raw.balance_micros : null;
+  }
+}
+
 import { authFetch } from "@/features/auth";
 import { prepareHfTokenForUse } from "@/features/hf-auth";
 // These helpers are deliberately API-layer-only, not part of their features' public barrels.
@@ -1657,7 +1680,10 @@ export async function* streamChatCompletions(
           | OpenAIChatChunk
           | { type?: string; content?: string; error?: { message?: string } };
         if ("error" in parsed && parsed.error) {
-          throw new Error(parsed.error.message || "Stream error");
+          throw new StreamProviderError(
+            parsed.error.message || "Stream error",
+            parsed.error as Record<string, unknown>,
+          );
         }
         // Tool status events are custom SSE payloads, not OpenAI chunks
         if ("type" in parsed && parsed.type === "tool_status") {

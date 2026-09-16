@@ -5,21 +5,21 @@
  * Which side of the connection the Code pill runs code on.
  *
  * `code_execution` runs in the provider's own sandbox and is billed by them;
- * `python` / `terminal` are Unsloth's tools and run on the machine Unsloth is
+ * `python` / `terminal` are Tough Customer's tools and run on the machine Tough Customer is
  * installed on. They are not two implementations of one feature, they are two
  * different trust boundaries, so which one a stored toggle means must not
  * change underneath the user.
  *
  * That is what made this a rule rather than a line in the adapter. Until
- * Unsloth's tool loop reached the general external providers, only openai_codex
+ * Tough Customer's tool loop reached the general external providers, only openai_codex
  * carried studio_tools, so the pill on an OpenAI / Anthropic / Gemini
  * connection always resolved to the provider's sandbox. Now those providers
- * take the Unsloth branch, and the same persisted `true` would resolve to local
+ * take the Tough Customer branch, and the same persisted `true` would resolve to local
  * execution instead -- a relocation nobody asked for, announced nowhere.
  *
  * The rule: a connection with its own sandbox keeps it. A model on such a
  * connection that cannot use it runs nothing, exactly as before the loop
- * existed, rather than falling back to the user's machine. Unsloth's local tools
+ * existed, rather than falling back to the user's machine. Tough Customer's local tools
  * are for connections that have no sandbox at all -- the self-hosted presets,
  * and the cloud providers that ship none, which is what openai_codex has always
  * done, with tool cards and the permission gate to show it.
@@ -35,7 +35,7 @@ export interface CodeToolPlacementInput {
 }
 
 export interface CodeToolNames {
-  /** Unsloth tool names, executed on this machine by the Unsloth tool loop. */
+  /** Tough Customer tool names, executed on this machine by the Tough Customer tool loop. */
   local: string[];
   /** Provider builtin names, executed and billed by the provider. */
   hosted: string[];
@@ -63,7 +63,7 @@ export function selectCodeToolNames(input: CodeToolPlacementInput): CodeToolName
 export function codeToolCanRun(input: {
   hostedCodeExecutionForThisTurn: boolean;
   providerHostsCodeExecution: boolean;
-  /** This provider AND model can run Unsloth's own tools through the loop. */
+  /** This provider AND model can run Tough Customer's own tools through the loop. */
   supportsStudioTools: boolean;
 }): boolean {
   const names = selectCodeToolNames({

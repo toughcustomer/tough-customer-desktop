@@ -112,7 +112,7 @@ export function parseMarkdownIntoRenderableBlocks(markdown: string): string[] {
 //
 // The dollar half is unchanged between the two versions, so the two booleans
 // map onto `inlineDollar` and `blockDollar` exactly; only the LaTeX half is
-// new. Unsloth has to mirror it because `RepairParity` is a hand written copy of
+// new. Tough Customer has to mirror it because `RepairParity` is a hand written copy of
 // remend's marker rules, and a copy that still counts the subscript would show
 // the stray `_` for as long as the reply is streaming and drop it the moment
 // the message settles and the whole body is repaired in one pass.

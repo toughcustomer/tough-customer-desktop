@@ -42,7 +42,7 @@ def test_the_merged_export_load_path_resolves_the_alias_the_same_way():
     "Spark-TTS-0.5B/LLM" -> "unsloth/Spark-TTS-0.5B" mapping; it now shares load_scan_target
     with the capability probe here and with the trainer preflight in routes/training.py, so
     the three cannot drift."""
-    # Read rather than import: core.inference.inference pulls the whole Unsloth stack,
+    # Read rather than import: core.inference.inference pulls the whole Tough Customer stack,
     # which is what made a second, dependency-light copy of this mapping tempting.
     from pathlib import Path
 

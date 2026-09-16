@@ -567,7 +567,7 @@ async def get_gallery_video_file(
 ):
     from core.inference import video_gallery
 
-    # Ownership-gate the serve like delete/clear: resolve only an Unsloth-owned MP4, so a guessed stem cannot stream out
+    # Ownership-gate the serve like delete/clear: resolve only a Tough Customer-owned MP4, so a guessed stem cannot stream out
     # a foreign clip.
     path = await asyncio.to_thread(video_gallery.owned_video_path, video_id)
     if path is None:
@@ -627,7 +627,7 @@ async def get_gallery_video_signed_url(
     if no_credential:
         raise HTTPException(
             status_code = 403,
-            detail = "Video links can only be created from the Unsloth UI or with an API key.",
+            detail = "Video links can only be created from the Tough Customer UI or with an API key.",
         )
 
     from core.inference import video_gallery

@@ -7,7 +7,7 @@ import { authFetch } from "@/features/auth";
 export type LlamaFlagCatalog = {
   /** Flag name -> its help text. Empty when the probe failed. */
   flags: Record<string, string>;
-  /** Flags Unsloth manages; the load refuses these outright. */
+  /** Flags Tough Customer manages; the load refuses these outright. */
   managed: ReadonlySet<string>;
   /** Flags this build documents as taking no value ("--verbose", "--jinja"). */
   switches: ReadonlySet<string>;
@@ -117,7 +117,7 @@ export function invalidateLlamaFlagCatalog(): void {
   // Dropped as well as cleared: a request already on the wire answers for the
   // binary that has just been replaced.
   inFlightCatalog = null;
-  // The managed answer too. Its denylist is Unsloth's own and no binary changes it,
+  // The managed answer too. Its denylist is Tough Customer's own and no binary changes it,
   // but it carries defaultParallelSlots beside it, and that is the EFFECTIVE count:
   // a build without --kv-unified serves one slot however many are configured. A tab
   // that had already fetched it went on sizing the hidden hydration check's batch
@@ -131,12 +131,12 @@ export function invalidateLlamaFlagCatalog(): void {
 }
 
 /**
- * Just the flags Unsloth refuses, without the `--help` probe behind the catalogue.
+ * Just the flags Tough Customer refuses, without the `--help` probe behind the catalogue.
  *
  * The panel sanitizes a stored list with this before turning it into an explicit
  * request, and that must not wait on a cold probe (up to ten seconds), or a flag
  * denied since the list was saved stays in the request for as long as it runs.
- * Cached for the session: unlike the flag map, it describes this build of Unsloth.
+ * Cached for the session: unlike the flag map, it describes this build of Tough Customer.
  */
 export function loadManagedLlamaFlags(): Promise<LlamaManagedFlags | null> {
   if (cachedManaged) {
@@ -146,7 +146,7 @@ export function loadManagedLlamaFlags(): Promise<LlamaManagedFlags | null> {
     return Promise.resolve(cachedCatalog);
   }
   // Read before the request goes out, and checked before its answer is published,
-  // exactly as the full catalogue does. The denylist in this answer is Unsloth's own
+  // exactly as the full catalogue does. The denylist in this answer is Tough Customer's own
   // and no binary changes it, but defaultParallelSlots beside it is the EFFECTIVE
   // count, which depends on the probed binary: a request already on the wire when
   // llama.cpp is replaced would otherwise repopulate the cache the invalidation had

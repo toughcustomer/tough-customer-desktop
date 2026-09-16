@@ -94,12 +94,12 @@ fn liveness_from_probe_error(error: &reqwest::Error) -> BackendLiveness {
 ///
 /// The ownership probe cannot answer this on its own: every transport error inside it becomes
 /// `NotVerified`, indistinguishable from a port that a different process now owns. The
-/// pre-probe can: it answered, from an Unsloth backend, on this port. Silence from the
+/// pre-probe can: it answered, from a Tough Customer backend, on this port. Silence from the
 /// requests after that is the same stall the owned path already rides out.
 ///
 /// `different_owner` is the one thing the probe *can* say for certain, so it overrides both:
 /// an adopted backend that exits while the busy latch is set leaves a freed port, and a
-/// restarted Unsloth backend binding it answers the pre-probe just as the old one did. That
+/// restarted Tough Customer backend binding it answers the pre-probe just as the old one did. That
 /// answer is not silence -- the ownership probe got a complete reply naming a different root,
 /// token or no desktop owner at all -- so it is a takeover, not a stall, and the port must be
 /// cleared on the normal three-strike budget rather than held for twelve.
@@ -115,7 +115,7 @@ fn adopted_failure_is_a_stall(verified: bool, served_alive: bool, different_owne
 /// the pre-probe with the busy marker set and then goes quiet, so requiring verification
 /// threw away the answer and cleared a backend mid-response, which is the loss this whole
 /// path is for. A stalled port that says it is generating is kept; silence is not, and a
-/// port a different Unsloth backend took over never reaches here with the marker set.
+/// port a different Tough Customer backend took over never reaches here with the marker set.
 fn watchdog_confirm_keeps_backend(confirmed: &BackendLiveness) -> bool {
     confirmed.inference_active && (confirmed.alive || confirmed.probe_timed_out)
 }
@@ -180,16 +180,16 @@ fn should_emit_repair_failed(msg: &str) -> bool {
 fn external_conflict_message(conflict: &crate::preflight::ExternalBackendConflict) -> String {
     match conflict.reason.as_str() {
         "desktop_owned_backend_active" => format!(
-            "A desktop-owned Unsloth server for this install is already running on port {}. Quit the other desktop app instance, then try again.",
+            "A desktop-owned Tough Customer server for this install is already running on port {}. Quit the other desktop app instance, then try again.",
             conflict.port
         ),
         // Do not describe a backend from an unknown install as terminal-started.
         "ambiguous_root_external_backend_active" => format!(
-            "An Unsloth server is already running on port {}, and this app cannot confirm which install it belongs to. Stop that server, then try again.",
+            "A Tough Customer server is already running on port {}, and this app cannot confirm which install it belongs to. Stop that server, then try again.",
             conflict.port
         ),
         _ => format!(
-            "An Unsloth server for this install is already running from a terminal on port {}. Stop that server, or run `unsloth studio update` from that terminal before using desktop repair/update.",
+            "A Tough Customer server for this install is already running from a terminal on port {}. Stop that server, or run `unsloth studio update` from that terminal before using desktop repair/update.",
             conflict.port
         ),
     }
@@ -442,7 +442,7 @@ pub async fn stop_server(
 /// What one launcher probe learned about the backend process.
 #[derive(Debug, Default, Clone, Copy, PartialEq, Eq)]
 struct BackendLiveness {
-    /// The port answered with an Unsloth backend reply.
+    /// The port answered with a Tough Customer backend reply.
     alive: bool,
     /// The backend answered but has not finished its background warm, so the ML-stack
     /// imports on its warm thread are still in flight. Alive, but not yet done starting.
@@ -457,7 +457,7 @@ struct BackendLiveness {
     probe_timed_out: bool,
 }
 
-/// Check if an Unsloth backend is running on the given port.
+/// Check if a Tough Customer backend is running on the given port.
 /// Expects JSON with status=="alive" (or "healthy") AND service=="Unsloth UI Backend".
 #[tauri::command]
 pub async fn check_health(port: u16) -> Result<bool, String> {
@@ -661,10 +661,10 @@ fn adopted_backend_liveness(
         // narrower budget is re-read on every failure, so one such cycle could fire the
         // kill immediately on a count already past three.
         //
-        // The read is the evidence: an Unsloth backend answered on this port, so silence
+        // The read is the evidence: a Tough Customer backend answered on this port, so silence
         // from the rest of the check is a stall, not an empty port. A refused port never
         // reaches here -- it returns above with `probe_timed_out` set from the error, and a
-        // port a different Unsloth backend has taken over is excluded by `different_owner`,
+        // port a different Tough Customer backend has taken over is excluded by `different_owner`,
         // since that one answered rather than fell silent.
         probe_timed_out: adopted_failure_is_a_stall(verified, served.alive, different_owner),
     }
@@ -701,7 +701,7 @@ fn open_existing_dir(dir: &std::path::Path) -> Result<(), String> {
     open_existing_dir_with(dir, |path| crate::process::open_detached(path))
 }
 
-/// Open the Unsloth directory in the system file manager.
+/// Open the Tough Customer directory in the system file manager.
 #[tauri::command]
 pub fn open_logs_dir(window: tauri::WebviewWindow) -> Result<(), String> {
     crate::native_intents::ensure_main_window(&window)?;
@@ -729,7 +729,7 @@ pub async fn start_install(
 ) -> Result<(), String> {
     if has_owned_backend(&backend_state)? {
         return Err(
-            "The Unsloth backend is still running. Stop it before starting installation."
+            "The Tough Customer backend is still running. Stop it before starting installation."
                 .to_string(),
         );
     }
@@ -914,7 +914,7 @@ pub fn discard_staged_update(
     })
 }
 
-/// Repair a stale managed Unsloth install.
+/// Repair a stale managed Tough Customer install.
 /// Whether a native path lease this app signs can actually be verified.
 ///
 /// The key is per process, so only a backend THIS process spawned holds it. An
@@ -999,7 +999,7 @@ pub async fn start_managed_repair(
         let _ = app.emit("repair-progress", "Running bundled installer...");
         Ok(())
     } else {
-        let _ = app.emit("repair-progress", "Updating existing Unsloth install...");
+        let _ = app.emit("repair-progress", "Updating existing Tough Customer install...");
         let update_app = app.clone();
         let update_state = update_state.inner().clone();
         let update_diagnostics = diagnostics_state.clone();
@@ -1029,7 +1029,7 @@ pub async fn start_managed_repair(
             warn!("Managed repair update finished, but preflight is still not ready; falling back to installer");
             let _ = app.emit(
                 "repair-progress",
-                "Update finished, but Unsloth is still not ready. Running bundled installer...",
+                "Update finished, but Tough Customer is still not ready. Running bundled installer...",
             );
         }
         Err(msg) => {
@@ -1122,7 +1122,7 @@ pub async fn start_managed_repair(
         return Ok(());
     }
 
-    let msg = "Repair finished, but Unsloth install is still not desktop-ready.".to_string();
+    let msg = "Repair finished, but Tough Customer install is still not desktop-ready.".to_string();
     error!("{}", msg);
     diagnostics::finish_repair_group(
         &diagnostics_state,
@@ -1786,7 +1786,7 @@ mod tests {
         );
         assert!(!super::watchdog_confirm_keeps_backend(&idle));
 
-        // And a port a different Unsloth backend took over answers with its own generation,
+        // And a port a different Tough Customer backend took over answers with its own generation,
         // which is not ours to hold the port open for.
         let taken_over = super::adopted_backend_liveness(false, &served, true);
         assert!(!super::watchdog_confirm_keeps_backend(&taken_over));
@@ -1795,7 +1795,7 @@ mod tests {
     #[test]
     fn a_port_another_backend_took_over_stays_on_the_normal_budget() {
         // An adopted backend that exits mid-generation leaves the busy latch set, and the
-        // freed port is routinely rebound by the next Unsloth backend the user starts. That
+        // freed port is routinely rebound by the next Tough Customer backend the user starts. That
         // one answers the pre-probe exactly as the old one did, so `served.alive` is true
         // while the ownership probe rejects it -- with a complete answer, not silence.
         //
@@ -2162,7 +2162,7 @@ mod tests {
     #[test]
     fn a_restart_during_the_last_chance_probe_is_not_declared_dead() {
         // The watched generation is the only identity this task has: `check_health_inner`
-        // matches on a service name, so a probe answer says "an Unsloth backend is on this
+        // matches on a service name, so a probe answer says "a Tough Customer backend is on this
         // port", never "the one I was started for". Anything that is not still generation
         // G with a handle stored and no stop in flight has to end the loop rather than
         // reach `stop_backend`, which takes whatever handle is stored *now*.

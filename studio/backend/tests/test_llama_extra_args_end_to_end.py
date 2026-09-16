@@ -9,7 +9,7 @@ It reuses the placement suite's harness, which runs the real ``load_model`` and
 captures the command at the Popen boundary instead of spawning anything.
 
 The bar the whole feature is measured against is the first test here: with nothing
-in the box, the command must be byte-identical to the one Unsloth emitted before.
+in the box, the command must be byte-identical to the one Tough Customer emitted before.
 """
 
 from __future__ import annotations
@@ -74,7 +74,7 @@ def test_extra_args_come_after_unsloths_own(tmp_path):
     cmd = _cmd(tmp_path, extra_args = ["--top-k", "20"])
     managed = [i for i, token in enumerate(cmd) if token in {"--model", "-m", "--port"}]
 
-    assert managed, "expected Unsloth's own flags in the command"
+    assert managed, "expected Tough Customer's own flags in the command"
     assert cmd.index("--top-k") > max(managed)
 
 
@@ -112,7 +112,7 @@ def test_a_multi_token_value_stays_one_argv_entry(tmp_path):
 def test_a_denied_flag_never_reaches_the_child(tmp_path, denied):
     # The load has to refuse rather than launch and hope: llama-server would
     # happily honour any of these.
-    with pytest.raises(ValueError, match = "managed by Unsloth Studio"):
+    with pytest.raises(ValueError, match = "managed by Tough Customer Studio"):
         from core.inference.llama_server_args import validate_extra_args
         validate_extra_args(denied)
 

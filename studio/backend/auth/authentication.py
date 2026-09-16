@@ -45,7 +45,7 @@ def is_keyless(credentials: Optional[HTTPAuthorizationCredentials]) -> bool:
 
 
 def _names_a_session(token: str) -> bool:
-    """Whether this bearer claims an Unsloth sign-in this install actually knows.
+    """Whether this bearer claims a Tough Customer sign-in this install actually knows.
 
     A session token stays authoritative even under keyless API access: letting an
     expired one through would leave the app running as the admin instead of prompting
@@ -125,10 +125,10 @@ def request_admitted_without_credential(request: Request) -> bool:
 
 
 def admitted_without_session(request: Any) -> bool:
-    """True when keyless API access lets this request through with no Unsloth sign-in.
+    """True when keyless API access lets this request through with no Tough Customer sign-in.
 
     The single predicate behind both the auth dependency below and the route-level
-    checks that ask whether a caller is the Unsloth UI or a programmatic client.
+    checks that ask whether a caller is the Tough Customer UI or a programmatic client.
     """
     from utils.keyless_api_access import request_was_admitted_keyless
 
@@ -343,7 +343,7 @@ async def authenticated_via_api_key(
 ) -> bool:
     """True when the caller used an sk-unsloth API key, not a UI session JWT.
 
-    Lets routes treat programmatic API callers differently from the Unsloth UI
+    Lets routes treat programmatic API callers differently from the Tough Customer UI
     (e.g. refuse a teardown the UI would allow). A keyless caller counts as an API
     caller too: it is the same programmatic surface, only without the key, so every
     guard an API key faces still applies to it.
@@ -395,7 +395,7 @@ def require_ui_session_for_local_commands(via_api_key: bool) -> None:
     if via_api_key:
         raise HTTPException(
             status_code = status.HTTP_403_FORBIDDEN,
-            detail = "Local (stdio) MCP servers can only be configured from the Unsloth UI, "
+            detail = "Local (stdio) MCP servers can only be configured from the Tough Customer UI, "
             "not with an API key. Use an http:// or https:// MCP server instead.",
         )
 
@@ -443,7 +443,7 @@ def _invalid_api_key_detail(token: str) -> str:
     if token == API_KEY_PLACEHOLDER:
         return (
             "This is the placeholder key from the example. Create an API key in "
-            f"Unsloth Studio under Settings > API and use it in place of {API_KEY_PLACEHOLDER}."
+            f"Tough Customer Studio under Settings > API and use it in place of {API_KEY_PLACEHOLDER}."
         )
     return "Invalid or expired API key"
 

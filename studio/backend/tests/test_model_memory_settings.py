@@ -365,7 +365,7 @@ class TestEffectiveMemoryState:
 
 
 class TestReloadRequired:
-    """The reload hint must reflect the launched state, not only what Unsloth
+    """The reload hint must reflect the launched state, not only what Tough Customer
     emitted, so a user-supplied --mlock / --no-mmap counts too."""
 
     @staticmethod
@@ -1452,7 +1452,7 @@ class TestMlockActiveReporting:
         assert body.memlock_limit_bytes == mm_settings.memlock_limit_bytes()
 
     def test_a_users_own_mlock_counts_as_a_real_lock(self, monkeypatch):
-        """Keep resident on, full discrete offload so Unsloth emits nothing, but
+        """Keep resident on, full discrete offload so Tough Customer emits nothing, but
         the user typed --mlock: the child IS locked, so say so."""
         import routes.settings as rs
 
@@ -2420,7 +2420,7 @@ class TestAnActiveFitterVoidsTheAllLayersVerdict:
 
 class TestTheEffectiveFitterState:
     """fit_is_enabled_in answers for the extras; this answers for the child, so
-    Unsloth's own --fit counts and llama.cpp's ON default is respected."""
+    Tough Customer's own --fit counts and llama.cpp's ON default is respected."""
 
     @pytest.mark.parametrize(
         ("args", "env", "expected"),
@@ -2443,7 +2443,7 @@ class TestTheEffectiveFitterState:
         assert _lsa.fit_is_effectively_on(args, env) is expected
 
     def test_the_launch_asks_over_the_whole_command(self):
-        """Source check: Unsloth emits its own --fit into cmd, so reading the
+        """Source check: Tough Customer emits its own --fit into cmd, so reading the
         extras alone would miss it."""
         import inspect
 

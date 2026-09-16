@@ -18,7 +18,7 @@ from typing import Any, Optional
 os.environ["PYTHONWARNINGS"] = "ignore"
 
 # Pin GPU index ordering to PCI bus id before any torch import creates a CUDA context.
-# Otherwise torch/CUDA default to FASTEST_FIRST while nvidia-smi (and Unsloth's VRAM
+# Otherwise torch/CUDA default to FASTEST_FIRST while nvidia-smi (and Tough Customer's VRAM
 # probes) use PCI-bus order, so an index chosen from nvidia-smi can resolve to a different
 # card. setdefault so an override wins; full rationale in utils/hardware/hardware.py.
 os.environ.setdefault("CUDA_DEVICE_ORDER", "PCI_BUS_ID")
@@ -88,7 +88,7 @@ if sys.platform == "win32":
     # ── Windows AMD ROCm: make hipInfo.exe resolvable for subprocess probes ──
     # bitsandbytes' get_rocm_gpu_arch() runs `hipinfo.exe` via PATH at import time; the AMD
     # torch wheel ships it in the venv Scripts dir, which is on PATH only when the venv is
-    # activated -- Unsloth launches python directly. Without this every bitsandbytes import
+    # activated -- Tough Customer launches python directly. Without this every bitsandbytes import
     # logs a scary (harmless) "Could not detect ROCm GPU architecture" error. Gated on the
     # file existing, so non-AMD hosts are untouched; subprocess PATH ignores DLL dirs.
     _scripts_dir = os.path.dirname(sys.executable)
@@ -225,7 +225,7 @@ if _STUDIO_ROOT_RESOLVED != _LEGACY_STUDIO_ROOT:
     _MANAGED_LLAMA_CPP_PATH = _STUDIO_ROOT_RESOLVED / "llama.cpp"
     if not os.environ.get("UNSLOTH_LLAMA_CPP_PATH"):
         os.environ["UNSLOTH_LLAMA_CPP_PATH"] = str(_MANAGED_LLAMA_CPP_PATH)
-    # A CLI/desktop launcher may already have exported Unsloth's own install path.
+    # A CLI/desktop launcher may already have exported Tough Customer's own install path.
     # Classify by the canonical value so that inherited default remains editable.
     from utils.llama_cpp_path_settings import mark_managed_llama_cpp_path
 
@@ -254,7 +254,7 @@ def _read_studio_install_id() -> str:
 
     Returns "" when absent or not a 64-char lowercase-hex token; then
     /api/health emits "" and the launcher accepts any healthy backend.
-    Carries no install-path info (matters when Unsloth runs -H 0.0.0.0)."""
+    Carries no install-path info (matters when Tough Customer runs -H 0.0.0.0)."""
     try:
         token = (
             (_STUDIO_ROOT_RESOLVED / "share" / "studio_install_id")
@@ -774,7 +774,7 @@ async def lifespan(app: FastAPI):
         print("DEFAULT ADMIN ACCOUNT CREATED")
         print(f"    username: {storage.DEFAULT_ADMIN_USERNAME}")
         print(f"    password saved to: {bootstrap_path}")
-        print("    Open the Unsloth UI to sign in and change it.")
+        print("    Open the Tough Customer UI to sign in and change it.")
         print("=" * 60 + "\n")
     else:
         app.state.bootstrap_password = (
@@ -867,7 +867,7 @@ async def lifespan(app: FastAPI):
 app = FastAPI(
     title = "Unsloth UI Backend",
     version = UNSLOTH_VERSION,
-    description = "Backend API for Unsloth UI - Training and Model Management",
+    description = "Backend API for Tough Customer UI - Training and Model Management",
     lifespan = lifespan,
     # Swagger UI and ReDoc are re-registered below on these same paths, against vendored
     # assets instead of a CDN. FastAPI's built-ins point at cdn.jsdelivr.net, and this origin
@@ -1048,7 +1048,7 @@ app.add_middleware(SecurityHeadersMiddleware)
 # Swagger UI and ReDoc, on FastAPI's own paths but served entirely from this origin.
 # FastAPI's built-in pages load ~2.3 MB of JavaScript from cdn.jsdelivr.net and start it with
 # an inline script. localStorage is origin-scoped, not path-scoped, so anything running on
-# /docs can read the Unsloth tokens session.ts keeps there and call the API as that user. The
+# /docs can read the Tough Customer tokens session.ts keeps there and call the API as that user. The
 # bundles are vendored under assets/docs_ui (pinned + digest-checked by
 # tests/test_docs_ui_assets.py) and the inline init runs off the same per-response nonce the
 # bootstrap script uses, so script-src stays 'self' and works offline as a bonus.
@@ -1473,10 +1473,10 @@ app.include_router(
     tags = ["inference"],
 )
 app.include_router(inference_router, prefix = "/api/inference", tags = ["inference"])
-# Unsloth-only inference endpoints (cancel, etc.) are not on the /v1 OpenAI-compat prefix.
+# Tough Customer-only inference endpoints (cancel, etc.) are not on the /v1 OpenAI-compat prefix.
 app.include_router(inference_studio_router, prefix = "/api/inference", tags = ["inference"])
 
-# Unsloth-only text-to-video endpoints; not exposed on the /v1 OpenAI-compat prefix.
+# Tough Customer-only text-to-video endpoints; not exposed on the /v1 OpenAI-compat prefix.
 app.include_router(video_router, prefix = "/api/inference", tags = ["inference"])
 app.include_router(video_openai_router, prefix = "/api/inference", tags = ["inference"])
 app.include_router(video_openai_router, prefix = "/v1", tags = ["openai-compat"])
@@ -1492,6 +1492,8 @@ app.include_router(preview_router, prefix = "/p", tags = ["preview"])
 app.include_router(providers_router, prefix = "/api/providers", tags = ["providers"])
 
 app.include_router(openai_codex_auth_router, prefix = "/api/providers", tags = ["providers"])
+from routes.toughcustomer import router as toughcustomer_router  # noqa: E402
+app.include_router(toughcustomer_router, prefix = "/api/toughcustomer", tags = ["toughcustomer"])
 
 app.include_router(settings_router, prefix = "/api/settings", tags = ["settings"])
 app.include_router(mcp_servers_router, prefix = "/api/mcp/servers", tags = ["mcp"])
@@ -1826,7 +1828,7 @@ async def health_check(request: Request):
         "desktop_manageability_version": 2,
         "supports_desktop_auth": True,
         "supports_desktop_backend_ownership": True,
-        # Opaque per-install id; launchers reject sibling Unsloth instances on the same port.
+        # Opaque per-install id; launchers reject sibling Tough Customer instances on the same port.
         "studio_root_id": _studio_root_id(),
         "native_path_leases_supported": native_path_leases_supported(),
         **({"desktop_owner": owner} if (owner := _desktop_owner()) else {}),
@@ -1929,7 +1931,7 @@ def studio_install_source(_current_subject: str = Depends(get_current_subject)):
 
 @app.get("/api/studio/update-status")
 def studio_update_status(_current_subject: str = Depends(get_current_subject)):
-    """Return source-aware manual update status for browser-served Unsloth."""
+    """Return source-aware manual update status for browser-served Tough Customer."""
     return get_studio_update_status(UNSLOTH_VERSION)
 
 
@@ -1958,7 +1960,7 @@ def studio_download_transport_capabilities(
 
 @app.post("/api/shutdown")
 async def shutdown_server(request: Request, current_subject: str = Depends(get_current_subject)):
-    """Gracefully shut down the Unsloth Studio server.
+    """Gracefully shut down the Tough Customer Studio server.
 
     Called by the frontend quit dialog so users can stop the server from the UI
     without the CLI or killing the process manually.

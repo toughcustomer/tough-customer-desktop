@@ -393,7 +393,7 @@ export function LanAccessSection() {
               <AccessStatus status={status} />
             </div>
             <p className="text-xs text-muted-foreground leading-relaxed">
-              Use Unsloth and its APIs from other devices on your Wi-Fi or wired
+              Use Tough Customer and its APIs from other devices on your Wi-Fi or wired
               network.
             </p>
           </div>
@@ -504,7 +504,7 @@ export function LanAccessSection() {
         </SettingsRow>
         <SettingsRow
           label="Start automatically"
-          description="Put Unsloth on the network each time it starts. Stopping LAN access now won’t turn this off."
+          description="Put Tough Customer on the network each time it starts. Stopping LAN access now won’t turn this off."
         >
           <Switch
             checked={status?.autoStart ?? false}

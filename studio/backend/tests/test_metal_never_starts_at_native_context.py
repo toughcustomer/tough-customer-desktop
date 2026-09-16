@@ -319,7 +319,7 @@ class TestAPassThroughZeroContext:
 class TestTheEmittedCommand:
     """What llama-server actually receives, argv-level.
 
-    Floor and drop are only correct together: extras are appended after Unsloth's
+    Floor and drop are only correct together: extras are appended after Tough Customer's
     own -c and llama.cpp is last-wins, so a surviving "-c 0" undoes the floor.
     """
 
@@ -409,7 +409,7 @@ class TestAutoLayers:
 class TestAutoLayersWithTheFitterTurnedOff:
     """The Auto-layers exemption is only as good as the fitter it defers to.
 
-    Extras land after Unsloth's own "--fit on" and win, so a pass-through
+    Extras land after Tough Customer's own "--fit on" and win, so a pass-through
     "--fit off" leaves a command carrying no -c and no fitter, which is
     llama.cpp's native context and the over-commit this branch prevents.
 
@@ -511,7 +511,7 @@ class TestAutoLayersWithTheFitterTurnedOff:
 class TestAnInheritedContextEnvironment:
     """LLAMA_ARG_CTX_SIZE runs -c's own handler, and env parses before argv.
 
-    So the command line wins wherever Unsloth emits one. Auto-layers emits none,
+    So the command line wins wherever Tough Customer emits one. Auto-layers emits none,
     on purpose, leaving an inherited 0 to cancel the --fit that sizes the mode.
     """
 

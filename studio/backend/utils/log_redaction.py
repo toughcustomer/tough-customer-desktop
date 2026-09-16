@@ -40,7 +40,7 @@ _SECRET_KEYS = (
     "authorization|x-api-key|api[-_]?key|apikey|hf[-_]?token|access[-_]?token|"
     "refresh[-_]?token|auth[-_]?token|bearer[-_]?token|client[-_]?secret|"
     "aws_secret_access_key|aws_session_token|wandb[-_]?token|hub[-_]?token|"
-    # Unsloth's own S3 field and its camelCase alias: neither is reachable through the bare "secret" alternative, and an
+    # Tough Customer's own S3 field and its camelCase alias: neither is reachable through the bare "secret" alternative, and an
     # AWS secret key has no prefix of its own for a shape rule to catch.
     # The field is models/training.py:60.
     "secret[-_]?access[-_]?key|"
@@ -104,7 +104,7 @@ _FLAG_RE = re.compile(
 )
 
 # An Authorization value whatever the scheme: the key/value rule captures only "Basic" and leaves the credential behind
-# it. Same for a Cookie, which for Unsloth is the UI session.
+# it. Same for a Cookie, which for Tough Customer is the UI session.
 _SCHEMES = ("bearer", "basic", "digest", "token", "apikey")
 # A scheme word only introduces a credential when an Authorization header put it there, and the credential stops at a
 # quote or structural delimiter: \S+ swallowed the rest of the dict.

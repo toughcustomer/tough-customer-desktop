@@ -124,7 +124,7 @@ def pytest_configure(config):
 def pytest_addoption(parser):
     group = parser.getgroup(
         "unsloth-e2e",
-        "Unsloth Studio end-to-end test options",
+        "Tough Customer Studio end-to-end test options",
     )
     group.addoption(
         "--unsloth-model",
@@ -276,7 +276,7 @@ def _empty_hf_hub_cache(tmp_path_factory):
 def _hf_cache_is_empty(_empty_hf_hub_cache, monkeypatch):
     """Point BOTH hub-cache roots at an empty dir, so the suite is host independent.
 
-    Unsloth pins its live setting out of this env snapshot; huggingface_hub falls back to
+    Tough Customer pins its live setting out of this env snapshot; huggingface_hub falls back to
     ``constants.HF_HUB_CACHE``. A dev holding FLUX.1-dev otherwise watches its files leave a
     download plan AND the mirror swap decline. Pinned at the ROOT, not by stubbing a probe: that
     reaches only one of the four cache reads, and ``_upstream_is_cached`` walks the tree itself.
@@ -730,13 +730,13 @@ def studio_server(request):
 
 @pytest.fixture
 def base_url(studio_server):
-    """Base URL for the e2e Unsloth server (from ``studio_server``)."""
+    """Base URL for the e2e Tough Customer server (from ``studio_server``)."""
     return studio_server[0]
 
 
 @pytest.fixture
 def api_key(studio_server):
-    """API key for the e2e Unsloth server (from ``studio_server``)."""
+    """API key for the e2e Tough Customer server (from ``studio_server``)."""
     return studio_server[1]
 
 

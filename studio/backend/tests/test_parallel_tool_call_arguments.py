@@ -875,7 +875,7 @@ def test_a_second_round_keeps_numbering_where_the_first_stopped():
 
 
 def test_a_provider_id_in_the_minted_namespace_is_not_handed_out_twice():
-    # tool_call_<n> is not reserved to Unsloth.
+    # tool_call_<n> is not reserved to Tough Customer.
     turn = _Turn()
     turn.merge_structured([_delta(0, "alpha", '{"a":1}', call_id = "tool_call_0")])
     turn.merge_structured([_delta(1, "beta", '{"b":2}')])

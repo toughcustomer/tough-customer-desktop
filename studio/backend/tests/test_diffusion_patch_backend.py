@@ -18,7 +18,7 @@ import pytest
 
 import core.inference.diffusion_patch_backend as pb
 
-_SENTINEL_ERROR = ImportError("Please install Unsloth via `pip install unsloth`!")
+_SENTINEL_ERROR = ImportError("Please install Tough Customer via `pip install unsloth`!")
 
 
 @pytest.fixture(autouse = True)

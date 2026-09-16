@@ -105,7 +105,7 @@ if grep -aFq 'COLR' "$safe_emoji_font"; then
   echo "Complete AppImage safe emoji font unexpectedly contains a COLR table" >&2
   exit 1
 fi
-grep -Fq 'Unsloth Safe Emoji' "$fontconfig_file" || {
+grep -Fq 'Tough Customer Safe Emoji' "$fontconfig_file" || {
   echo "Complete AppImage fontconfig does not prefer its safe emoji family" >&2
   exit 1
 }
@@ -195,7 +195,7 @@ case "$(readlink "$appdir/.DirIcon" 2>/dev/null)" in
 esac
 
 binary="$(find "$appdir/usr/bin" -maxdepth 1 -type f -name 'unsloth*' -perm -111 -print -quit 2>/dev/null)"
-[[ -n "$binary" ]] || { echo "Complete AppImage has no Unsloth executable" >&2; exit 1; }
+[[ -n "$binary" ]] || { echo "Complete AppImage has no Tough Customer executable" >&2; exit 1; }
 
 machine="$(readelf -h "$binary" | sed -n 's/^[[:space:]]*Machine:[[:space:]]*//p')"
 [[ "$machine" == "Advanced Micro Devices X86-64" ]] || {

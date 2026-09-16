@@ -59,7 +59,7 @@ def _chat_template_kwargs() -> dict:
 
 
 def get_tokenizer_chat_template(tokenizer, model_name):
-    """Apply a chat template to the tokenizer, using Unsloth's
+    """Apply a chat template to the tokenizer, using Tough Customer's
     get_chat_template when the model class name is in the mapper.
 
     Args:
@@ -80,7 +80,7 @@ def get_tokenizer_chat_template(tokenizer, model_name):
 
     if model_name_lower in MODEL_TO_TEMPLATE_MAPPER:
         matched_template = MODEL_TO_TEMPLATE_MAPPER[model_name_lower]
-        logger.info(f"📝 Applying Unsloth chat template: {matched_template}")
+        logger.info(f"📝 Applying Tough Customer chat template: {matched_template}")
         try:
             tokenizer = get_chat_template(
                 tokenizer,
@@ -88,7 +88,7 @@ def get_tokenizer_chat_template(tokenizer, model_name):
                 **_chat_template_kwargs(),
             )
         except Exception as e:
-            logger.info(f"⚠️ Failed to apply Unsloth template '{matched_template}': {e}")
+            logger.info(f"⚠️ Failed to apply Tough Customer template '{matched_template}': {e}")
             logger.info(f"   Falling back to tokenizer's default chat template")
     else:
         has_chat_template = (
@@ -96,7 +96,7 @@ def get_tokenizer_chat_template(tokenizer, model_name):
             and tokenizer.chat_template is not None
         )
         if has_chat_template:
-            logger.info(f"📝 Using tokenizer's own chat template (no Unsloth template match)")
+            logger.info(f"📝 Using tokenizer's own chat template (no Tough Customer template match)")
         else:
             # Base model with no chat template: apply default ChatML.
             logger.info(f"📝 No chat template found — applying default ChatML template (base model)")
@@ -356,7 +356,7 @@ def apply_chat_template_to_dataset(
         if not is_standardized:
             warnings.append("Dataset may not be fully standardized")
 
-        # Apply Unsloth chat template if the model matches.
+        # Apply Tough Customer chat template if the model matches.
         if model_name:
             tokenizer = get_tokenizer_chat_template(tokenizer, model_name)
 

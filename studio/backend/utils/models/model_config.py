@@ -2078,7 +2078,7 @@ def detect_dspark_file(
 ) -> Optional[str]:
     """Find a DSpark sidecar for a local GGUF model.
 
-    Unsloth publishes these as ``dspark-*.gguf`` in the repository root or
+    Tough Customer publishes these as ``dspark-*.gguf`` in the repository root or
     under ``dspark/``. Prefer Q8_0, the precision recommended by the model
     card, while requiring the sidecar family name to match the target model
     (see _drafter_matches_weight: a folder holding a model and its "-Lite"
@@ -2310,7 +2310,7 @@ def detect_gguf_model(path: str, model_root: Optional[str] = None) -> Optional[s
     return None
 
 
-# Preferred GGUF quant levels, descending. UD (Unsloth Dynamic) variants beat standard
+# Preferred GGUF quant levels, descending. UD (Tough Customer Dynamic) variants beat standard
 # quants on quality per bit; ordered by size/quality tradeoff, not raw quality.
 _GGUF_QUANT_PREFERENCE = [
     # UD variants (best quality per bit) -- Q4 is the sweet spot
@@ -2330,7 +2330,7 @@ _GGUF_QUANT_PREFERENCE = [
     "UD-IQ2_XXS",
     "UD-IQ1_M",
     "UD-IQ1_S",
-    # Standard quants (fallback for non-Unsloth repos)
+    # Standard quants (fallback for non-Tough Customer repos)
     "Q4_K_M",
     "Q4_K_S",
     "Q5_K_M",
@@ -3227,7 +3227,7 @@ def _has_model_weight_files(model_dir: Path) -> bool:
 
 
 def _detect_training_output_type(model_dir: Path) -> Optional[str]:
-    """Classify an Unsloth training output as LoRA or full finetune."""
+    """Classify a Tough Customer training output as LoRA or full finetune."""
     adapter_config = model_dir / "adapter_config.json"
     adapter_model = model_dir / "adapter_model.safetensors"
     if adapter_config.exists() or adapter_model.exists():
@@ -3249,7 +3249,7 @@ def _looks_like_lora_adapter(model_dir: Path) -> bool:
 
 
 def scan_trained_models(outputs_dir: str = str(outputs_root())) -> List[Tuple[str, str, str]]:
-    """Scan outputs folder for trained Unsloth models.
+    """Scan outputs folder for trained Tough Customer models.
 
     Returns:
         List of (display_name, model_path, model_type), where model_type is

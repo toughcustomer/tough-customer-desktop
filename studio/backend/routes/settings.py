@@ -1074,7 +1074,7 @@ def update_llama_cpp_path(
     current_subject: str = Depends(get_current_subject),
     via_api_key: bool = Depends(authenticated_via_api_key),
 ) -> LlamaCppPathResponse:
-    # Only the interactive Unsloth UI may change this executable setting.
+    # Only the interactive Tough Customer UI may change this executable setting.
     require_ui_session(via_api_key)
     try:
         set_custom_llama_cpp_path(payload.path)
@@ -3091,7 +3091,7 @@ def _require_ui_session_for_keyless(via_api_key: bool = Depends(authenticated_vi
     if via_api_key:
         raise HTTPException(
             status_code = 403,
-            detail = "Keyless API access can only be changed from the Unsloth UI.",
+            detail = "Keyless API access can only be changed from the Tough Customer UI.",
         )
 
 

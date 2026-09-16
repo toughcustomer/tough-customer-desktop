@@ -321,7 +321,7 @@ def test_delete_refuses_dirs_outside_outputs_root(monkeypatch, tmp_path):
 
 
 def test_canonical_output_dir_rejects_foreign_absolute_paths(monkeypatch, tmp_path):
-    windows_path = r"C:\Users\alice\Unsloth\outputs\run-1"
+    windows_path = r"C:\Users\alice\Tough Customer\outputs\run-1"
     foreign_path = (
         windows_path
         if not Path(windows_path).is_absolute()

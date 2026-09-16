@@ -247,7 +247,7 @@ export function providerModelSupportsStudioTools(
   return typeof providerDefault === "boolean" ? providerDefault : null;
 }
 
-/** Whether the connection behind an ``external::`` model id runs Unsloth tools.
+/** Whether the connection behind an ``external::`` model id runs Tough Customer tools.
  *
  * Resolves the provider type from the saved connection, so callers that only
  * have a checkpoint id (the runtime store) can ask the capability question

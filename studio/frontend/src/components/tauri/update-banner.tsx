@@ -86,7 +86,7 @@ export function UpdateBanner({
   const currentVersion = formatVersion(info?.currentVersion);
   const latestVersion = formatVersion(info?.version);
   const Icon = showFailure ? CircleAlert : Download;
-  // The Unsloth version offered. Not a notes key; it scopes the expanded state.
+  // The Tough Customer version offered. Not a notes key; it scopes the expanded state.
   const notesTargetVersion = info?.version?.replace(LEADING_V, "") ?? null;
   const notesOpen =
     notesTargetVersion !== null && notesVersion === notesTargetVersion;
@@ -254,7 +254,7 @@ export function UpdateBanner({
               />
               <div className="min-w-0">
                 <p className="font-heading text-base font-medium text-foreground">
-                  {showFailure ? "App update failed" : "New Unsloth version"}
+                  {showFailure ? "App update failed" : "New Tough Customer version"}
                 </p>
                 {showFailure ? null : (
                   <p className="mt-0.5 text-xs text-muted-foreground">
@@ -270,7 +270,7 @@ export function UpdateBanner({
                     : isManualLinuxPackage
                       ? "Open the GitHub release page to install the Linux package"
                       : isExternalServer
-                        ? "Run `unsloth studio update` from your terminal"
+                        ? "Update the server install from the machine that runs it"
                         : "Prepares in the background. You keep working and restart when it is ready"}
                 </p>
               </div>

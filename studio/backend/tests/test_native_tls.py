@@ -3,7 +3,7 @@
 
 """Tests for the OS-trust-store TLS activation (utils/native_tls.py).
 
-truststore is stubbed: these assert only Unsloth's seam -- the platform defaults,
+truststore is stubbed: these assert only Tough Customer's seam -- the platform defaults,
 the UNSLOTH_STUDIO_NATIVE_TLS tri-state, idempotency, and the fail-open-to-certifi
 behaviour when truststore is unavailable. CPU-only, no network.
 """

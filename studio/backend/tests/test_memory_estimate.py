@@ -2005,7 +2005,7 @@ class TestInheritedEnvironment:
     """What the CHILD inherits, which is not always what the panel was told.
 
     ``_child_spec_env`` is the rule: the launch scrubs LLAMA_ARG_SPEC_* whenever
-    Unsloth owns the spec block, and keeps it when the extras do. The projector has no
+    Tough Customer owns the spec block, and keeps it when the extras do. The projector has no
     such scrub at all, so an inherited one loads even through --no-mmproj.
     """
 
@@ -2051,7 +2051,7 @@ class TestInheritedEnvironment:
         owned = ["--spec-type", "draft-mtp"]
         # The loader reads the env twin before falling back to the build's default.
         assert ri._estimate_draft_n_max(bare, gqa_gguf, requested = None, extras = owned) == 7
-        # Scrubbed when Unsloth owns the block, so the platform default stands.
+        # Scrubbed when Tough Customer owns the block, so the platform default stands.
         assert ri._estimate_draft_n_max(bare, gqa_gguf, requested = None, extras = []) in (2, 3)
         # A flag still beats the environment, as it does at launch.
         assert (

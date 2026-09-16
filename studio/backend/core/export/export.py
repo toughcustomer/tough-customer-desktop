@@ -54,7 +54,7 @@ logger = get_logger(__name__)
 
 
 def _export_runtime_available() -> bool:
-    """True if export can run: MLX active, or Unsloth imported (only succeeds on a GPU host)."""
+    """True if export can run: MLX active, or Tough Customer imported (only succeeds on a GPU host)."""
     return bool(_IS_MLX) or (FastLanguageModel is not None)
 
 
@@ -67,7 +67,7 @@ def _export_runtime_message() -> str:
         )
     return (
         "Export requires an NVIDIA, AMD, or Intel GPU, or Apple Silicon (MLX). No supported "
-        "accelerator was found on this host. (PyTorch is installed, but Unsloth cannot export on "
+        "accelerator was found on this host. (PyTorch is installed, but Tough Customer cannot export on "
         "CPU only.)"
     )
 
@@ -407,7 +407,7 @@ language:
 - **License:** apache-2.0
 - **Finetuned from model :** {base_model}
 
-This {model_type} model was trained 2x faster with [Unsloth](https://github.com/unslothai/unsloth) and Huggingface's TRL library.
+This {model_type} model was trained 2x faster with [Tough Customer](https://github.com/unslothai/unsloth) and Huggingface's TRL library.
 
 [<img src="https://raw.githubusercontent.com/unslothai/unsloth/main/images/unsloth%20made%20with%20love.png" width="200"/>](https://github.com/unslothai/unsloth)
 """
@@ -782,7 +782,7 @@ class ExportBackend:
                 if not _compressed_export_supported():
                     return (
                         False,
-                        "Compressed-tensors (FP8/FP4) export requires an Unsloth build with "
+                        "Compressed-tensors (FP8/FP4) export requires a Tough Customer build with "
                         "compressed-tensors support. Upgrade unsloth, or choose 16-bit.",
                         None,
                     )
@@ -913,7 +913,7 @@ class ExportBackend:
                         extra = "unsloth",
                     )
                     ModelCard(content).push_to_hub(
-                        repo_id, token = hf_token, commit_message = "Unsloth Model Card"
+                        repo_id, token = hf_token, commit_message = "Tough Customer Model Card"
                     )
                     hf_api.upload_folder(
                         folder_path = output_path,
@@ -1044,7 +1044,7 @@ class ExportBackend:
                         extra = "unsloth",
                     )
                     card = ModelCard(content)
-                    card.push_to_hub(repo_id, token = hf_token, commit_message = "Unsloth Model Card")
+                    card.push_to_hub(repo_id, token = hf_token, commit_message = "Tough Customer Model Card")
 
                     if save_directory:
                         hf_api.upload_folder(
@@ -1107,7 +1107,7 @@ class ExportBackend:
         if imatrix_file and not _imatrix_export_supported(self.current_model.save_pretrained_gguf):
             return (
                 False,
-                "This Unsloth build does not support GGUF imatrix export. "
+                "This Tough Customer build does not support GGUF imatrix export. "
                 "Upgrade unsloth and unsloth_zoo, or disable the imatrix option.",
                 None,
             )
@@ -1123,7 +1123,7 @@ class ExportBackend:
         ):
             return (
                 False,
-                "This Unsloth build does not support GGUF shard-size control. "
+                "This Tough Customer build does not support GGUF shard-size control. "
                 "Upgrade unsloth and unsloth_zoo, or clear the shard-size option.",
                 None,
             )
@@ -1163,7 +1163,7 @@ class ExportBackend:
                 # is only an optimisation.
                 if not _LLAMA_CPP_SCRIPTS_WARNING_EMITTED:
                     logger.warning(
-                        "Unsloth: installed unsloth_zoo does not honor "
+                        "Tough Customer: installed unsloth_zoo does not honor "
                         "UNSLOTH_LLAMA_CPP_SCRIPTS_DIR; convert_hf_to_gguf.py will "
                         "still be downloaded from llama.cpp master and may drift "
                         "past the pinned llama-quantize binary. Upgrade unsloth_zoo "
@@ -1381,7 +1381,7 @@ class ExportBackend:
             if _save_gguf_fn is None or not _supports_kwarg(_save_gguf_fn, "save_method"):
                 return (
                     False,
-                    "This Unsloth build does not support GGUF LoRA adapter export. "
+                    "This Tough Customer build does not support GGUF LoRA adapter export. "
                     "Upgrade unsloth and unsloth_zoo, or export the safetensors adapter.",
                     None,
                 )

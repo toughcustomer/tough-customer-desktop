@@ -9,7 +9,7 @@ import type { TranslationKey } from "@/i18n";
  * `useShortcut(id, ...)` where the action runs.
  *
  * Order is the render order and decides who owns a contested chord, so the
- * most reached-for actions come first. An action only earns a row when Unsloth
+ * most reached-for actions come first. An action only earns a row when Tough Customer
  * has the feature behind it.
  */
 export type ShortcutId =
@@ -319,7 +319,7 @@ const BROWSER_RESERVED_VALUES = new Set<string>([
   "Mod+KeyW",
   "Mod+Shift+KeyW",
   "Mod+KeyL",
-  // Find in page, on every engine. Unsloth ships its own on it anyway (see the note by the
+  // Find in page, on every engine. Tough Customer ships its own on it anyway (see the note by the
   // default); this is what warns a web user before they rebind onto it.
   "Mod+KeyF",
   "Mod+KeyR",

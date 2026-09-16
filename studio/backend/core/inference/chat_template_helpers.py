@@ -990,7 +990,7 @@ def _neutralize_replayed_tool_call(
     Gemma-4 renders "<|tool_call>call:NAME{key:<|"|>value<|"|>}<tool_call|>", so a name or
     argument echoing pasted text can close the call block and open a "<|tool_response>" or
     "<|turn>model" of its own (#7066). The rewrite is the identity on every dispatchable
-    name (Unsloth composes ^[a-zA-Z0-9_-]{1,64}$), and a tool result's "name" takes the same
+    name (Tough Customer composes ^[a-zA-Z0-9_-]{1,64}$), and a tool result's "name" takes the same
     rewrite, so the two still agree when Gemma-4 pairs them by name.
 
     Both replay shapes are swept, the OpenAI nested one and the flat {"id", "name",
@@ -1218,7 +1218,7 @@ def neutralize_control_markup_in_messages(
                 new_content = _neutralize_leaves(content, rewrite)
             elif isinstance(content, list):
                 # A media part is only opaque where something RESOLVES it, and nothing does
-                # inside a tool result: Unsloth's vision and audio paths build from the last
+                # inside a tool result: Tough Customer's vision and audio paths build from the last
                 # user message, while Llama-3.1's tool branch serializes the whole content
                 # iterable with tojson, so an exempt URL there lands in the prompt as live
                 # structure. That branch keys on "tool" OR "ipython" (chat_templates.py:517),
@@ -2353,7 +2353,7 @@ def _atem_block_pieces(block: str, *, complete: bool) -> Optional[list[tuple[boo
 class ReasoningChannelNormalizer:
     """Incrementally convert one native reasoning channel to ``<think>``.
 
-    The parser follows mlx-vlm's streaming boundary behavior but emits Unsloth's
+    The parser follows mlx-vlm's streaming boundary behavior but emits Tough Customer's
     established canonical text contract. Only the configured opening and
     closing markers are consumed; tool-call and other control markers remain
     available to downstream parsers.
@@ -3431,7 +3431,7 @@ def render_native_template(
 ):
     """Render ``messages`` + ``tools`` with the model's NATIVE chat template.
 
-    Some Unsloth override templates (e.g. ``mistral``, ``gemma-4``) do not emit
+    Some Tough Customer override templates (e.g. ``mistral``, ``gemma-4``) do not emit
     the ``tools`` schema, so a tool-calling turn silently stops advertising tools.
     The native template ships in the model repo and carries the family's
     tool-calling syntax. It is loaded straight from the repo (bypassing any
@@ -3570,7 +3570,7 @@ def render_with_native_template_fallback(
 
     if not tools:
         # Gemma 4 can emit its native reasoning protocol even when a generation-time
-        # Unsloth override rendered a marker-free prompt. Preserve the live-verified
+        # Tough Customer override rendered a marker-free prompt. Preserve the live-verified
         # no-tools thinking behavior without letting cached native metadata describe
         # unrelated tool prompts that kept the active override.
         markers = live_markers

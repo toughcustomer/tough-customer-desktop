@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""Unsloth-owned tool execution loop, shared by every external provider transport.
+"""Tough Customer-owned tool execution loop, shared by every external provider transport.
 
 The loop owns the parts that do not depend on how bytes reach the provider:
 turn cycling, the tool budget, the approval handshake, local execution through
@@ -89,28 +89,28 @@ from state.tool_approvals import (
 
 
 _TOOL_BUDGET_EXHAUSTED = (
-    "Unsloth did not execute this tool call because the per-message tool-call limit was reached. "
+    "Tough Customer did not execute this tool call because the per-message tool-call limit was reached. "
     "Continue with the available results and answer without calling another tool."
 )
 
-_TOOL_DISABLED = "Unsloth did not execute this tool call because the tool is disabled."
+_TOOL_DISABLED = "Tough Customer did not execute this tool call because the tool is disabled."
 
 _TOOL_CANCELLED = (
-    "Unsloth stopped this tool call before it returned, so there is no result. "
+    "Tough Customer stopped this tool call before it returned, so there is no result. "
     "The tool may have already done part of its work."
 )
 
 _TOOL_TRUNCATED = (
-    "Unsloth did not execute this tool call because the provider stopped mid-call at its "
+    "Tough Customer did not execute this tool call because the provider stopped mid-call at its "
     "output limit."
 )
 
 # Card text for a call the controller skipped. The client already painted a card from the provider's own tool_calls
 # delta, so it needs a short result; the long model-facing nudge stays in the conversation.
 _TOOL_SKIPPED = {
-    "duplicate": "Unsloth did not run this call because an identical one had already completed.",
+    "duplicate": "Tough Customer did not run this call because an identical one had already completed.",
     "disabled": _TOOL_DISABLED,
-    "render_html_repeat": "Unsloth did not run this call because render_html already ran.",
+    "render_html_repeat": "Tough Customer did not run this call because render_html already ran.",
 }
 
 # Verbatim from the local loops: the last pass answers instead of asking for more.
@@ -249,7 +249,7 @@ def _normalized_call(call: dict[str, Any], fallback_id: str = "") -> dict[str, A
     if not isinstance(function, dict):
         return None
     if not isinstance(call_id, str) or not call_id:
-        # The id is Unsloth's correlation key, not the model's contract. Several OpenAI-compatible servers omit it;
+        # The id is Tough Customer's correlation key, not the model's contract. Several OpenAI-compatible servers omit it;
         # dropping the call lost a real request with no error, so mint one instead.
         call_id = fallback_id
     if not call_id:
@@ -319,7 +319,7 @@ class ToolLoopTransport(Protocol):
     # does; a self-hosted GGUF often does.
     heals_text_tool_calls: bool
 
-    # Whether the transport already stripped Unsloth's control vocabulary from every raw upstream line. A transport that
+    # Whether the transport already stripped Tough Customer's control vocabulary from every raw upstream line. A transport that
     # has not is sanitized here; one that has must not be sanitized twice, because by this point its own synthesized
     # frames (a provider-hosted image result, say) are indis- tinguishable from a forged one and would be thrown away.
     sanitizes_provider_frames: bool
@@ -530,7 +530,7 @@ class _Turn:
 
         These reach the client as their own frames but are not part of the
         assistant message this loop replays, so the follow-up request would lose
-        whatever the provider just produced. Unsloth's own events carry a
+        whatever the provider just produced. Tough Customer's own events carry a
         top-level ``type``, so ``_toolEvent`` is unambiguously the provider's.
 
         Both halves matter: ``tool_end`` generally omits ``tool_name``, and for
@@ -1186,7 +1186,7 @@ async def stream_with_studio_tools(
     policy: ToolLoopPolicy,
     cancel_event: threading.Event,
 ) -> AsyncIterator[str]:
-    """Stream a provider, execute requested Unsloth tools, continue to a final answer."""
+    """Stream a provider, execute requested Tough Customer tools, continue to a final answer."""
     conversation = [dict(message) for message in run.messages]
     # Kept before the loop appends anything: this is the branch the request is on.
     request_branch = list(run.messages)
@@ -1547,7 +1547,7 @@ async def stream_with_studio_tools(
                 # client painted a card from it. Nothing else closes that card, so without a terminal event it spins for
                 # the rest of the answer and then reads as a tool that ran and returned nothing. Keyed on the streamed
                 # id, since a repeated call is exactly the one this loop renames above. Only for a tool the user DID
-                # enable. A call for something outside the catalog is not a tool of Unsloth's that declined to run, it
+                # enable. A call for something outside the catalog is not a tool of Tough Customer's that declined to run, it
                 # is a name this install never offered, and giving it a card would advertise a tool the user switched
                 # off. That one is answered in the conversation only.
                 if decision.action == "disabled":
@@ -1558,7 +1558,7 @@ async def stream_with_studio_tools(
                         call.get("card_id") or call.get("stream_id") or decision.tool_call_id
                     ),
                     arguments = decision.arguments,
-                    result = _TOOL_SKIPPED.get(decision.action, "Unsloth did not run this call."),
+                    result = _TOOL_SKIPPED.get(decision.action, "Tough Customer did not run this call."),
                     provenance = decision.provenance,
                 ):
                     yield card_line
@@ -1664,7 +1664,7 @@ async def stream_with_studio_tools(
                 # the replaced response in them.
                 if accepts_kwarg(execute_tool, "conversation_branch"):
                     kwargs["conversation_branch"] = request_branch
-                # And a budget, so the tool's clamp is not skipped. Unsloth cannot measure an external model's window,
+                # And a budget, so the tool's clamp is not skipped. Tough Customer cannot measure an external model's window,
                 # and a custom OpenAI-compatible endpoint can be a small local server, so a model-chosen 8 chunks is
                 # roughly 4K tokens replayed on every later call. Unmeasurable means one recall's worth. Explicitly
                 # unknowable, not absent: this request is served by an external provider, so the resident GGUF's window

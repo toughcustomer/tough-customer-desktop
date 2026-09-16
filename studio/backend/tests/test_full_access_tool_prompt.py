@@ -71,12 +71,12 @@ def test_full_access_descriptions_drop_the_isolation_claim(tool):
     # The one claim that is outright false with the sandbox off.
     assert "do not exist" not in description
     assert "sandbox is disabled" in description
-    assert "wherever Unsloth Studio is running" in description
+    assert "wherever Tough Customer Studio is running" in description
     # Docker is a documented deployment, where only mounted paths are visible,
-    # so the reach is the Unsloth process's, not a whole machine's.
+    # so the reach is the Tough Customer process's, not a whole machine's.
     assert "container with only some paths mounted" in description
     # The remote modes (--secure / -H 0.0.0.0, README) put the tools on the host
-    # serving Unsloth, not on the device the user is looking at, so the prompt
+    # serving Tough Customer, not on the device the user is looking at, so the prompt
     # must not claim the two are the same.
     assert "user's own machine" not in description
     # The workdir really is still the per-session dir in bypass mode
@@ -118,7 +118,7 @@ def test_the_substitutions_land_on_every_platform(monkeypatch, platform, tool_na
     assert "sandbox is disabled" in full
     assert "do resolve" in full
     assert "user's own machine" not in full
-    assert "wherever Unsloth Studio is running" in full
+    assert "wherever Tough Customer Studio is running" in full
     # _build_bypass_env keeps _SANDBOX_SITE_DIR on PYTHONPATH, so sitecustomize
     # still heals these onto the workdir under Full access. A blanket "absolute
     # paths resolve" would have the model report a write that went elsewhere.
@@ -184,7 +184,7 @@ def test_python_full_access_description_still_omits_the_shell():
 
 def test_full_access_drops_the_local_desktop_promise(monkeypatch):
     """The Git Bash branch of the shell note says a detached program opens a
-    window on the user's desktop, which only holds while Unsloth is local. The
+    window on the user's desktop, which only holds while Tough Customer is local. The
     Full access text now says it may be remote or containerized, so the two
     would contradict each other."""
     monkeypatch.setattr(sys, "platform", "win32")
@@ -280,9 +280,9 @@ def test_nudge_is_unchanged_without_full_access():
 
 def test_nudge_states_the_environment_under_full_access():
     nudge = _build_tool_action_nudge(tools = _CODE_TOOLS, model_name = "test-8B", full_access = True)
-    assert "where Unsloth Studio is running" in nudge
+    assert "where Tough Customer Studio is running" in nudge
     assert "code sandbox and the approval prompts disabled" in nudge
-    # Containerized Unsloth sees only its mounts, so the claim is scoped to what
+    # Containerized Tough Customer sees only its mounts, so the claim is scoped to what
     # the process can reach rather than to the machine.
     assert "whatever that process can reach" in nudge
     assert "container that mounts only some" in nudge
@@ -313,7 +313,7 @@ def test_the_tip_names_only_the_selected_code_tools(enabled, expected):
     for absent in {"python", "terminal"} - set(enabled):
         assert f"The {absent} tool runs where" not in nudge
         assert f"and {absent} tools run where" not in nudge
-    # Unsloth can be served remotely, so the tools' host is not necessarily the
+    # Tough Customer can be served remotely, so the tools' host is not necessarily the
     # device in front of the user.
     assert "not necessarily the device the user is viewing this on" in nudge
     # The actual reported failure: the model asserted isolation instead of
@@ -349,7 +349,7 @@ def test_full_access_tip_needs_a_code_tool():
     """web_search alone runs nothing locally, so the sandbox sentence would be
     noise (and false)."""
     nudge = _build_tool_action_nudge(tools = _WEB_ONLY, model_name = "test-8B", full_access = True)
-    assert "where Unsloth Studio is running" not in nudge
+    assert "where Tough Customer Studio is running" not in nudge
     assert nudge == _build_tool_action_nudge(tools = _WEB_ONLY, model_name = "test-8B")
 
 

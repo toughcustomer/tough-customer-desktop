@@ -967,7 +967,7 @@ def _embedding_leaves(target_modules) -> set:
 def _full_weight_embedding_elements(arch: ModelArchConfig, target_modules) -> int:
     """embed_tokens/lm_head cost a full matrix each, not a low-rank pair.
 
-    Unsloth redirects them into modules_to_save. A tied pair also gets
+    Tough Customer redirects them into modules_to_save. A tied pair also gets
     ensure_weight_tying, which collapses them to one trainable matrix.
     """
     selected = len(_embedding_leaves(target_modules))
@@ -1016,7 +1016,7 @@ def compute_lora_params(arch: ModelArchConfig, lora_rank: int, target_modules: l
             n_moe = n_layers - n_dense
             # peft "all-linear" attaches LoRA to nn.Linear only; routed experts are nn.Parameter and need explicit
             # naming, while shared experts are nn.Linear and get_peft_regex picks them up.
-            # Routed experts need explicit gate_proj/up_proj/down_proj naming via Unsloth's get_moe_target_parameters.
+            # Routed experts need explicit gate_proj/up_proj/down_proj naming via Tough Customer's get_moe_target_parameters.
             routed_moe = (
                 0
                 if all_linear

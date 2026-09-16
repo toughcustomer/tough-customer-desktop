@@ -43,16 +43,13 @@ function Logo() {
   return (
     <div className="flex items-center justify-center gap-3">
       <img
-        src="/sticker.png"
+        src="/tc-mark.png"
         alt=""
         aria-hidden="true"
         className="h-[60px] w-[60px] object-contain"
       />
-      <span
-        className="text-ui-50 font-semibold leading-none tracking-[-0.02em] text-foreground"
-        style={{ fontFamily: '"Hellix", sans-serif' }}
-      >
-        unsloth
+      <span className="font-heading text-ui-50 font-semibold leading-none tracking-[-0.02em] text-foreground">
+        Tough Customer
       </span>
     </div>
   );
@@ -85,9 +82,8 @@ function NotInstalledContent({ onInstall }: { onInstall: () => void }) {
       <div className="mb-10 flex flex-col items-center gap-3">
         <p
           className="text-ui-13 font-semibold tracking-[-0.01em] text-muted-foreground"
-          style={{ fontFamily: '"Hellix", sans-serif' }}
         >
-          To install Unsloth, click Get Started.
+          To install Tough Customer, click Get Started.
         </p>
         <Button size="hero" onClick={onInstall}>
           Get Started
@@ -178,7 +174,7 @@ function ClosingContent() {
       <div className="mb-10 flex w-full flex-col items-center gap-2">
         <Spinner className="size-6 text-primary" />
         <p className="text-sm font-bold text-foreground" aria-live="polite">
-          Closing Unsloth Desktop...
+          Closing Tough Customer...
         </p>
         <p className="text-sm text-muted-foreground">Shutting down the backend.</p>
       </div>

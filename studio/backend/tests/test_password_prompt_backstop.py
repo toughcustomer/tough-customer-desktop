@@ -3,7 +3,7 @@
 
 """Pre-tunnel terminal password gate: never publish a public Cloudflare URL
 while the seeded default admin password is active. Imports run.py directly,
-so run under the Unsloth venv."""
+so run under the Tough Customer venv."""
 
 from __future__ import annotations
 

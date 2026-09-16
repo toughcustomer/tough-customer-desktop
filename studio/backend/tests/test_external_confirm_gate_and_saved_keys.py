@@ -7,10 +7,10 @@ Both are one-line conditions in ``_proxy_to_external_provider`` and both are
 reachable only by driving the route, so they are pinned here rather than through
 a helper's return value:
 
-* the confirm gate. Unsloth's UI expresses "ask me first" as ``permission_mode``,
+* the confirm gate. Tough Customer's UI expresses "ask me first" as ``permission_mode``,
   not as ``confirm_tool_calls``, so a guard that reads the raw flag admits the
   very request the local routes reject.
-* the saved-credential exception for internal workflow keys. Unsloth mints those
+* the saved-credential exception for internal workflow keys. Tough Customer mints those
   keys for more than one workflow, and the data-recipe key is handed to a
   user-authored recipe subprocess, so "internal" alone cannot be the licence to
   spend every saved cloud credential.
@@ -169,7 +169,7 @@ def test_an_explicit_confirm_flag_still_401s_the_streaming_hosted_only_request(m
     """The pre-existing rejection must survive the mode-derived one.
 
     A streaming request whose selection is purely the provider's hosted tools
-    never enters Unsloth's loop, so an explicit ``confirm_tool_calls`` cannot be
+    never enters Tough Customer's loop, so an explicit ``confirm_tool_calls`` cannot be
     honoured there either.
     """
     inf = _install(monkeypatch, "openai")
@@ -339,7 +339,7 @@ def test_a_storage_failure_withholds_the_saved_connection(monkeypatch):
 
 
 def test_a_third_party_key_never_unlocks_a_saved_connection(monkeypatch):
-    """The pre-existing rule: someone using Unsloth as an API server brings a key."""
+    """The pre-existing rule: someone using Tough Customer as an API server brings a key."""
     from auth.authentication import API_KEY_PREFIX
     from routes import inference as inf
 
@@ -351,7 +351,7 @@ def test_a_third_party_key_never_unlocks_a_saved_connection(monkeypatch):
 
 
 def test_an_interactive_session_still_uses_its_saved_connection(monkeypatch):
-    """Unsloth's own chat sends a session JWT and no API key at all."""
+    """Tough Customer's own chat sends a session JWT and no API key at all."""
     from routes import inference as inf
 
     seen: list[bool] = []

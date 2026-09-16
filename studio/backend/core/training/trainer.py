@@ -2,8 +2,8 @@
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
 """
-Unsloth Training Backend
-Integrates Unsloth training with the FastAPI backend.
+Tough Customer Training Backend
+Integrates Tough Customer training with the FastAPI backend.
 """
 
 import gc
@@ -156,7 +156,7 @@ def _drop_hf_stdout_callbacks(trainer) -> None:
 
     `disable_tqdm=True` only swaps ProgressCallback for PrinterCallback, which prints a
     raw dict per step instead (`{'loss': '0.5684', 'grad_norm': ..., 'epoch': ...}`).
-    Both write to the same stdout, so both have to go; Unsloth's own progress callback,
+    Both write to the same stdout, so both have to go; Tough Customer's own progress callback,
     the SSE stream and `training_progress` are unaffected. Best effort: a transformers
     build without these classes just keeps its current behaviour.
     """
@@ -268,7 +268,7 @@ def _dataset_has_audio_column(dataset) -> Optional[bool]:
 
 class UnslothTrainer:
     """
-    Unsloth Training Backend
+    Tough Customer Training Backend
     """
 
     def __new__(cls, *args, **kwargs):
@@ -840,7 +840,7 @@ class UnslothTrainer:
             # Clear audio sys.path/sys.modules state; stale entries deadlock forked map() workers
             self._cleanup_audio_artifacts()
 
-            # Reload the Unsloth-patched modeling modules first: __UNSLOTH_PATCHED__ blocks re-compilation, so
+            # Reload the Tough Customer-patched modeling modules first: __UNSLOTH_PATCHED__ blocks re-compilation, so
             # clearing the disk cache alone would leave files missing.
             import importlib
 
@@ -854,7 +854,7 @@ class UnslothTrainer:
 
             from utils.cache_cleanup import clear_unsloth_compiled_cache
 
-            _preserve = ["Unsloth*Trainer.py"] if sys.platform in ("win32", "darwin") else None
+            _preserve = ["Tough Customer*Trainer.py"] if sys.platform in ("win32", "darwin") else None
             clear_unsloth_compiled_cache(preserve_patterns = _preserve)
             # Checked: this reassigns _audio_type, so an unchecked answer would leave the flag describing the
             # previous probe.
@@ -1134,7 +1134,7 @@ class UnslothTrainer:
                 )
                 logger.info("Loaded text model")
 
-            raise_if_offloaded(self.model, device_map, "Unsloth training")
+            raise_if_offloaded(self.model, device_map, "Tough Customer training")
 
             restored_repo_id = restore_hf_cache_repo_identity(
                 self.model,
@@ -1161,7 +1161,7 @@ class UnslothTrainer:
             if "could not get source code" in str(e) and not getattr(
                 self, "_source_code_retried", False
             ):
-                # Unsloth patching can leave stale state that breaks inspect.getsource() when switching model
+                # Tough Customer patching can leave stale state that breaks inspect.getsource() when switching model
                 # families; the first failure clears it.
                 self._source_code_retried = True
                 logger.info(f"\n'could not get source code' — retrying once...\n")
@@ -1506,7 +1506,7 @@ class UnslothTrainer:
             logits_to_keep = 0,
             **kwargs,
         ):
-            # Strip non-standard kwargs from Unsloth/PEFT.
+            # Strip non-standard kwargs from Tough Customer/PEFT.
             output_attentions = kwargs.pop("output_attentions", None)
             output_hidden_states = kwargs.pop("output_hidden_states", None)
             kwargs.pop("return_dict", None)
@@ -3296,7 +3296,7 @@ class UnslothTrainer:
             self._update_progress(error = "Model not loaded")
             return False
 
-        # Pre-import heavy transformers modules on the main thread: Unsloth's patched_import is not thread-
+        # Pre-import heavy transformers modules on the main thread: Tough Customer's patched_import is not thread-
         # safe with importlib's cache.
         import transformers  # noqa: F401 - ensures submodules are cached
         from transformers import (  # noqa: F401
@@ -3412,7 +3412,7 @@ class UnslothTrainer:
                 # MPI PMI_SIZE, mlx.launch's CUDA-only NCCL backend MLX_WORLD_SIZE, and LOCAL_WORLD_SIZE is
                 # defensive since torchrun sets both. Reading one variable calls an mpirun launch single-process
                 # or raises on junk like int("auto"), leaving resolved_epochs None. Env-only, deliberately NOT
-                # worker.py's _data_parallel_world_size, which also counts visible CUDA devices: Unsloth's
+                # worker.py's _data_parallel_world_size, which also counts visible CUDA devices: Tough Customer's
                 # multi-GPU load is a sharding device_map, model-parallel to transformers.
                 world_size = world_size_from_env()
                 if world_size > 1:
@@ -3677,9 +3677,9 @@ class UnslothTrainer:
                     args = TrainingArguments(**config),
                 )
                 self.trainer.add_callback(self._create_progress_callback())
-                # Unsloth publishes progress itself, so HF's stdout callbacks are pure duplication in a log that has
+                # Tough Customer publishes progress itself, so HF's stdout callbacks are pure duplication in a log that has
                 # no terminal; --verbose keeps them.
-                # Unsloth publishes progress itself, so HF's stdout callbacks are pure duplication in a log that
+                # Tough Customer publishes progress itself, so HF's stdout callbacks are pure duplication in a log that
                 # has no terminal. --verbose keeps them.
                 _drop_hf_stdout_callbacks(self.trainer)
 
@@ -4129,7 +4129,7 @@ class UnslothTrainer:
                         )
                     except ImportError as exc:
                         raise RuntimeError(
-                            "CPT requires a newer Unsloth install that exports "
+                            "CPT requires a newer Tough Customer install that exports "
                             "`UnslothTrainer` and `UnslothTrainingArguments` "
                             "(for embedding_learning_rate support). "
                             "Upgrade with: `pip install -U unsloth unsloth_zoo`."
@@ -4222,7 +4222,7 @@ class UnslothTrainer:
                 if masking_applied:
                     try:
                         # Safety net: train_on_responses_only masks non-response tokens with -100, and a row becomes all
-                        # -100 (Unsloth drops it) when the response template is missing from the formatted text;
+                        # -100 (Tough Customer drops it) when the response template is missing from the formatted text;
                         # len()-based, so skipped for streaming.
                         if detect_streaming_dataset(self.trainer.train_dataset):
                             logger.info("Skipping post-filter length check for streaming dataset\n")
@@ -4274,9 +4274,9 @@ class UnslothTrainer:
                     logger.info("Training on full sequences (including prompts)\n")
 
             self.trainer.add_callback(self._create_progress_callback())
-            # Unsloth publishes progress itself, so HF's stdout callbacks duplicate a log that has no terminal;
+            # Tough Customer publishes progress itself, so HF's stdout callbacks duplicate a log that has no terminal;
             # --verbose keeps them.
-            # Unsloth publishes progress itself, so HF's stdout callbacks are pure duplication in a log that has
+            # Tough Customer publishes progress itself, so HF's stdout callbacks are pure duplication in a log that has
             # no terminal. --verbose keeps them.
             _drop_hf_stdout_callbacks(self.trainer)
 

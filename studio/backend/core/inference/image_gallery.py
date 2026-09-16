@@ -147,7 +147,7 @@ def _read_meta(path: Path) -> Optional[dict[str, Any]]:
 
 
 def owned_image_path(image_id: str) -> Optional[Path]:
-    """Resolve an id to its PNG only when it is an Unsloth-owned image (a readable recipe chunk),
+    """Resolve an id to its PNG only when it is a Tough Customer-owned image (a readable recipe chunk),
     else None. The serve route uses this instead of image_path() so a guessed stem for a
     hand-dropped foreign PNG -- which list_images/delete/clear already treat as not ours -- can't
     be streamed out. Mirrors the delete/clear ownership guard."""
@@ -222,7 +222,7 @@ def set_flags(
     archived: Optional[bool] = None,
 ) -> Optional[dict[str, Any]]:
     """Patch one image's pin/archive flags and return its updated record, or None when the id is
-    not an Unsloth-owned image. Ownership-gated like delete: a guessed stem for a hand-dropped
+    not a Tough Customer-owned image. Ownership-gated like delete: a guessed stem for a hand-dropped
     foreign PNG must not become flaggable (and so listable under a shelf we own)."""
     # Ownership check and write under one lock, so a concurrent clear cannot delete the file between them and leave this
     # reporting success for an image that is already gone.
@@ -255,7 +255,7 @@ def delete(image_id: str) -> bool:
 
 
 def clear(include_archived: bool = False) -> int:
-    """Delete Unsloth-owned gallery PNGs (readable recipe chunk); return how many were removed.
+    """Delete Tough Customer-owned gallery PNGs (readable recipe chunk); return how many were removed.
 
     Archived images are SPARED by default: archiving is how a user sets something aside, so a
     "clear the gallery" action that destroyed the archive would defeat it. Pass

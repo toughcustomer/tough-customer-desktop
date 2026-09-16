@@ -1308,7 +1308,7 @@ def test_v1_models_retrieve_is_case_insensitive(monkeypatch):
 
 def test_index_excludes_hidden_models(tmp_path, monkeypatch):
     # The llama.cpp validation probe and RAG embedding weights are hidden from
-    # Unsloth's pickers; they must never become auto-switch targets.
+    # Tough Customer's pickers; they must never become auto-switch targets.
     from types import SimpleNamespace
     import routes.models as models_route
 
@@ -2259,7 +2259,7 @@ def test_manual_unload_interrupts_even_while_inference_active(monkeypatch):
 
 
 def test_auto_switch_waits_when_unsloth_stream_active(monkeypatch):
-    # The GGUF slot is empty but an Unsloth model is streaming (counted in-flight).
+    # The GGUF slot is empty but a Tough Customer model is streaming (counted in-flight).
     # The replacement waits for it just as it does for a GGUF generation.
     from core.inference import llama_keepwarm as kw
 
@@ -2272,7 +2272,7 @@ def test_auto_switch_waits_when_unsloth_stream_active(monkeypatch):
         backend = backend,
         recorder = rec,
     )
-    monkeypatch.setattr(kw, "_inflight", 2)  # an Unsloth stream + this request
+    monkeypatch.setattr(kw, "_inflight", 2)  # a Tough Customer stream + this request
     monkeypatch.setattr(kw, "_pending", 0)
 
     async def _drive():
@@ -2462,9 +2462,9 @@ def test_no_stash_reload_when_idle_off_and_auto_switch_off(monkeypatch):
 
 
 def test_stash_reload_skipped_while_unsloth_model_active(monkeypatch):
-    # An Unsloth/Transformers model loaded after an idle-unload leaves the GGUF slot
+    # A Tough Customer/Transformers model loaded after an idle-unload leaves the GGUF slot
     # empty but is the live model; an unknown /v1 name must NOT resurrect the stale
-    # GGUF stash (that reload would tear the active Unsloth model down).
+    # GGUF stash (that reload would tear the active Tough Customer model down).
     from types import SimpleNamespace
     from core.inference import llama_keepwarm as kw
 
@@ -2473,14 +2473,14 @@ def test_stash_reload_skipped_while_unsloth_model_active(monkeypatch):
     _wire(monkeypatch, enabled = True, resolves_to = None, backend = backend, recorder = rec)
     monkeypatch.setattr(kw, "_inflight", 0)
     monkeypatch.setattr(kw, "_last_unloaded_model", ("/cache/snap/A", "Q4_K_M", "org/A-GGUF"))
-    # An Unsloth model is the live backend.
+    # A Tough Customer model is the live backend.
     monkeypatch.setattr(
         inference_route,
         "get_inference_backend",
         lambda: SimpleNamespace(active_model_name = "unsloth/Qwen3-8B"),
     )
     _run_hook("gpt-4o-mini")
-    assert rec.calls == []  # stale GGUF not reloaded over the active Unsloth model
+    assert rec.calls == []  # stale GGUF not reloaded over the active Tough Customer model
 
 
 def test_is_abs_path_id_distinguishes_path_from_repo_id():
@@ -4769,7 +4769,7 @@ def test_chat_count_tokens_collapses_system_turns(monkeypatch):
     payload = _count_request(
         [
             {"role": "system", "content": "Runtime rules."},
-            {"role": "system", "content": "Unsloth prompt."},
+            {"role": "system", "content": "Tough Customer prompt."},
             {"role": "user", "content": "hello"},
         ]
     )
@@ -4778,7 +4778,7 @@ def test_chat_count_tokens_collapses_system_turns(monkeypatch):
     systems = [m for m in messages if m.get("role") in ("system", "developer")]
     assert len(systems) == 1, messages
     assert "Runtime rules." in systems[0].get("content", "")
-    assert "Unsloth prompt." in systems[0].get("content", "")
+    assert "Tough Customer prompt." in systems[0].get("content", "")
 
 
 @pytest.mark.parametrize(
@@ -5112,7 +5112,7 @@ def test_unload_route_clears_reload_stash(monkeypatch):
 
 
 def test_non_gguf_load_clears_reload_stash():
-    # A non-GGUF (Transformers/Unsloth) load must clear the stash like the GGUF
+    # A non-GGUF (Transformers/Tough Customer) load must clear the stash like the GGUF
     # branch, so it never lingers until the idle poll (or forever, idle-unload off).
     import inspect
 
@@ -7098,7 +7098,7 @@ def test_save_updates_the_existing_case_variant_instead_of_forking_it(override_s
     settings.set_model_override("unsloth/b-gguf:q4_k_m", max_seq_length = 8192)
     _put("unsloth/B-GGUF:Q4_K_M", max_seq_length = 4096)
     assert list(settings.get_model_overrides()) == ["unsloth/b-gguf:q4_k_m"]
-    assert settings.get_model_override("Unsloth/B-GGUF:Q4_K_M")["max_seq_length"] == 4096
+    assert settings.get_model_override("Tough Customer/B-GGUF:Q4_K_M")["max_seq_length"] == 4096
 
 
 def test_removal_of_a_path_still_only_touches_the_exact_key(override_store):
@@ -7661,7 +7661,7 @@ def test_fill_absent_fields_matches_a_legacy_casing_and_never_deletes(override_s
     import routes.settings as settings_route
 
     stored = settings_route.ModelOverridePayload(
-        model_id = "Unsloth/B-GGUF:Q4_K_M", max_seq_length = 8192
+        model_id = "Tough Customer/B-GGUF:Q4_K_M", max_seq_length = 8192
     )
     settings_route.update_openai_auto_switch_override(stored, "tester")
 
@@ -7669,19 +7669,19 @@ def test_fill_absent_fields_matches_a_legacy_casing_and_never_deletes(override_s
         model_id = "unsloth/b-gguf:q4_k_m", max_seq_length = 2048, fill_absent_fields = True
     )
     resp = settings_route.update_openai_auto_switch_override(folded, "tester")
-    assert list(resp.overrides) == ["Unsloth/B-GGUF:Q4_K_M"]
-    assert resp.overrides["Unsloth/B-GGUF:Q4_K_M"]["max_seq_length"] == 8192
+    assert list(resp.overrides) == ["Tough Customer/B-GGUF:Q4_K_M"]
+    assert resp.overrides["Tough Customer/B-GGUF:Q4_K_M"]["max_seq_length"] == 8192
 
     # An all-default fill is a no-op, not the "empty payload means forget" path.
     empty = settings_route.ModelOverridePayload(
-        model_id = "Unsloth/B-GGUF:Q4_K_M", fill_absent_fields = True
+        model_id = "Tough Customer/B-GGUF:Q4_K_M", fill_absent_fields = True
     )
     resp2 = settings_route.update_openai_auto_switch_override(empty, "tester")
-    assert resp2.overrides["Unsloth/B-GGUF:Q4_K_M"]["max_seq_length"] == 8192
+    assert resp2.overrides["Tough Customer/B-GGUF:Q4_K_M"]["max_seq_length"] == 8192
 
     # A fill that is also a delete has no meaning.
     with pytest.raises(HTTPException) as excinfo:
-        _put("Unsloth/B-GGUF:Q4_K_M", remove = True, fill_absent_fields = True)
+        _put("Tough Customer/B-GGUF:Q4_K_M", remove = True, fill_absent_fields = True)
     assert excinfo.value.status_code == 400
 
 

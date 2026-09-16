@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""llama.cpp multimodal (mtmd) speech-to-text sidecar for Unsloth dictation.
+"""llama.cpp multimodal (mtmd) speech-to-text sidecar for Tough Customer dictation.
 
 whisper.cpp loads only the Whisper architecture, so newer ASR models run through
 llama.cpp instead: a text model plus an audio mmproj, served by `llama-server`
@@ -169,7 +169,7 @@ def _reap(process: Optional[subprocess.Popen]) -> None:
     """Stop a child and wait for it, so its port and VRAM are actually free.
 
     terminate() alone returns before the process has gone, and a child that
-    ignores SIGTERM would hold both until Unsloth exits.
+    ignores SIGTERM would hold both until Tough Customer exits.
     """
     if process is None:
         return
@@ -930,7 +930,7 @@ class MtmdSttSidecar:
                 # bundled libs and pip CUDA runtimes on the loader path, secrets scrubbed, as the chat backend spawns
                 # the same binary
                 env = _llama_server_child_env(binary),
-                # Die with Unsloth, so a crash never orphans a server on the GPU.
+                # Die with Tough Customer, so a crash never orphans a server on the GPU.
                 **child_popen_kwargs(),
             )
             # Published before the wait, so training can preempt a startup that is already allocating; _process is not

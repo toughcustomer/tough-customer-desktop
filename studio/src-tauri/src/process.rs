@@ -390,7 +390,7 @@ fn acquire_named_studio_runtime_launch_guard(
     };
     if handle.is_null() {
         return Err(format!(
-            "Could not create the Unsloth runtime lock: {}",
+            "Could not create the Tough Customer runtime lock: {}",
             std::io::Error::last_os_error()
         ));
     }
@@ -403,7 +403,7 @@ fn acquire_named_studio_runtime_launch_guard(
                 let _ = windows_sys::Win32::Foundation::CloseHandle(handle);
             }
             Err(
-                "Unsloth installation is modifying the managed environment. Wait for it to finish, then start the backend again."
+                "Tough Customer installation is modifying the managed environment. Wait for it to finish, then start the backend again."
                     .to_string(),
             )
         }
@@ -413,7 +413,7 @@ fn acquire_named_studio_runtime_launch_guard(
                 let _ = windows_sys::Win32::Foundation::CloseHandle(handle);
             }
             Err(format!(
-                "Could not acquire the Unsloth runtime lock: {error}"
+                "Could not acquire the Tough Customer runtime lock: {error}"
             ))
         }
     }
@@ -435,7 +435,7 @@ fn current_windows_user_sid() -> Result<String, String> {
     let mut token = std::ptr::null_mut();
     if unsafe { OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &mut token) } == 0 {
         return Err(format!(
-            "Could not open the Windows user token for the Unsloth runtime lock: {}",
+            "Could not open the Windows user token for the Tough Customer runtime lock: {}",
             std::io::Error::last_os_error()
         ));
     }
@@ -447,7 +447,7 @@ fn current_windows_user_sid() -> Result<String, String> {
         }
         if required == 0 {
             return Err(format!(
-                "Could not size the Windows user SID for the Unsloth runtime lock: {}",
+                "Could not size the Windows user SID for the Tough Customer runtime lock: {}",
                 std::io::Error::last_os_error()
             ));
         }
@@ -465,7 +465,7 @@ fn current_windows_user_sid() -> Result<String, String> {
         } == 0
         {
             return Err(format!(
-                "Could not read the Windows user SID for the Unsloth runtime lock: {}",
+                "Could not read the Windows user SID for the Tough Customer runtime lock: {}",
                 std::io::Error::last_os_error()
             ));
         }
@@ -473,14 +473,14 @@ fn current_windows_user_sid() -> Result<String, String> {
         let token_user = unsafe { &*(buffer.as_ptr().cast::<TOKEN_USER>()) };
         let sid = token_user.User.Sid;
         if sid.is_null() || unsafe { IsValidSid(sid) } == 0 {
-            return Err("Windows returned an invalid user SID for the Unsloth runtime lock".into());
+            return Err("Windows returned an invalid user SID for the Tough Customer runtime lock".into());
         }
 
         let authority_ptr = unsafe { GetSidIdentifierAuthority(sid) };
         let count_ptr = unsafe { GetSidSubAuthorityCount(sid) };
         if authority_ptr.is_null() || count_ptr.is_null() {
             return Err(
-                "Could not inspect the Windows user SID for the Unsloth runtime lock".into(),
+                "Could not inspect the Windows user SID for the Tough Customer runtime lock".into(),
             );
         }
         let authority = unsafe { (*authority_ptr).Value }
@@ -493,7 +493,7 @@ fn current_windows_user_sid() -> Result<String, String> {
             let sub_authority = unsafe { GetSidSubAuthority(sid, index) };
             if sub_authority.is_null() {
                 return Err(
-                    "Could not inspect the Windows user SID for the Unsloth runtime lock".into(),
+                    "Could not inspect the Windows user SID for the Tough Customer runtime lock".into(),
                 );
             }
             sid_text.push_str(&format!("-{}", unsafe { *sub_authority }));
@@ -535,7 +535,7 @@ fn acquire_file_studio_runtime_launch_guard(
     let error = std::io::Error::last_os_error();
     if error.kind() == std::io::ErrorKind::WouldBlock {
         return Err(
-            "Unsloth installation is modifying the managed environment. Wait for it to finish, then start the backend again."
+            "Tough Customer installation is modifying the managed environment. Wait for it to finish, then start the backend again."
                 .to_string(),
         );
     }
@@ -602,7 +602,7 @@ mod posix_studio_runtime_launch_guard_tests {
 #[cfg(windows)]
 fn normalized_existing_windows_path(path: &std::path::Path) -> Result<String, String> {
     let resolved = std::fs::canonicalize(path)
-        .map_err(|error| format!("Could not resolve managed Unsloth path {:?}: {error}", path))?;
+        .map_err(|error| format!("Could not resolve managed Tough Customer path {:?}: {error}", path))?;
     Ok(resolved
         .to_string_lossy()
         .trim_end_matches(['\\', '/'])
@@ -614,15 +614,15 @@ fn windows_ordinal_ignore_case_equal(left: &[u16], right: &[u16]) -> Result<bool
     use windows_sys::Win32::Globalization::{CompareStringOrdinal, CSTR_EQUAL};
 
     let left_length = i32::try_from(left.len())
-        .map_err(|_| "Normalized Unsloth path exceeds Win32 comparison limits".to_string())?;
+        .map_err(|_| "Normalized Tough Customer path exceeds Win32 comparison limits".to_string())?;
     let right_length = i32::try_from(right.len())
-        .map_err(|_| "Normalized Unsloth path exceeds Win32 comparison limits".to_string())?;
+        .map_err(|_| "Normalized Tough Customer path exceeds Win32 comparison limits".to_string())?;
     let comparison = unsafe {
         CompareStringOrdinal(left.as_ptr(), left_length, right.as_ptr(), right_length, 1)
     };
     if comparison == 0 {
         return Err(format!(
-            "Could not compare normalized Unsloth paths: {}",
+            "Could not compare normalized Tough Customer paths: {}",
             std::io::Error::last_os_error()
         ));
     }
@@ -685,7 +685,7 @@ fn process_image_path(process_id: u32) -> Option<std::path::PathBuf> {
 }
 
 /// Reject an update when a process image runs from the target venv or the exact
-/// supported Unsloth shim.
+/// supported Tough Customer shim.
 ///
 /// Callers must hold the runtime launch mutex across the whole mutation: this
 /// scan finds older consumers, and the gate blocks new launches after it.
@@ -713,13 +713,13 @@ pub(crate) fn ensure_managed_environment_is_idle(
             .and_then(std::path::Path::parent)
             .ok_or_else(|| {
                 format!(
-                    "Could not determine the managed Unsloth environment for {:?}",
+                    "Could not determine the managed Tough Customer environment for {:?}",
                     managed_binary
                 )
             })?;
         let studio_home = venv.parent().ok_or_else(|| {
             format!(
-                "Could not determine the managed Unsloth root for {:?}",
+                "Could not determine the managed Tough Customer root for {:?}",
                 managed_binary
             )
         })?;
@@ -733,7 +733,7 @@ pub(crate) fn ensure_managed_environment_is_idle(
         let snapshot = unsafe { CreateToolhelp32Snapshot(TH32CS_SNAPPROCESS, 0) };
         if snapshot == INVALID_HANDLE_VALUE {
             return Err(format!(
-                "Could not inspect running processes before Unsloth update: {}",
+                "Could not inspect running processes before Tough Customer update: {}",
                 std::io::Error::last_os_error()
             ));
         }
@@ -750,7 +750,7 @@ pub(crate) fn ensure_managed_environment_is_idle(
                     return Ok(());
                 }
                 return Err(format!(
-                    "Could not enumerate running processes before Unsloth update: {}",
+                    "Could not enumerate running processes before Tough Customer update: {}",
                     std::io::Error::from_raw_os_error(error as i32)
                 ));
             }
@@ -771,7 +771,7 @@ pub(crate) fn ensure_managed_environment_is_idle(
                                 .unwrap_or(entry.szExeFile.len());
                             let name = String::from_utf16_lossy(&entry.szExeFile[..name_length]);
                             return Err(format!(
-                                "The managed Unsloth environment is in use by {} (PID {}). Stop that process, then retry the update.",
+                                "The managed Tough Customer environment is in use by {} (PID {}). Stop that process, then retry the update.",
                                 name, entry.th32ProcessID
                             ));
                         }
@@ -785,7 +785,7 @@ pub(crate) fn ensure_managed_environment_is_idle(
                         break;
                     }
                     return Err(format!(
-                        "Could not finish enumerating running processes before Unsloth update: {}",
+                        "Could not finish enumerating running processes before Tough Customer update: {}",
                         std::io::Error::from_raw_os_error(error as i32)
                     ));
                 }
@@ -881,7 +881,7 @@ mod studio_runtime_launch_guard_tests {
         with_named_studio_runtime_launch_guard(&name, || Ok(())).unwrap();
     }
 
-    // Since issue #8490 the long-lived Unsloth image is Scripts\python.exe, not
+    // Since issue #8490 the long-lived Tough Customer image is Scripts\python.exe, not
     // Scripts\unsloth.exe. ensure_managed_environment_is_idle matches by venv
     // root, so both must still register as "the environment is in use" -- a
     // miss here would let an update mutate a venv somebody is running.
@@ -931,7 +931,7 @@ mod studio_runtime_launch_guard_tests {
         let managed_binary = target_root.join("Scripts").join("unsloth.exe");
 
         let error = ensure_managed_environment_is_idle(&managed_binary).unwrap_err();
-        assert!(error.contains("managed Unsloth environment is in use"));
+        assert!(error.contains("managed Tough Customer environment is in use"));
     }
 
     #[test]
@@ -951,7 +951,7 @@ mod studio_runtime_launch_guard_tests {
     #[test]
     fn windows_path_comparison_uses_ordinal_case_insensitive_semantics() {
         assert!(windows_paths_are_equal(
-            r"C:\\Users\\PC\\.Unsloth\\Studio",
+            r"C:\\Users\\PC\\.Tough Customer\\Studio",
             r"c:\\users\\pc\\.unsloth\\studio"
         )
         .unwrap());
@@ -1595,11 +1595,11 @@ pub(crate) fn resolve_managed_cli_invocation_with(
     {
         let python = bin
             .parent()
-            .ok_or_else(|| "Managed Unsloth executable has no parent directory.".to_string())?
+            .ok_or_else(|| "Managed Tough Customer executable has no parent directory.".to_string())?
             .join("python.exe");
         if !python.is_file() {
             return Err(format!(
-                "Managed Python interpreter not found beside Unsloth: {}",
+                "Managed Python interpreter not found beside Tough Customer: {}",
                 python.display()
             ));
         }
@@ -1899,7 +1899,7 @@ pub(crate) const RELATIVE_PATH_ENV: &[&str] = &[
     // huggingface_hub resolves the credential file from here; a relative value
     // would follow the child and silently lose access to gated repos.
     "HF_TOKEN_PATH",
-    // uv reads this as written and Unsloth treats a non-blank value as
+    // uv reads this as written and Tough Customer treats a non-blank value as
     // authoritative, so an update would install from a different cache.
     "UV_CACHE_DIR",
     "TRANSFORMERS_CACHE",
@@ -2041,7 +2041,7 @@ const INLINE_JSON_ENV: &[&str] = &["MLX_HOSTFILE", "MLX_IBV_DEVICES"];
 
 /// Names whose readers disagree about %VAR%: huggingface_hub expands HF_HOME
 /// (and the XDG_CACHE_HOME it defaults from), HF_HUB_CACHE and HF_ASSETS_CACHE,
-/// and Unsloth expands SENTENCE_TRANSFORMERS_HOME, but Unsloth's own
+/// and Tough Customer expands SENTENCE_TRANSFORMERS_HOME, but Tough Customer's own
 /// hf_cache_settings does not, so it reads %LOCALAPPDATA%\hf as a relative
 /// folder. Expanding before deciding settles it: both readers then see one
 /// absolute path. Scoped to these names because a directory really called
@@ -2204,7 +2204,7 @@ fn names_a_path(name: &str, value: &str) -> bool {
 }
 
 /// Names every managed spawn removes before starting the child: Tauri uses the
-/// legacy Unsloth root whatever the environment says. Resolving one can only
+/// legacy Tough Customer root whatever the environment says. Resolving one can only
 /// invent a failure for a value the child is never going to see.
 const MANAGED_CHILD_SCRUBBED_ENV: &[&str] = &["UNSLOTH_STUDIO_HOME", "STUDIO_HOME"];
 
@@ -2734,7 +2734,7 @@ mod tests {
 
     // Quarantine takes the unsigned stub and leaves the environment intact. The
     // finder gates the backend, the updater and the install-status probe, so a None
-    // here reports "not installed" for an Unsloth that still runs.
+    // here reports "not installed" for a Tough Customer that still runs.
     #[cfg(windows)]
     #[test]
     fn a_quarantined_stub_is_still_a_managed_install() {
@@ -2793,7 +2793,7 @@ mod tests {
 
     // The other half of the same interruption: the new layout kept the launcher and
     // the legacy one kept the interpreter. Returning the new launcher there fails
-    // later with "Managed Python interpreter not found beside Unsloth" while a
+    // later with "Managed Python interpreter not found beside Tough Customer" while a
     // usable environment sits in the other base.
     #[cfg(windows)]
     #[test]
@@ -3174,7 +3174,7 @@ pub(crate) fn resolve_backend_binary() -> Result<std::path::PathBuf, String> {
     }
 
     find_unsloth_binary()
-        .ok_or_else(|| "Unsloth binary not found. Please install Unsloth first.".to_string())
+        .ok_or_else(|| "Tough Customer binary not found. Please install Tough Customer first.".to_string())
 }
 
 fn backend_args(port: u16) -> Vec<String> {
@@ -3301,7 +3301,7 @@ pub fn start_backend(
     if let Err(error) = apply_managed_cli_context_at(&mut cmd, &work_dir) {
         // The drive holding an override can go between the preflight check and
         // this call, and a panic in the spawn path takes the desktop with it.
-        let msg = format!("Failed to prepare the Unsloth backend command: {}", error);
+        let msg = format!("Failed to prepare the Tough Customer backend command: {}", error);
         diagnostics::record_backend_start_failure(
             diagnostics_state,
             Some(port),
@@ -3978,12 +3978,12 @@ fn start_watchdog(
         let secs = BACKEND_START_DEADLINE.as_secs();
         let msg = if tail.trim().is_empty() {
             format!(
-                "The Unsloth backend did not start within {secs} seconds and produced no \
+                "The Tough Customer backend did not start within {secs} seconds and produced no \
                  output at all. It is still running but is not responding."
             )
         } else {
             format!(
-                "The Unsloth backend did not start within {secs} seconds. Its last output \
+                "The Tough Customer backend did not start within {secs} seconds. Its last output \
                  was:\n{tail}"
             )
         };
@@ -4220,7 +4220,7 @@ fn read_output_stream<R: std::io::Read>(
 /// was emitted, so the window sat on the startup screen with nothing reported. Seen on
 /// Windows CI, which logged "process is still running" for a PID that was already gone.
 ///
-/// Returning None still means "genuinely alive", which matters because Unsloth may close
+/// Returning None still means "genuinely alive", which matters because Tough Customer may close
 /// its own stdout once logging moves to the session log, so stdout EOF alone must not
 /// be read as death. Same poll shape as `wait_for_child_exit` below.
 fn exit_status_after_stdout_closed(child: &mut Box<dyn ChildWrapper + Send>) -> Option<String> {
@@ -4805,7 +4805,7 @@ mod managed_cli_working_dir_tests {
         let work_dir = PathBuf::from("C:\\Users\\me\\.unsloth");
         let env = |name: &str| match name {
             "HF_HOME" => Some("cache".to_string()),
-            // A name the child keeps: the two Unsloth roots are removed for
+            // A name the child keeps: the two Tough Customer roots are removed for
             // every managed spawn, so they are never pinned.
             "UNSLOTH_COMPILE_LOCATION" => Some("  studio  ".to_string()),
             "OLLAMA_MODELS" => Some("D:\\models".to_string()),

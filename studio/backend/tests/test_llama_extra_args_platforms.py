@@ -3,15 +3,15 @@
 
 """The extra-arguments pass-through across every platform and accelerator.
 
-Unsloth emits a different command on each of these: CUDA, ROCm and Vulkan take
+Tough Customer emits a different command on each of these: CUDA, ROCm and Vulkan take
 different offload flags, Metal takes none of them, and Windows spells the binary
 and the paths differently. The claim this suite has to defend is the same on all of
 them, and it is a claim about what does NOT change:
 
-  with the box empty, the command is byte-identical to the one Unsloth emitted
+  with the box empty, the command is byte-identical to the one Tough Customer emitted
   before this feature existed.
 
-The matrix is the Cartesian product of the platforms Unsloth ships on and the
+The matrix is the Cartesian product of the platforms Tough Customer ships on and the
 accelerators it detects, driven through the real ``load_model`` with the command
 captured at the Popen boundary.
 """
@@ -153,7 +153,7 @@ def test_an_extra_arg_lands_last_and_changes_nothing_before_it(
     tmp_path, monkeypatch, platform, accelerator
 ):
     # Appended, never interleaved: llama.cpp's last-wins parsing is the whole
-    # mechanism, and a flag that landed early would lose to Unsloth's own.
+    # mechanism, and a flag that landed early would lose to Tough Customer's own.
     _apply_platform(monkeypatch, platform)
     _label, vulkan, memory = accelerator
 
@@ -170,7 +170,7 @@ def test_an_extra_arg_lands_last_and_changes_nothing_before_it(
 def test_placement_is_not_moved_by_an_unrelated_extra_arg(
     tmp_path, monkeypatch, platform, accelerator
 ):
-    # A flag Unsloth's estimator knows nothing about must not disturb the flags it
+    # A flag Tough Customer's estimator knows nothing about must not disturb the flags it
     # computed: the offload decision belongs to the placement code on every one of
     # these accelerators, and --seed has no business changing it.
     _apply_platform(monkeypatch, platform)
@@ -207,12 +207,12 @@ def test_placement_is_not_moved_by_an_unrelated_extra_arg(
 def test_a_denied_flag_is_refused_identically_everywhere(
     tmp_path, monkeypatch, platform, accelerator
 ):
-    # The denylist is a property of Unsloth, not of the host: a flag refused on
+    # The denylist is a property of Tough Customer, not of the host: a flag refused on
     # Linux must not be reachable by running the same build on Windows.
     from core.inference.llama_server_args import validate_extra_args
     _apply_platform(monkeypatch, platform)
     for denied in (["--agent"], ["--mcp-servers-json", "{}"], ["--log-file", "x"]):
-        with pytest.raises(ValueError, match = "managed by Unsloth Studio"):
+        with pytest.raises(ValueError, match = "managed by Tough Customer Studio"):
             validate_extra_args(denied)
 
 
@@ -232,19 +232,19 @@ def test_a_windows_shaped_value_survives_as_one_token(tmp_path, monkeypatch, pla
 @pytest.mark.parametrize("platform", PLATFORMS, ids = [p[0] for p in PLATFORMS])
 def test_the_denied_env_twins_are_scrubbed_on_every_platform(tmp_path, monkeypatch, platform):
     # llama.cpp reads LLAMA_ARG_* before argv on all of them, so denying the token
-    # without the variable would leave the capability reachable wherever Unsloth runs.
+    # without the variable would leave the capability reachable wherever Tough Customer runs.
     _apply_platform(monkeypatch, platform)
     monkeypatch.setenv("LLAMA_ARG_AGENT", "1")
     monkeypatch.setenv("LLAMA_ARG_TOOLS", "all")
-    # The logging twin matters most of all: Unsloth classifies a failed start by
+    # The logging twin matters most of all: Tough Customer classifies a failed start by
     # reading llama-server's output, and nothing it emits later overrides this.
     monkeypatch.setenv("LLAMA_ARG_LOG_FILE", "/tmp/llama.log")
     # --api-prefix moves /health, which every load waits on, and an inherited API key
-    # makes the healthy child refuse requests Unsloth sends without one.
+    # makes the healthy child refuse requests Tough Customer sends without one.
     monkeypatch.setenv("LLAMA_ARG_API_PREFIX", "/llama")
     monkeypatch.setenv("LLAMA_API_KEY", "sk-someone-elses")
     monkeypatch.setenv("LLAMA_ARG_API_KEY_FILE", "/etc/llama.keys")
-    # Given both TLS twins llama-server listens on https, while Unsloth probes /health
+    # Given both TLS twins llama-server listens on https, while Tough Customer probes /health
     # and proxies over http: the child is healthy and every load times out.
     monkeypatch.setenv("LLAMA_ARG_SSL_KEY_FILE", "/etc/llama/key.pem")
     monkeypatch.setenv("LLAMA_ARG_SSL_CERT_FILE", "/etc/llama/cert.pem")
@@ -269,7 +269,7 @@ def test_the_denied_env_twins_are_scrubbed_on_every_platform(tmp_path, monkeypat
 @pytest.mark.parametrize("platform", PLATFORMS, ids = [p[0] for p in PLATFORMS])
 def test_the_size_cap_leaves_room_for_the_rest_of_a_windows_command(monkeypatch, platform):
     # CreateProcess takes ONE string for the whole command line, capped at 32767
-    # characters, and the model path, Unsloth's own flags and subprocess's quoting
+    # characters, and the model path, Tough Customer's own flags and subprocess's quoting
     # come out of the same budget. A grammar that passed here and then failed inside
     # Popen would do so after the load had begun switching models.
     import sys as _sys
@@ -283,7 +283,7 @@ def test_the_size_cap_leaves_room_for_the_rest_of_a_windows_command(monkeypatch,
     limit = lsa.max_extra_args_bytes()
     if sys_platform == "win32":
         assert limit == lsa.MAX_EXTRA_ARGS_BYTES_WINDOWS
-        assert limit < 32767 - 4096, "no room left for the command Unsloth builds"
+        assert limit < 32767 - 4096, "no room left for the command Tough Customer builds"
     else:
         assert limit == lsa.MAX_EXTRA_ARGS_BYTES
 

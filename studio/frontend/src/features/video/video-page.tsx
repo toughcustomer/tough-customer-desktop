@@ -270,7 +270,7 @@ function exportFilename(video: GalleryVideo, format: VideoExportFormat = "mp4"):
     ? "unknown"
     : `${d.getFullYear()}${p(d.getMonth() + 1)}${p(d.getDate())}` +
       `-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
-  return `Unsloth_video_${stamp}_${video.seed}.${format}`;
+  return `ToughCustomer_video_${stamp}_${video.seed}.${format}`;
 }
 
 // MP4 streams from its signed link to the chosen path: that link is cross-origin under Tauri,
@@ -417,7 +417,7 @@ function SliderField({
   );
 }
 
-// Matches the field-label style used across Unsloth (export/chat settings).
+// Matches the field-label style used across Tough Customer (export/chat settings).
 function Field({
   label,
   hint,

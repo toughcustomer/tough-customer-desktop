@@ -669,7 +669,7 @@ export function AgentsTab() {
   const origin = typeof window !== "undefined" ? window.location.origin : "";
   // Browser commands target the viewed origin; a desktop window origin is a Tauri URL
   // the CLI cannot reach, so use the backend URL from /api/health (getApiBase until it
-  // lands). The command then runs wherever that CLI is: a loopback base is this Unsloth's
+  // lands). The command then runs wherever that CLI is: a loopback base is this Tough Customer's
   // own host, so deviceType decides, and it reports wsl where the browser would claim
   // Windows. For any other base the client platform is only the initial guess.
   const studioBase = isTauri ? (serverUrl ?? getApiBase()) : origin;

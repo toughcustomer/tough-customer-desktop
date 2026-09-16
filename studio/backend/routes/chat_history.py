@@ -196,9 +196,9 @@ class ChatThread(BaseModel):
 def thread_from_row(row: dict) -> ChatThread:
     """Build a ChatThread from a DATABASE row, tolerating a snapshot it cannot read.
 
-    `settings` is the first strictly validated nested model Unsloth builds out of the
+    `settings` is the first strictly validated nested model Tough Customer builds out of the
     database rather than off the wire, and a stored snapshot outlives the build that
-    wrote it: a newer Unsloth adding a seventeenth setting, widening an enum or
+    wrote it: a newer Tough Customer adding a seventeenth setting, widening an enum or
     raising a bound writes a blob this one rejects. Refusing it here 500s the chat on
     open and takes the entire history export with it, since the export validates
     every thread. `_json_loads` already shrugs off JSON that will not parse; JSON
@@ -236,7 +236,7 @@ def readable_thread_settings(settings: dict) -> Optional[dict]:
 def _unreadable_thread_settings(stored: dict) -> dict:
     """The part of a stored snapshot this build cannot validate, and so must not delete.
 
-    An older Unsloth opening a database a newer one wrote drops the fields it cannot read.
+    An older Tough Customer opening a database a newer one wrote drops the fields it cannot read.
     A blind replacement would make that loss permanent instead of temporary, so a write
     carries forward everything the writer could not have known about: unknown keys, and
     known keys holding values this build rejects.
@@ -1089,7 +1089,7 @@ def save_project(payload: ChatProject, current_subject: str = Depends(get_curren
     try:
         return ChatProject(**upsert_chat_project(payload.model_dump()))
     except ProjectWorkspaceError as exc:
-        # A project is the only thing Unsloth writes to Documents, so only this error and only its own path: the same
+        # A project is the only thing Tough Customer writes to Documents, so only this error and only its own path: the same
         # upsert also opens the database, which lives elsewhere.
         raise log_and_http_error(
             exc,

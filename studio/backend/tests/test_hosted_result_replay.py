@@ -9,7 +9,7 @@ client as its own ``_toolEvent`` frame, but the loop rebuilds the assistant
 message from the text and tool calls it saw, so that output was absent from the
 replayed conversation and the model answered from the local results alone.
 
-Unsloth's own tool events carry a top-level ``type`` and never appear as
+Tough Customer's own tool events carry a top-level ``type`` and never appear as
 ``_toolEvent``, so local results are not replayed twice.
 """
 
@@ -188,7 +188,7 @@ def test_a_hosted_result_reaches_the_follow_up_request(executed):
                         "type": "tool_end",
                         "tool_call_id": "hosted-1",
                         "tool_name": "web_search",
-                        "result": "Title: Unsloth\nSnippet: gradient checkpointing lands",
+                        "result": "Title: Tough Customer\nSnippet: gradient checkpointing lands",
                     }
                 ),
                 _text("Let me also compute that."),
@@ -558,7 +558,7 @@ def test_a_stalled_turn_keeps_its_hosted_result(executed):
                         "type": "tool_end",
                         "tool_call_id": "hosted-1",
                         "tool_name": "web_search",
-                        "result": "Title: Unsloth\nSnippet: gradient checkpointing lands",
+                        "result": "Title: Tough Customer\nSnippet: gradient checkpointing lands",
                     }
                 ),
                 _text("Let me check that."),
@@ -588,7 +588,7 @@ def test_a_stalled_continuation_stays_one_assistant_turn(executed):
                         "type": "tool_end",
                         "tool_call_id": "hosted-1",
                         "tool_name": "web_search",
-                        "result": "Title: Unsloth\nSnippet: gradient checkpointing lands",
+                        "result": "Title: Tough Customer\nSnippet: gradient checkpointing lands",
                     }
                 ),
                 _text(" Let me check that."),
@@ -954,7 +954,7 @@ def test_a_stalled_turn_keeps_its_thought_signature(executed):
                         "type": "tool_end",
                         "tool_call_id": "hosted-1",
                         "tool_name": "web_search",
-                        "result": "Title: Unsloth\nSnippet: gradient checkpointing lands",
+                        "result": "Title: Tough Customer\nSnippet: gradient checkpointing lands",
                     }
                 ),
                 "data: "

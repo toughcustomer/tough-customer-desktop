@@ -104,10 +104,10 @@ const DICTATION_LANGUAGES: { value: string; label: string }[] = [
 // Keep spoken preview content independent of the interface locale. The system
 // voice and loaded local model may not support the language used by the UI.
 const TTS_PREVIEW_TEXT =
-  "Hello from Unsloth! This is a preview of the selected voice.";
+  "Hello from Tough Customer! This is a preview of the selected voice.";
 
 /** Source repository shown under a model row. Curated models download from
- * the Unsloth GGUF repos, mirrored by the backend (stt_ggml_sidecar.py). */
+ * the Tough Customer GGUF repos, mirrored by the backend (stt_ggml_sidecar.py). */
 function sttModelSource(model: SttModel): string {
   return isCuratedSttModel(model) && !MTMD_STT_MODELS.has(model)
     ? `unslothai/whisper-${model}-GGUF`

@@ -20,7 +20,7 @@ pub(super) const WORKING_DIRECTORY_UNAVAILABLE: &str = "working_directory_unavai
 pub(super) const PATH_SETTING_UNRESOLVABLE: &str = "path_setting_unresolvable";
 
 /// The reason a managed context failure is reported under, with the setting that
-/// caused it where there is one: "one of Unsloth's folder settings" is not
+/// caused it where there is one: "one of Tough Customer's folder settings" is not
 /// something a user can act on, and every pin failure names the setting it could
 /// not preserve. The name only, never the value, since this reaches the window.
 pub(super) fn context_reason(error: &crate::process::ManagedContextError) -> String {
@@ -960,7 +960,7 @@ mod tests {
     fn a_context_reason_names_the_setting_it_could_not_preserve() {
         use crate::process::ManagedContextError;
         // Every pin failure names the setting first, and the window needs that
-        // name: "one of Unsloth's folder settings" is not something to act on.
+        // name: "one of Tough Customer's folder settings" is not something to act on.
         let reason = context_reason(&ManagedContextError::PathSetting(
             "HF_HOME names a path this machine cannot resolve".to_string(),
         ));

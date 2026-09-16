@@ -2205,8 +2205,8 @@ def _reprompt_loop(*, auto_heal_tool_calls):
             tools = [{"type": "function", "function": {"name": "search_knowledge_base"}}],
             execute_tool = exec_fn,
             auto_heal_tool_calls = auto_heal_tool_calls,
-            # Unsloth always nudges (always-on for the Unsloth inference paths); the
-            # API opts in per request. Model the Unsloth caller here.
+            # Tough Customer always nudges (always-on for the Tough Customer inference paths); the
+            # API opts in per request. Model the Tough Customer caller here.
             nudge_tool_calls = True,
             max_tool_iterations = 3,
         )
@@ -3226,7 +3226,7 @@ class TestLoopBehaviour:
 
 
 class TestLoopRePrompt:
-    """Plan-without-action re-prompt parity with GGUF: nudge instead of terminating, up to ``MAX_ACT_REPROMPTS`` extra slots. Unsloth always nudges, so these drive the loop with ``nudge_tool_calls=True``."""
+    """Plan-without-action re-prompt parity with GGUF: nudge instead of terminating, up to ``MAX_ACT_REPROMPTS`` extra slots. Tough Customer always nudges, so these drive the loop with ``nudge_tool_calls=True``."""
 
     def test_reasoning_intent_does_not_reprompt_a_visible_answer(self):
         generations = 0

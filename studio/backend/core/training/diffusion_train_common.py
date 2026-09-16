@@ -92,7 +92,7 @@ _CAPTION_EXTS = (".txt", ".caption")
 # diffusers' canonical single-file LoRA name, so load_lora_weights(dir) finds it.
 DEFAULT_LORA_FILENAME = "pytorch_lora_weights.safetensors"
 
-# Architectures Unsloth can neither train nor load: not in the family registry but recognisable by
+# Architectures Tough Customer can neither train nor load: not in the family registry but recognisable by
 # name, so rejecting them by name gives a clear error instead of a mid-run crash.
 _NON_TRAINABLE_RESIDUAL_TOKENS = frozenset({"sd3", "pixart", "sana", "lumina", "cogview"})
 _NON_TRAINABLE_RESIDUAL_PHRASES = ("stable-diffusion-3", "hunyuan-dit")
@@ -129,7 +129,7 @@ def _trainable_family_spec(name: str) -> Any:
 
 
 def _refuse_untrainable_video_family(name: str) -> None:
-    """Raise for a video family Unsloth has no trainer for.
+    """Raise for a video family Tough Customer has no trainer for.
 
     Video bases are invisible to the image registry, so before this gate existed every video
     checkpoint fell through ``resolve_trainable_family``'s unknown-name fallback and was
@@ -137,7 +137,7 @@ def _refuse_untrainable_video_family(name: str) -> None:
     name instead, with the list of video families that do train."""
     trainable = ", ".join(sorted(TRAINABLE_VIDEO_FAMILIES))
     raise ValueError(
-        f"'{name}' is a video model Unsloth can't train yet. Video LoRA training currently "
+        f"'{name}' is a video model Tough Customer can't train yet. Video LoRA training currently "
         f"supports: {trainable}. {_trainable_hint()}"
     )
 
@@ -213,7 +213,7 @@ def _refuse_component_only_repo(base_model: str) -> None:
 
 
 def _trainable_hint() -> str:
-    """A user-facing hint listing the families Unsloth can train today. Always names SDXL
+    """A user-facing hint listing the families Tough Customer can train today. Always names SDXL
     explicitly so the message is actionable even as more families become trainable."""
     names = ", ".join(_all_trainable_family_names()) or "sdxl"
     return (
@@ -392,7 +392,7 @@ def repo_is_prequantized(base_model: str) -> bool:
 
 
 def _module_is_torchao_stub(module: Any) -> bool:
-    """True iff ``module`` is the Unsloth Windows-ROCm torchao import stub rather than the
+    """True iff ``module`` is the Tough Customer Windows-ROCm torchao import stub rather than the
     real package. The stub (core/_torchao_stub.py) satisfies find_spec and even lets
     ``from torchao.quantization import quantize_`` succeed -- but the imported symbols are
     no-op stub types, so the quantization never happens. Every stub module carries the
@@ -985,7 +985,7 @@ class DiffusionLoraConfig:
         """Return a copy with derived/validated fields filled in. Raises ValueError on a
         request that cannot train (bad numbers, or an untrainable base model).
 
-        Also coerces values that arrive as strings/blanks through the Unsloth config path
+        Also coerces values that arrive as strings/blanks through the Tough Customer config path
         (``learning_rate`` is preserved as a string there; ``hf_token`` defaults to "")."""
         resolved_family = resolve_trainable_family(self.base_model, self.model_family)
         if self.train_steps < 1:
@@ -1056,7 +1056,7 @@ class DiffusionLoraConfig:
             raise ValueError("save_steps must be >= 0 (0 disables periodic checkpoints)")
         if save_total_limit < 0:
             raise ValueError("save_total_limit must be >= 0 (0 keeps every checkpoint)")
-        # A blank resume path (the Unsloth default when the field is present but unset) means "fresh run",
+        # A blank resume path (the Tough Customer default when the field is present but unset) means "fresh run",
         # not the outputs root.
         resume_from_checkpoint = (
             str(self.resume_from_checkpoint).strip()
@@ -1085,7 +1085,7 @@ class DiffusionLoraConfig:
         # - decay), so valid decays live in [0, 1).
         if not 0.0 <= ema_decay < 1.0:
             raise ValueError("ema_decay must be in [0, 1); 0 disables the EMA adapter")
-        # A blank cond_cache_dir (the Unsloth default when unset) means "off", not cwd.
+        # A blank cond_cache_dir (the Tough Customer default when unset) means "off", not cwd.
         cond_cache_dir = (
             str(self.cond_cache_dir).strip() if self.cond_cache_dir is not None else ""
         ) or None
@@ -1164,7 +1164,7 @@ class DiffusionLoraConfig:
         # degenerate loss; None is the documented disable.
         if self.snr_gamma is not None and float(self.snr_gamma) <= 0:
             raise ValueError("snr_gamma must be > 0, or null to disable min-SNR weighting")
-        # learning_rate can arrive as a string ("1e-4") from the Unsloth config path, so coerce it before AdamW sees it.
+        # learning_rate can arrive as a string ("1e-4") from the Tough Customer config path, so coerce it before AdamW sees it.
         try:
             learning_rate = float(self.learning_rate)
         except (TypeError, ValueError) as exc:
@@ -1173,7 +1173,7 @@ class DiffusionLoraConfig:
             raise ValueError("learning_rate must be > 0")
         alpha = self.lora_alpha if self.lora_alpha is not None else self.lora_rank
         targets = tuple(self.lora_target_modules) or DEFAULT_LORA_TARGETS
-        # A blank Hub token (the Unsloth default when none is configured) must load anonymously, not as an
+        # A blank Hub token (the Tough Customer default when none is configured) must load anonymously, not as an
         # explicit empty credential.
         token = self.hf_token.strip() if isinstance(self.hf_token, str) else self.hf_token
         from core.inference.diffusion_families import (
@@ -2076,7 +2076,7 @@ def _publish_to_lora_catalog(
     cfg: DiffusionLoraConfig,
     steps: Optional[int] = None,
 ) -> Optional[str]:
-    """Best-effort copy of the trained adapter into the Unsloth diffusion LoRA directory so
+    """Best-effort copy of the trained adapter into the Tough Customer diffusion LoRA directory so
     the Images LoRA picker (which scans only files directly under ``loras/diffusion``) finds
     it without the user moving files. Also writes a ``<alias>.json`` metadata sidecar so the
     picker can family-gate the adapter (family, base model, trigger prompt, ...). Returns the
@@ -2089,7 +2089,7 @@ def _publish_to_lora_catalog(
     A VIDEO family publishes nothing. ``loras/diffusion`` is read by the Images LoRA picker
     alone, and ``core/inference/video.py`` has no LoRA surface at all, so mirroring a video
     adapter there would copy a large file into a catalog nothing can load and hand the UI a
-    deployment path Unsloth cannot honour. The run still reports ``lora_path`` (and ``ema_path``),
+    deployment path Tough Customer cannot honour. The run still reports ``lora_path`` (and ``ema_path``),
     which is the adapter a caller loads directly. Giving video its own catalog and a load path
     on the Video tab is a separate, larger piece of work."""
     if detect_video_family("", override = cfg.resolved_family) is not None:
@@ -2149,7 +2149,7 @@ def _write_lora_sidecar(
     sidecar_path.write_text(json.dumps(meta, indent = 2), encoding = "utf-8")
 
 
-# Aliases from the generic Unsloth training payload onto DiffusionLoraConfig fields, so the shared
+# Aliases from the generic Tough Customer training payload onto DiffusionLoraConfig fields, so the shared
 # request shape can also drive this trainer.
 _CONFIG_ALIASES = {
     "model_name": "base_model",
@@ -2166,7 +2166,7 @@ _CONFIG_ALIASES = {
 
 
 def _coerce_gradient_checkpointing(value: Any) -> bool:
-    """Unsloth sends gradient_checkpointing as a string ("none" / "true" / "unsloth"); the
+    """Tough Customer sends gradient_checkpointing as a string ("none" / "true" / "unsloth"); the
     disable words are False, anything else truthy is True. A real bool passes through."""
     if isinstance(value, str):
         return value.strip().lower() not in ("", "none", "false", "0", "no", "off")
@@ -2174,7 +2174,7 @@ def _coerce_gradient_checkpointing(value: Any) -> bool:
 
 
 def _coerce_bool(value: Any) -> bool:
-    """Coerce a flag that may arrive as a string through the generic Unsloth config path
+    """Coerce a flag that may arrive as a string through the generic Tough Customer config path
     (e.g. "false" / "0" / "off"). A non-empty string like "false" is otherwise truthy, so
     an opt-out would silently no-op. A real bool passes through."""
     if isinstance(value, str):
@@ -2184,7 +2184,7 @@ def _coerce_bool(value: Any) -> bool:
 
 def _config_from_dict(config: dict) -> DiffusionLoraConfig:
     """Build a DiffusionLoraConfig from a plain dict. Unknown keys are ignored so a richer
-    request payload (UI form) does not break construction; a small set of generic Unsloth
+    request payload (UI form) does not break construction; a small set of generic Tough Customer
     training keys are aliased onto the diffusion field names, and string flags are coerced."""
     valid = DiffusionLoraConfig.__dataclass_fields__.keys()
     kwargs: dict[str, Any] = {}

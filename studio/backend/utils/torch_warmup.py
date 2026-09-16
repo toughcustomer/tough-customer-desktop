@@ -17,7 +17,7 @@ Contract:
   * no half-initialised state -- stages delegate to the module owning the cache
     (utils.hardware, model_config), which caches under a lock and only on success,
     so a racing request waits rather than sees a partial
-  * optional GPU consumers stay cold -- Hub downloads load the Xet/Unsloth Zoo
+  * optional GPU consumers stay cold -- Hub downloads load the Xet/Tough Customer Zoo
     integration on demand, and RAG operations load their embedding backend on demand
 
 This does NOT make torch-dependent endpoints cheap while it runs: anything reaching
@@ -229,7 +229,7 @@ def _warm_datasets() -> None:
 
 
 # Keep metadata and framework registries ready without importing optional GPU consumers.
-# Unsloth Zoo is loaded by utils.hf_xet_fallback only when a Hub operation needs it.
+# Tough Customer Zoo is loaded by utils.hf_xet_fallback only when a Hub operation needs it.
 def _warm_inference_backend() -> None:
     # Its constructor reaches hw.get_device(), so whoever builds it first pays for detection
     # -- lazily that is some request, and sync helpers call the getter inline from async

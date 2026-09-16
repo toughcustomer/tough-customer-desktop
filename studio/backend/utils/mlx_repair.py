@@ -3,7 +3,7 @@
 
 """Best-effort MLX self-heal for Apple Silicon.
 
-On macOS, Unsloth enables Train/Export only when the MLX training/export stack is
+On macOS, Tough Customer enables Train/Export only when the MLX training/export stack is
 usable (see utils.hardware.hardware.detect_hardware -> CHAT_ONLY). MLX is pulled
 only transitively via unsloth-zoo, and a resolver backtrack (mlx-vlm ->
 transformers>=5 vs the single-env transformers pin) can silently drop it, leaving
@@ -13,7 +13,7 @@ a background thread, then re-detects so the gate re-opens without a manual
 
 The install mirrors the main Apple Silicon installer (install_python_stack.py):
 it points UV_OVERRIDE at overrides-darwin-arm64.txt so the resolver keeps the
-Unsloth transformers pin AND installs a current mlx-vlm, and it requires the same
+Tough Customer transformers pin AND installs a current mlx-vlm, and it requires the same
 minimum versions unsloth-zoo declares so a backtracked old mlx-vlm (which still
 imports but breaks VLM Train/Export) is never accepted as healthy.
 
@@ -73,10 +73,10 @@ _MLX_REINSTALL_ARGS = tuple(
 # Require pre-built wheels for the unattended self-heal: a source distribution's PEP 517 build backend runs arbitrary
 # code at install time, and this install is default-on and runs before the post-install stack check can reject anything.
 # mlx/mlx-metal ship wheels only (no sdist on PyPI) and mlx-lm/mlx-vlm publish py3-none-any wheels, so requiring wheels
-# does not break a healthy self-heal; if a wheel is genuinely unavailable the install fails and Unsloth stays chat-only.
+# does not break a healthy self-heal; if a wheel is genuinely unavailable the install fails and Tough Customer stays chat-only.
 _ONLY_BINARY_ARG = "--only-binary=:all:"
 # Allowlist of environment variables forwarded to the install subprocess. The self-heal runs without confirmation on the
-# default startup path, so it must not hand resolver/build code the full Unsloth environment. Dropping everything else
+# default startup path, so it must not hand resolver/build code the full Tough Customer environment. Dropping everything else
 # excludes three classes by construction: secrets (HF_TOKEN, AWS_*, WANDB_API_KEY) a malicious wheel/sdist build hook
 # would read out of os.environ; package-source redirects (UV_INDEX*, UV_DEFAULT_INDEX, UV_FIND_LINKS, PIP_INDEX_URL)
 # that could repoint the install at an attacker-controlled index; and cache-dir redirects (UV_CACHE_DIR, XDG_CACHE_HOME)
@@ -334,13 +334,13 @@ def _mlx_install_env() -> dict[str, str]:
 
     The self-heal runs without confirmation on the default startup path, so it
     forwards only the variables uv genuinely needs (see _MLX_ENV_ALLOWLIST) instead
-    of the full Unsloth environment: secrets and package-source redirects in
+    of the full Tough Customer environment: secrets and package-source redirects in
     os.environ are dropped so a malicious resolver-selected artifact cannot read
-    Unsloth secrets or be steered to a hostile index.
+    Tough Customer secrets or be steered to a hostile index.
 
     Mirror the main installer (install_python_stack.py) by pointing UV_OVERRIDE at
-    overrides-darwin-arm64.txt, which keeps mlx-vlm/mlx-lm on the Unsloth
-    Transformers floor. Without it, uv keeps the Unsloth transformers pin only
+    overrides-darwin-arm64.txt, which keeps mlx-vlm/mlx-lm on the Tough Customer
+    Transformers floor. Without it, uv keeps the Tough Customer transformers pin only
     by silently backtracking mlx-vlm to an old, unsupported version (uv honours
     UV_OVERRIDE; plain pip ignores it, so the transformers constraint below is the
     pip-path safety net). We set UV_OVERRIDE ourselves, so a poisoned one in the
@@ -377,17 +377,17 @@ def _mlx_install_env() -> dict[str, str]:
 def _transformers_constraint_args() -> tuple[list[str], str | None]:
     """Pin transformers to the running version for the mlx install.
 
-    The install must never upgrade transformers underneath a running Unsloth
+    The install must never upgrade transformers underneath a running Tough Customer
     (the single-env install pins a compatible default). With UV_OVERRIDE set this
     is belt-and-suspenders; on the plain-pip path (no UV_OVERRIDE support) it is
     the actual guard -- the resolver either finds an mlx build compatible with the
-    pin or fails, leaving us chat-only rather than breaking Unsloth. Returns
+    pin or fails, leaving us chat-only rather than breaking Tough Customer. Returns
     (pip args, temp file path to clean up).
 
     Read the version from installed metadata rather than `import transformers`:
     transformers can have valid metadata yet fail to import (e.g. an incompatible
     huggingface_hub), and in that case we still want to pin it so the mlx install
-    cannot quietly upgrade it out from under Unsloth."""
+    cannot quietly upgrade it out from under Tough Customer."""
     from importlib.metadata import PackageNotFoundError, version as _dist_version
 
     try:
@@ -406,10 +406,10 @@ def attempt_mlx_repair(*, timeout: int = _REPAIR_TIMEOUT_S) -> bool:
     """Install a usable mlx/mlx-lm/mlx-vlm stack by name into the running venv.
     Best-effort; returns True iff the resulting stack meets unsloth-zoo's minimums
     (so a backtracked old mlx-vlm is rejected, not accepted). transformers is held
-    at its pinned version so the install can never upgrade it underneath Unsloth."""
+    at its pinned version so the install can never upgrade it underneath Tough Customer."""
     global _environment_mutated
     # Prepare the constraint inside the try: this runs on a daemon thread
-    # An exception here (e.g. tempfile.mkstemp failing on a full disk or a bad TMPDIR) must leave Unsloth chat-only, not
+    # An exception here (e.g. tempfile.mkstemp failing on a full disk or a bad TMPDIR) must leave Tough Customer chat-only, not
     # crash the background self-heal thread.
     constraint_path = None
     try:
@@ -423,7 +423,7 @@ def attempt_mlx_repair(*, timeout: int = _REPAIR_TIMEOUT_S) -> bool:
         )
         if cmd is None:
             logger.warning(
-                "MLX self-heal requires uv so Unsloth can apply dependency overrides; "
+                "MLX self-heal requires uv so Tough Customer can apply dependency overrides; "
                 "staying chat-only. Run `unsloth studio update` to restore uv."
             )
             return False
@@ -458,7 +458,7 @@ def attempt_mlx_repair(*, timeout: int = _REPAIR_TIMEOUT_S) -> bool:
         if _UNRESOLVED_PYTHON_MARKER in (result.stdout or ""):
             _environment_mutated = False
             logger.warning(
-                "MLX self-heal could not use the Unsloth environment at %s: uv did not "
+                "MLX self-heal could not use the Tough Customer environment at %s: uv did not "
                 "recognise it as a virtual environment. This usually means the venv's "
                 "bin/python points at an interpreter that has since been upgraded or "
                 "removed. Train/Export stay disabled until the environment is rebuilt: "

@@ -101,7 +101,7 @@ def test_delta_fails_closed_when_installed_notes_have_no_bullets(monkeypatch):
     releases = {
         "b9596-mix-e6f2453": {
             "body": (
-                "Automated Unsloth llama.cpp prebuild for upstream b9596 "
+                "Automated Tough Customer llama.cpp prebuild for upstream b9596 "
                 "+ PR #24423 @ 10a2613 (unslothai/llama.cpp@7bbfff8)."
             )
         },
@@ -124,7 +124,7 @@ def test_delta_reports_no_changes_when_target_drops_every_carried_pr(monkeypatch
     # Not a failure: the target is always newest, so no bullets means no carries.
     releases = {
         "old": {"body": OLD_BODY},
-        "new": {"body": "Automated Unsloth llama.cpp prebuild for upstream b10800."},
+        "new": {"body": "Automated Tough Customer llama.cpp prebuild for upstream b10800."},
     }
     monkeypatch.setattr(
         changes,
@@ -274,7 +274,7 @@ def test_release_page_url_is_github_or_nothing():
 def test_unavailable_reason_separates_permanent_from_transient(monkeypatch):
     # Predating the bullet format is permanent, so the banner offers no Retry.
     releases = {
-        "prose": {"body": "Automated Unsloth llama.cpp prebuild for upstream b9000."},
+        "prose": {"body": "Automated Tough Customer llama.cpp prebuild for upstream b9000."},
         "itemised": {"body": OLD_BODY},
     }
     monkeypatch.setattr(

@@ -456,7 +456,7 @@ def test_the_drop_and_the_create_share_one_writer_lock():
 
 
 def test_downgrade_still_sees_attachment_changes(db):
-    """An older Unsloth run against an upgraded database keeps the scoped trigger, since
+    """An older Tough Customer run against an upgraded database keeps the scoped trigger, since
     its CREATE TRIGGER IF NOT EXISTS finds the name taken. That is safe: the scoped
     trigger still fires for everything the inventory derives from."""
     conn = studio_db.get_connection()

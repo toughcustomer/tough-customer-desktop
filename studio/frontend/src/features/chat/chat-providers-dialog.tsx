@@ -42,7 +42,9 @@ import { toast } from "sonner";
 import { ApiProviderLogo } from "./api-provider-logo";
 
 import { OpenAICodexConnect } from "./openai-codex-connect";
+import { ToughCustomerConnect } from "@/features/sales/tough-customer-connect";
 import {
+  isManagedAuthKind,
   type CodexSubscriptionModels,
   type ProviderAuthStatus,
   type ProviderRegistryEntry,
@@ -284,7 +286,7 @@ export function ChatProvidersSettings({
   // llama.cpp hides the key field. Ollama and vLLM show an optional key:
   // Ollama cloud and secured vLLM need one; local servers leave it empty.
   const showReasoningToggle = supportsProviderReasoningToggle(providerType);
-  // Unsloth runs Search, Code, MCP and RAG on this machine for any provider that
+  // Tough Customer runs Search, Code, MCP and RAG on this machine for any provider that
   // advertises the capability, with no extra opt-in. Say so where the
   // connection is created: the tool results also travel back to the provider as
   // the next turn's input, which is not obvious from "connect a model".
@@ -302,12 +304,14 @@ export function ChatProvidersSettings({
     toExternalBackendProviderType(providerType),
   );
   const usesOAuth = selectedProviderContract?.auth_kind === "chatgpt_oauth";
+  const usesTcDevice =
+    selectedProviderContract?.auth_kind === "toughcustomer_device";
 
   const isCodexSubscription = usesOAuth;
   const modelIdsEditable =
     selectedProviderContract?.model_ids_editable !== false;
   const showApiKeyField =
-    !usesOAuth && !customPresetSkipsApiKeyField(providerType);
+    !usesOAuth && !usesTcDevice && !customPresetSkipsApiKeyField(providerType);
   const isCuratedModelList = useMemo(() => {
     return registryByType.get(providerType)?.model_list_mode === "curated";
   }, [registryByType, providerType]);
@@ -724,8 +728,8 @@ export function ChatProvidersSettings({
     if (editingProviderId) return editingProviderId;
     const backendProviderType = toExternalBackendProviderType(providerType);
     const entry = registryByType.get(backendProviderType);
-    if (entry?.auth_kind !== "chatgpt_oauth") {
-      throw new Error("This connection does not support ChatGPT authorization.");
+    if (!entry || !isManagedAuthKind(entry.auth_kind)) {
+      throw new Error("This connection does not support managed sign-in.");
     }
 
     setMutatingProvider(true);
@@ -789,7 +793,7 @@ export function ChatProvidersSettings({
       : (selectedRegistryEntry?.display_name ?? providerType);
     if (
       !isCustomProvider &&
-      selectedRegistryEntry?.auth_kind !== "chatgpt_oauth" &&
+      !isManagedAuthKind(selectedRegistryEntry?.auth_kind) &&
       !apiKey.trim()
     ) {
       toast.error("API key is required.");
@@ -927,7 +931,7 @@ export function ChatProvidersSettings({
     const editingContract = registryByType.get(
       toExternalBackendProviderType(existing.providerType),
     );
-    const isEditingOAuthProvider = existing.authKind === "chatgpt_oauth";
+    const isEditingOAuthProvider = isManagedAuthKind(existing.authKind);
     if (
       !isEditingCustomProvider &&
       !isEditingOAuthProvider &&
@@ -1240,6 +1244,15 @@ export function ChatProvidersSettings({
       } else {
         await editProvider(provider);
         toast.info("Authorize this ChatGPT subscription connection.");
+      }
+      return;
+    }
+    if (provider.authKind === "toughcustomer_device") {
+      if (provider.authStatus === "connected") {
+        toast.success("Tough Customer is signed in.");
+      } else {
+        await editProvider(provider);
+        toast.info("Sign in to Tough Customer to use this connection.");
       }
       return;
     }
@@ -1614,7 +1627,7 @@ export function ChatProvidersSettings({
               {runsStudioToolsLocally ? (
                 <div className="px-4 py-3">
                   <p className="text-xs text-muted-foreground">
-                    Models on this connection can use Unsloth&apos;s Search, Code,
+                    Models on this connection can use Tough Customer&apos;s Search, Code,
                     MCP and Docs tools. Those run on this machine, and their
                     results are sent back to the provider as part of the next
                     message. Code and terminal calls still ask before anything
@@ -1626,6 +1639,18 @@ export function ChatProvidersSettings({
           </section>
 
 
+          {usesTcDevice ? (
+            <ToughCustomerConnect
+              providerId={editingProviderId}
+              authStatus={providers.find((provider) => provider.id === editingProviderId)?.authStatus}
+              ensureProvider={ensureCodexProvider}
+              onChanged={async () => {
+                const synced = await syncExternalProvidersFromBackend(providersRef.current);
+                providersRef.current = synced;
+                onProvidersChange(synced);
+              }}
+            />
+          ) : null}
           {isCodexSubscription ? (
             <OpenAICodexConnect
               providerId={editingProviderId}

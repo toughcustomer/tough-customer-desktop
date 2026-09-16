@@ -4,8 +4,8 @@
 """Regression tests for the Colab "OutStream has no attribute 'watch_fd_thread'"
 startup crash.
 
-Field report (Colab): Unsloth Studio dies at server startup with
-``❌ Unsloth Studio failed to start: 'OutStream' object has no attribute
+Field report (Colab): Tough Customer Studio dies at server startup with
+``❌ Tough Customer Studio failed to start: 'OutStream' object has no attribute
 'watch_fd_thread'``.
 
 Root cause chain:
@@ -200,7 +200,7 @@ class TestTeeStreamClose:
 class TestColabStartupRegression:
     """End-to-end: the exact trigger -- an absl-style handler closing the
     orphaned OutStream during the ``logging.shutdown`` that uvicorn's
-    ``uvicorn.Config`` -> ``dictConfig`` runs -- must not crash Unsloth, and the
+    ``uvicorn.Config`` -> ``dictConfig`` runs -- must not crash Tough Customer, and the
     tee must keep logging afterwards.
 
     ``logging.shutdown`` is driven over a LOCAL weakref list (identical code path

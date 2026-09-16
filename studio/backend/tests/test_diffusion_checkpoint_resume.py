@@ -128,7 +128,7 @@ def _healthy_diffusers(healthy_diffusers):
 
 @pytest.fixture
 def run_dir(tmp_path, monkeypatch):
-    """A run output directory inside the (per-test) Unsloth outputs root, since the resume
+    """A run output directory inside the (per-test) Tough Customer outputs root, since the resume
     path resolver refuses anything outside it."""
     from utils.paths import outputs_root
 
@@ -748,7 +748,7 @@ def test_unknown_revision_or_dataset_on_either_side_is_not_a_mismatch(run_dir):
 def test_resume_path_must_stay_inside_the_outputs_root(tmp_path):
     outside = tmp_path / "elsewhere"
     outside.mkdir()
-    with pytest.raises(dc.ResumeError, match = "inside Unsloth outputs"):
+    with pytest.raises(dc.ResumeError, match = "inside Tough Customer outputs"):
         dc.resolve_resume_dir(str(outside))
 
 

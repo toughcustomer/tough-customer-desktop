@@ -34,7 +34,7 @@ logger = get_logger(__name__)
 def _build_browse_allowlist(
     media_roots: Optional[list[Path]] = None, drive_roots: Optional[list[Path]] = None
 ) -> list[Path]:
-    """Root directories the browser may walk (also seeds the suggestion chips): HOME, resolved HF cache dirs, Unsloth outputs/exports/root, registered scan folders, and well-known local-LLM dirs. Each is added only if it resolves to a real directory so the sandbox has no dead boundary.
+    """Root directories the browser may walk (also seeds the suggestion chips): HOME, resolved HF cache dirs, Tough Customer outputs/exports/root, registered scan folders, and well-known local-LLM dirs. Each is added only if it resolves to a real directory so the sandbox has no dead boundary.
 
     *media_roots* / *drive_roots* let the caller pass already-probed
     removable-media and Windows drive roots so they aren't scanned again (a

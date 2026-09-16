@@ -673,7 +673,7 @@ function VramBudgetRow() {
         info={
           <div className="flex flex-col gap-1.5">
             <div>
-              Share of each GPU Unsloth will claim when it sizes the model and
+              Share of each GPU Tough Customer will claim when it sizes the model and
               context. The rest is left for memory fragmentation, the per-device
               CUDA context on a multi-GPU split, and MoE routing.
             </div>
@@ -777,7 +777,7 @@ function GpuMemorySettings({
           <InfoHint>
             <div className="flex flex-col gap-1.5">
               <div>
-                <span className="font-medium">Default:</span> Unsloth fits the
+                <span className="font-medium">Default:</span> Tough Customer fits the
                 model and context to your GPUs.
               </div>
               <div>
@@ -868,7 +868,7 @@ function GpuMemorySettings({
           <div className="flex min-w-0 items-center gap-1.5">
             <span className={LABEL_CLASS}>GPUs</span>
             <InfoHint>
-              By default, Unsloth chooses GPUs automatically. Editing this list
+              By default, Tough Customer chooses GPUs automatically. Editing this list
               makes the checked GPUs the explicit candidate pool. At least one
               GPU must stay selected.
             </InfoHint>
@@ -1272,7 +1272,7 @@ function LoadModeRow({
           <span className={LABEL_CLASS}>Mmap/Mlock</span>
           <InfoHint>
             How the weights are read off disk (--load-mode). Auto is the
-            default: Unsloth picks None when it can prove the model fits without
+            default: Tough Customer picks None when it can prove the model fits without
             paging, since a mapped read is slower, and otherwise leaves the
             choice to llama.cpp, which memory-maps unless a device cannot. mmap
             forces the mapping, mlock keeps the model in RAM rather than letting
@@ -1820,11 +1820,11 @@ function GgufAdvancedSettings({
 /**
  * Pass-through llama-server arguments for this model.
  *
- * llama-server documents 283 flags and Unsloth already emits or manages about 115
+ * llama-server documents 283 flags and Tough Customer already emits or manages about 115
  * of them, so the long tail is a text box rather than 168 more controls. The
- * boundary is `validate_extra_args` on the backend, which refuses the flags Unsloth
+ * boundary is `validate_extra_args` on the backend, which refuses the flags Tough Customer
  * owns; this row is the same judgement shown early, plus a check against the flags
- * THIS build documents, which a list shipped with Unsloth could not do.
+ * THIS build documents, which a list shipped with Tough Customer could not do.
  */
 function ExtraArgsRow({
   config,
@@ -1954,7 +1954,7 @@ function ExtraArgsRow({
             <div>
               Quote a value containing spaces or backslashes, including a
               Windows path. Nothing runs a shell, so $HOME, ; and | are ordinary
-              characters. Flags Unsloth owns, like the model, the port and the
+              characters. Flags Tough Customer owns, like the model, the port and the
               API key, are refused.
             </div>
           </div>
@@ -2377,7 +2377,7 @@ export function ModelConfigPage({
     const rememberAtStart = rememberRef.current;
     const localAtStart = configAtStart.llamaExtraArgs;
     // The denylist, not the catalogue: sanitizing a stored list needs only the flags
-    // Unsloth refuses, and that route answers without running `llama-server --help`.
+    // Tough Customer refuses, and that route answers without running `llama-server --help`.
     // Waiting on the probe instead would hold Load shut for as long as a cold --help
     // takes, and releasing on a deadline would leave a legacy flag in an explicit
     // request that /load then refuses.

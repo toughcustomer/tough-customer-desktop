@@ -129,7 +129,7 @@ def test_repair_install_pins_transformers_and_cleans_up(monkeypatch):
     assert mr.attempt_mlx_repair() is True
     cmd = captured["cmd"]
     # transformers is pinned via a constraint file so the mlx install cannot
-    # upgrade it underneath Unsloth, and the temp constraint file is cleaned up.
+    # upgrade it underneath Tough Customer, and the temp constraint file is cleaned up.
     assert "--constraint" in cmd
     assert "--upgrade" in cmd
     reinstall_pairs = set(zip(cmd, cmd[1:]))
@@ -139,7 +139,7 @@ def test_repair_install_pins_transformers_and_cleans_up(monkeypatch):
         assert pkg in cmd
     assert created_paths and not Path(created_paths[0]).exists()
     # The install mirrors the main installer by relaxing the transformers pin via
-    # UV_OVERRIDE so a current mlx-vlm can coexist with the Unsloth Transformers pin.
+    # UV_OVERRIDE so a current mlx-vlm can coexist with the Tough Customer Transformers pin.
     env = captured["env"]
     assert env is not None
     assert env.get("UV_OVERRIDE", "").endswith("overrides-darwin-arm64.txt")
@@ -149,7 +149,7 @@ def test_install_requires_prebuilt_wheels(monkeypatch):
     # A source distribution's PEP 517 build backend runs arbitrary code at install
     # time, before the post-install stack check. The unattended self-heal must
     # require pre-built wheels so a malicious resolver-selected sdist cannot execute
-    # during ordinary Unsloth startup. mlx/mlx-metal ship wheels only and
+    # during ordinary Tough Customer startup. mlx/mlx-metal ship wheels only and
     # mlx-lm/mlx-vlm publish py3-none-any wheels, so a healthy self-heal still works.
     pytest.importorskip("transformers")
     captured = {}
@@ -169,7 +169,7 @@ def test_install_requires_prebuilt_wheels(monkeypatch):
 
 
 def test_install_env_drops_secrets_and_source_redirects(monkeypatch):
-    # The unattended self-heal must not hand resolver/build code the full Unsloth
+    # The unattended self-heal must not hand resolver/build code the full Tough Customer
     # environment: secrets and package-source redirects are dropped, while the
     # variables uv genuinely needs are forwarded.
     monkeypatch.setenv("HF_TOKEN", "secret-hf")
@@ -449,7 +449,7 @@ def test_install_env_names_the_target_venv_for_uv(monkeypatch, tmp_path):
 
 def test_unresolvable_venv_reports_the_unsloth_repair_command(monkeypatch, tmp_path, capsys):
     # uv's own text tells the user to run `uv venv`, which would build an
-    # environment Unsloth does not manage. Point at `unsloth studio update`.
+    # environment Tough Customer does not manage. Point at `unsloth studio update`.
     venv = _fake_venv(tmp_path)
     monkeypatch.setattr(mr.sys, "prefix", str(venv))
     monkeypatch.setattr(mr.sys, "base_prefix", "/usr")

@@ -484,7 +484,7 @@ def test_none_tool_choice_never_executes_model_tool_calls(monkeypatch):
 def test_structured_tool_call_after_visible_preface_is_executed(monkeypatch):
     """llama-server may emit content first and then native delta.tool_calls.
 
-    Unsloth must not drop that tool call after it has streamed the preface.
+    Tough Customer must not drop that tool call after it has streamed the preface.
     """
 
     tool_call_id = "call_render_late"
@@ -6370,7 +6370,7 @@ def test_a_long_tool_run_reports_a_boundary_in_the_requests_own_terms(monkeypatc
     )
 
     branch = [
-        # Unsloth always prepends one and a fit never evicts it, so counting it as the
+        # Tough Customer always prepends one and a fit never evicts it, so counting it as the
         # front of the branch reported zero on every compaction.
         {"role": "system", "content": "you are helpful"},
         {"role": "user", "content": "u" * 1200},

@@ -7,7 +7,7 @@ Reported: a text-to-video model opened from the Model Hub landed in a chat, ran 
 download-and-launch path, and died as "llama-server failed to start". ``_non_chat_gguf_refusal``
 decides that from the GGUF header instead, and names the page that does run it.
 
-Unsloth's video GGUFs (MiniMax-H3) carry a bare tensor header with ZERO KV pairs, so there is no
+Tough Customer's video GGUFs (MiniMax-H3) carry a bare tensor header with ZERO KV pairs, so there is no
 ``general.architecture`` to match -- which is why "declares no architecture" is a verdict here,
 and why it has to be told apart from "the header could not be read".
 """

@@ -26,16 +26,16 @@ export interface ChannelPreset {
   idSuffix?: string;
   format: ModelFormatFilter;
   sort: HfSortKey;
-  // Keep only formats Unsloth can fine-tune (drops fp8, nvfp4, w4a16, etc.).
+  // Keep only formats Tough Customer can fine-tune (drops fp8, nvfp4, w4a16, etc.).
   finetunableOnly?: boolean;
 }
 
 export const CHANNEL_PRESETS: readonly ChannelPreset[] = [
   {
     id: "unsloth-trending",
-    label: "Unsloth Trending",
+    label: "Tough Customer Trending",
     icon: SparklesIcon,
-    hint: "Most trending models published by Unsloth.",
+    hint: "Most trending models published by Tough Customer.",
     owner: "unsloth",
     tags: ["gguf"],
     format: "gguf",
@@ -43,9 +43,9 @@ export const CHANNEL_PRESETS: readonly ChannelPreset[] = [
   },
   {
     id: "unsloth-latest",
-    label: "Latest Unsloth",
+    label: "Latest Tough Customer",
     icon: NewReleasesIcon,
-    hint: "Freshly released models from the Unsloth channel.",
+    hint: "Freshly released models from the Tough Customer channel.",
     owner: "unsloth",
     format: "all",
     // Newest by creation date so the feed shows freshly released models, not
@@ -85,6 +85,6 @@ export const CHANNEL_TO_SECTION: Record<ChannelId, HubSection> = {
 
 export const HUB_SECTION_TITLE: Record<HubSection, string> = {
   trending: "Trending Now",
-  latest: "Latest Unsloth Models",
+  latest: "Latest Tough Customer Models",
   finetune: "Fine-tune Ready",
 };

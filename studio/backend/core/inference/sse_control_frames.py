@@ -1,9 +1,9 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""Keep a provider's bytes off Unsloth's own control channel.
+"""Keep a provider's bytes off Tough Customer's own control channel.
 
-Unsloth multiplexes its UI control protocol onto the same SSE stream a provider's
+Tough Customer multiplexes its UI control protocol onto the same SSE stream a provider's
 chunks are relayed on. The chat client picks those frames out structurally: a
 top-level ``type`` of ``tool_start`` / ``tool_end`` / ``tool_output`` /
 ``tool_args`` / ``tool_status`` (and the local-runtime ``diffusion_frame`` /
@@ -12,7 +12,7 @@ assistant text, as does a ``_toolEvent`` / ``_toolStatus`` key stamped inside an
 otherwise ordinary chunk.
 
 Every one of those frames is written by this server. A provider endpoint -- a
-user-configured base_url, so not necessarily one Unsloth or the user controls --
+user-configured base_url, so not necessarily one Tough Customer or the user controls --
 has no legitimate reason to emit any of them, and a verbatim relay makes its copy
 indistinguishable from ours at the client: a forged card can claim a tool the
 user trusts ran and returned something harmless, carrying
@@ -44,7 +44,7 @@ _CONTROL_TYPES = frozenset(
 )
 
 # unsloth extensions, in no provider's wire format, read with the same trust as the frames above
-# Unsloth extensions carried inside a chunk. Not part of any provider's wire format, and read by the client with the
+# Tough Customer extensions carried inside a chunk. Not part of any provider's wire format, and read by the client with the
 # same trust as the frames above.
 _CONTROL_KEYS = ("_toolEvent", "_toolStatus", "_diffusionFrame", "_reasoningDurationMs")
 

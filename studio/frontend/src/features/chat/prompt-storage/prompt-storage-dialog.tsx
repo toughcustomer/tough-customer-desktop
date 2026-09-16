@@ -420,7 +420,7 @@ export async function exportConversationShareGPT(threadId: string): Promise<void
 }
 
 // OpenAI/ChatML JSONL: {"messages": [{"role","content"}, ...]} per conversation;
-// Unsloth reads this as a ChatML dataset.
+// Tough Customer reads this as a ChatML dataset.
 export async function exportConversationRawJsonl(threadId: string): Promise<void> {
   return exportConversationJsonl(threadId, "training");
 }
@@ -732,7 +732,7 @@ export async function exportProjectConversations(
 
 // ── Fine-tuning export ─────────────────────────────────────────────────────
 // One JSONL line per conversation: {"messages": [{"role", "content"}]} with
-// string-only content in system/user/assistant turns. Unsloth's training tab
+// string-only content in system/user/assistant turns. Tough Customer's training tab
 // detects this as ChatML natively (no column mapping, no standardization) and
 // it works with train-on-completions masking, which only trains on assistant
 // turns. Reasoning, tool calls, and images are dropped: clean SFT targets.
@@ -1279,7 +1279,7 @@ function ExportModal({
                 <div className="min-w-0 flex-1">
                   <p className="text-sm font-semibold leading-none">Training Style</p>
                   <p className="mt-1 text-xs text-muted-foreground">
-                    ShareGPT format for Unsloth fine-tuning
+                    ShareGPT format for Tough Customer fine-tuning
                   </p>
                   <code className="mt-2 block w-full truncate rounded-md bg-muted px-2 py-1 font-mono text-ui-10 text-muted-foreground/60">
                     {`{"conversations":[{"from":"human","value":"..."},{"from":"gpt","value":""}]}`}

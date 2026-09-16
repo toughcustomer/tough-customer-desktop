@@ -623,7 +623,7 @@ class TestExtraArgsMtpDetection:
 
     def test_the_fit_reads_the_env_only_when_the_extras_own_the_spec_type(self):
         # An emitted --spec-type/--spec-default cannot override the env, since llama.cpp
-        # appends. So the launch scrubs LLAMA_ARG_SPEC_TYPE whenever Unsloth owns the
+        # appends. So the launch scrubs LLAMA_ARG_SPEC_TYPE whenever Tough Customer owns the
         # spec block, and the reserve consults the env only where it still reaches the
         # child: the extras own --spec-type, and their flags and the env accumulate.
         # Whitespace-stripped so the check survives formatter line-wrapping.
@@ -655,7 +655,7 @@ class TestExtraArgsMtpDetection:
 
     def test_load_model_drafter_budget_precedence(self):
         # The budget sizes the drafter the launch actually loads: CLI extras win,
-        # then Unsloth's emitted mtp_draft_path (overrides LLAMA_ARG_SPEC_DRAFT_MODEL),
+        # then Tough Customer's emitted mtp_draft_path (overrides LLAMA_ARG_SPEC_DRAFT_MODEL),
         # then the env drafter, and only when the env survives the launch scrub, else it
         # reserves for a model the child never loads.
         compact = "".join(inspect.getsource(LlamaCppBackend.load_model).split())
@@ -987,7 +987,7 @@ class TestExtraArgsMtpDetection:
         assert _extra_args_n_ubatch([], env = {"LLAMA_ARG_UBATCH": "notint"}) is None
 
     def test_env_main_cache_type_for_budget(self):
-        # The child inherits LLAMA_ARG_CACHE_TYPE_K/_V, but Unsloth emits no
+        # The child inherits LLAMA_ARG_CACHE_TYPE_K/_V, but Tough Customer emits no
         # --cache-type when neither param nor extras set it -> an env type that
         # budgets differently from f16 must be adopted so the reserve matches
         # the child.
@@ -1047,7 +1047,7 @@ class TestExtraArgsMtpDetection:
         assert "cache_type_kv=_env_main_cache_type_for_budget()" in compact
 
     def test_env_split_mode_is_tensor(self):
-        # The child inherits LLAMA_ARG_SPLIT_MODE, but Unsloth emits --split-mode
+        # The child inherits LLAMA_ARG_SPLIT_MODE, but Tough Customer emits --split-mode
         # only on its tensor branch -> a tensor env must flip the budget so the
         # heavier per-device compute buffer is reserved (not layer overhead).
         assert _env_split_mode_is_tensor(env = {}) is False
@@ -1155,7 +1155,7 @@ class TestExtraArgsMtpDetection:
         # Cluster A: when the final decision is layer split, an inherited
         # non-layer LLAMA_ARG_SPLIT_MODE (and paired LLAMA_ARG_TENSOR_SPLIT) must
         # be popped from the child env so the child cannot run tensor/row/none
-        # against Unsloth's layer budget. Whitespace-stripped for formatter.
+        # against Tough Customer's layer budget. Whitespace-stripped for formatter.
         compact = "".join(inspect.getsource(LlamaCppBackend.load_model).split())
         assert 'env.get("LLAMA_ARG_SPLIT_MODE")' in compact
         assert '_inherited_sm!="layer"' in compact
@@ -1163,10 +1163,10 @@ class TestExtraArgsMtpDetection:
         assert 'env.pop("LLAMA_ARG_TENSOR_SPLIT",None)' in compact
 
     def test_load_model_clears_tensor_split_env_in_tensor_mode(self):
-        # review run3 #2: Unsloth owns the tensor split. When it emits no
+        # review run3 #2: Tough Customer owns the tensor split. When it emits no
         # --tensor-split (even split), a stale inherited LLAMA_ARG_TENSOR_SPLIT must
         # be cleared in the TENSOR branch too (not just the layer downgrade), or the
-        # child runs a split Unsloth didn't budget. The else (tensor) branch pops it.
+        # child runs a split Tough Customer didn't budget. The else (tensor) branch pops it.
         src = inspect.getsource(LlamaCppBackend.load_model)
         compact = "".join(src.split())
         # appears in both the layer branch and the tensor branch.
@@ -1232,16 +1232,16 @@ def test_qwen36_class_regression_picks_lower_ctx_with_mtp():
 
 def test_mtp_draft_budget_prefers_user_extras_drafter():
     # A user --model-draft in extras is appended last and wins at launch, so the
-    # VRAM budget must size it first; then Unsloth's emitted mtp_draft_path (which
+    # VRAM budget must size it first; then Tough Customer's emitted mtp_draft_path (which
     # overrides LLAMA_ARG_SPEC_DRAFT_MODEL), then the env drafter (load_model is too
     # entangled to drive end-to-end; assert the precedence at the source level).
     # Whitespace-stripped so the check survives any formatter line-wrapping.
     compact = "".join(inspect.getsource(LlamaCppBackend.load_model).split())
-    # CLI extras sized first (env={} so the env doesn't pre-empt Unsloth's drafter).
+    # CLI extras sized first (env={} so the env doesn't pre-empt Tough Customer's drafter).
     assert "_cli_draft_for_budget=_extra_args_mtp_draft_path(extra_args,env={})" in compact
-    # Order: CLI extras, then Unsloth's mtp_draft_path, then the env drafter.
+    # Order: CLI extras, then Tough Customer's mtp_draft_path, then the env drafter.
     assert "_cli_draft_for_budgetor_studio_draft_for_budgetor_env_draft_for_budget" in compact
-    # The env must not be consulted before Unsloth's resolved drafter.
+    # The env must not be consulted before Tough Customer's resolved drafter.
     assert "_extra_args_mtp_draft_path(extra_args)ormtp_draft_path" not in compact
 
 
@@ -1249,7 +1249,7 @@ class TestUnemittableCacheTypeFallsBackToTheEnvBudget:
     """A type llama.cpp's kv_cache_type_from_str does not know is never emitted
     (_VALID_CACHE_TYPES), so the child inherits LLAMA_ARG_CACHE_TYPE_K/_V instead.
 
-    Before ggml-org/llama.cpp#23792 Unsloth's tensor gate happened to cover this:
+    Before ggml-org/llama.cpp#23792 Tough Customer's tensor gate happened to cover this:
     it dropped any type outside {f16,bf16,f32} -- including an unknown one -- and
     then re-adopted the heavier env type for the reserve, with the comment "Else
     the child allocates f32 KV against an f16 budget." Removing the gate removed

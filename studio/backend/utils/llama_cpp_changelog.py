@@ -183,7 +183,7 @@ def _entry(markdown: str) -> dict:
 
 
 def _identities(markdown: str) -> set[str]:
-    """Stable aliases for one carried change: a patch migrated to an Unsloth carry
+    """Stable aliases for one carried change: a patch migrated to a Tough Customer carry
     PR links that PR but still says ``ggml-org#24423``, and both must match."""
     identities = set()
     # One namespace: GitHub numbers issues and PRs together, so ``/issues/900``,

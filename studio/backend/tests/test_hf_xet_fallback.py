@@ -1,10 +1,10 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""Tests for the Unsloth shim over the shared unsloth_zoo Xet -> HTTP fallback.
+"""Tests for the Tough Customer shim over the shared unsloth_zoo Xet -> HTTP fallback.
 
 The transport-policy matrix is tested once in unsloth_zoo; here we assert only the
-Unsloth seam: re-exporting the shared API and injecting the marker-aware
+Tough Customer seam: re-exporting the shared API and injecting the marker-aware
 prepare_cache_for_transport on the HTTP retry. CPU-only, no network, no real subprocess.
 """
 
@@ -95,7 +95,7 @@ def test_child_should_disable_xet_truth_table():
 
 
 def test_shim_injects_studio_prepare_on_http_retry(monkeypatch):
-    """A Xet stall retries over HTTP and the shim runs Unsloth's marker-aware
+    """A Xet stall retries over HTTP and the shim runs Tough Customer's marker-aware
     ``prepare_cache_for_transport(..., 'http')`` before the retry."""
     _requires_shared()
     for var in ("UNSLOTH_DISABLE_XET", "UNSLOTH_STABLE_DOWNLOADS", "HF_HUB_DISABLE_XET"):
@@ -150,7 +150,7 @@ def test_shim_injects_studio_prepare_on_http_retry(monkeypatch):
 
 
 def test_shim_snapshot_injects_studio_prepare(monkeypatch):
-    """The snapshot wrapper forwards Unsloth's marker-aware prep, like the file wrapper."""
+    """The snapshot wrapper forwards Tough Customer's marker-aware prep, like the file wrapper."""
     captured = {}
 
     def fake_snapshot(repo_id, **kwargs):
@@ -178,7 +178,7 @@ def test_shim_snapshot_injects_studio_prepare(monkeypatch):
 
 
 def test_degrades_gracefully_without_shared_helper(monkeypatch):
-    """On an older unsloth_zoo lacking the shared helper, the shim still imports (Unsloth
+    """On an older unsloth_zoo lacking the shared helper, the shim still imports (Tough Customer
     boots) and exposes stub API doing plain HF downloads with the watchdog disabled."""
     import importlib
 
@@ -257,7 +257,7 @@ def test_degrades_gracefully_without_shared_helper(monkeypatch):
 def test_degrades_when_unsloth_zoo_entirely_absent():
     """When unsloth_zoo is absent entirely, the import raises
     ModuleNotFoundError(name='unsloth_zoo') (top-level package). Guard that the shim still
-    degrades and does not re-raise, breaking every Unsloth import that pulls it in."""
+    degrades and does not re-raise, breaking every Tough Customer import that pulls it in."""
     import importlib
 
     class _BlockZoo:
@@ -299,7 +299,7 @@ def test_degrades_when_unsloth_zoo_entirely_absent():
 
 def test_degrades_when_shared_helper_import_raises_importerror():
     """unsloth_zoo can be installed yet fail to import when torch is missing (llama.cpp/GGUF-only
-    Unsloth), raising ImportError not ModuleNotFoundError. The shim must degrade for that too."""
+    Tough Customer), raising ImportError not ModuleNotFoundError. The shim must degrade for that too."""
     import importlib
 
     class _BlockWithImportError:
@@ -311,7 +311,7 @@ def test_degrades_when_shared_helper_import_raises_importerror():
         ):
             if name == "unsloth_zoo.hf_xet_fallback":
                 # Mirror a torch-less install: a plain ImportError with no .name.
-                raise ImportError("Unsloth: Pytorch is not installed.")
+                raise ImportError("Tough Customer: Pytorch is not installed.")
             return None
 
     finder = _BlockWithImportError()
@@ -409,7 +409,7 @@ def test_retries_under_light_gpu_init_when_import_fails(monkeypatch):
                 # Record the env each attempt sees; raise the no-GPU error both times so the shim
                 # degrades.
                 seen_env.append(os.environ.get("UNSLOTH_ZOO_DISABLE_GPU_INIT"))
-                raise NotImplementedError("Unsloth cannot find any torch accelerator")
+                raise NotImplementedError("Tough Customer cannot find any torch accelerator")
             return None
 
     finder = _GpuGatedBlocker()
@@ -432,7 +432,7 @@ def test_retries_under_light_gpu_init_when_import_fails(monkeypatch):
         # with it set); accessing DownloadStallError drives it via __getattr__.
         stall_error = degraded.DownloadStallError
         assert seen_env == [None, "1"], seen_env
-        # Both attempts raised -> Unsloth still boots in degraded mode.
+        # Both attempts raised -> Tough Customer still boots in degraded mode.
         assert issubclass(stall_error, RuntimeError)
         # The env override must not leak past the load.
         assert os.environ.get("UNSLOTH_ZOO_DISABLE_GPU_INIT") is None
@@ -466,7 +466,7 @@ def test_a_worker_spawned_during_the_gpu_init_retry_does_not_inherit_the_overrid
             if name == "unsloth_zoo":
                 # A concurrent request lands mid-retry and spawns its worker right here.
                 child_envs.append(utf8_child_env())
-                raise NotImplementedError("Unsloth cannot find any torch accelerator")
+                raise NotImplementedError("Tough Customer cannot find any torch accelerator")
             return None
 
     finder = _SpawnsAWorkerMidImport()
@@ -691,7 +691,7 @@ def test_start_watchdog_passes_everything_to_a_zoo_that_accepts_it(monkeypatch):
 
 
 def test_apply_xet_env_delegates_to_the_zoo(monkeypatch):
-    """One rule, in one place: Unsloth asks the zoo to size the worker rather than sizing it too."""
+    """One rule, in one place: Tough Customer asks the zoo to size the worker rather than sizing it too."""
     import types
 
     import utils.hf_xet_fallback as shim
@@ -783,7 +783,7 @@ def test_a_zoo_that_can_resize_is_asked_for_the_workers_own_cache(monkeypatch):
 
 
 # --- free-RAM clamp (issue #9032) ---------------------------------------------------------------
-# The zoo sizes Xet's buffers from TOTAL RAM, which cannot see a loaded model. Unsloth clamps the
+# The zoo sizes Xet's buffers from TOTAL RAM, which cannot see a loaded model. Tough Customer clamps the
 # result to what is free. The bar: shrink under pressure, change nothing otherwise.
 
 _GB = 1_000_000_000

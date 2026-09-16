@@ -96,7 +96,7 @@ pub(crate) enum OwnedBackendProbe {
 /// not this app's.
 ///
 /// Kept apart from `owned_backend_not_found`, which also covers a port that said nothing at
-/// all. The health watchdog needs the difference: silence from a port an Unsloth backend just
+/// all. The health watchdog needs the difference: silence from a port a Tough Customer backend just
 /// answered on is a stall and earns the wide busy budget, while a complete answer carrying a
 /// different root id, a different token or no desktop owner at all is proof that the backend
 /// this app adopted is gone and something else has the port.
@@ -209,7 +209,7 @@ pub(crate) fn read_expected_studio_root_id() -> Option<String> {
     parse_studio_root_id(&raw)
 }
 
-/// Returns the managed Unsloth root ID, creating it when absent.
+/// Returns the managed Tough Customer root ID, creating it when absent.
 /// Desktop installs skip the installer step that normally creates it.
 pub(crate) fn ensure_managed_studio_root_id() -> Result<String, String> {
     #[cfg(test)]
@@ -254,7 +254,7 @@ fn ensure_studio_root_id_at_with_blank_observer(
         .parent()
         .ok_or_else(|| format!("desktop ownership id path {} has no parent", path.display()))?;
 
-    // Do not create the share directory before Unsloth is installed.
+    // Do not create the share directory before Tough Customer is installed.
     if !create_when_missing && !path.exists() {
         return Ok(None);
     }
@@ -301,7 +301,7 @@ fn ensure_studio_root_id_at_with_blank_observer(
     match read_studio_root_id_file(path)? {
         Some(winner) => Ok(Some(winner)),
         None => Err(format!(
-            "could not create the desktop ownership id at {}; delete that file and reopen Unsloth",
+            "could not create the desktop ownership id at {}; delete that file and reopen Tough Customer",
             path.display()
         )),
     }
@@ -387,7 +387,7 @@ fn read_studio_root_id_file(path: &Path) -> Result<Option<String>, String> {
     // the previous value.
     parse_studio_root_id(&raw).map(Some).ok_or_else(|| {
         format!(
-            "the desktop ownership id at {} is not 64 lowercase hex characters; delete that file and reopen Unsloth",
+            "the desktop ownership id at {} is not 64 lowercase hex characters; delete that file and reopen Tough Customer",
             path.display()
         )
     })
@@ -1704,7 +1704,7 @@ mod tests {
     #[tokio::test]
     async fn a_port_taken_over_by_another_backend_is_reported_as_an_owner_mismatch() {
         // The other half of the classification above. A backend the app adopted can exit and
-        // have its port rebound by the next Unsloth backend the user starts, which answers
+        // have its port rebound by the next Tough Customer backend the user starts, which answers
         // the watchdog's pre-probe exactly as the old one did. The probe gets a complete
         // reply here, not silence, so it must say so: the watchdog reads this to keep the
         // dead adopted backend on the normal three-strike budget instead of the busy one.

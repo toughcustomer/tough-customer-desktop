@@ -188,7 +188,7 @@ def pytorch_wheel_index_base_url() -> str:
 
 _XFORMERS_WHEEL_VERSIONS: dict[str, dict[str, str]] = {
     # torch 2.7.0 is deliberately absent: it predates the stable-ABI switch, so it ships one wheel per interpreter and
-    # stops at cp312, while Unsloth's default interpreter is 3.13.
+    # stops at cp312, while Tough Customer's default interpreter is 3.13.
     # Supporting it would mean a per-interpreter gate here and a second one in install.ps1, for a torch that resolves to
     # nothing on the default install anyway (xFormers 0.0.30).
     "2.7.1": {"cu126": "0.0.31.post1", "cu128": "0.0.31.post1"},
@@ -341,7 +341,7 @@ def redact_url_credentials(url: str) -> str:
     UNSLOTH_PYTORCH_MIRROR is allowed to be a private index, and people put credentials in
     it -- ``https://user:token@mirror/whl`` or ``...?token=``. The wheel URL built from it
     is handed to pip AND printed, so without this the secret lands in the backend log the
-    first time Unsloth installs (or fails to install) xFormers. Same rule as the installer's
+    first time Tough Customer installs (or fails to install) xFormers. Same rule as the installer's
     Remove-IndexUrlCredentials, so both sides redact identically.
     """
     separator = url.find("://")

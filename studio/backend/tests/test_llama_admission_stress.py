@@ -4,7 +4,7 @@
 """Randomised stress against the admission queue's invariants.
 
 Two properties that have to hold under ANY interleaving, because the failure they guard is
-a wedged Unsloth, not a wrong number:
+a wedged Tough Customer, not a wrong number:
 
   1. ``committed`` never exceeds ``budget``, except the single holder the escape lets past.
      Breaking this is the ``Context size has been exceeded`` that clears every decoding

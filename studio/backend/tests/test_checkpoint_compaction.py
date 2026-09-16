@@ -281,7 +281,7 @@ def test_a_multiline_instruction_survives_being_read_back():
     ]
     assert checkpoint._block_items(checkpoint.render_checkpoint([nested])) == [nested]
 
-    # A flat block, no continuation indent, still reads line by line. It carries Unsloth's
+    # A flat block, no continuation indent, still reads line by line. It carries Tough Customer's
     # own header, which is what marks a block as ours; a foreign one is not read at all.
     flat = (
         checkpoint._OPEN
@@ -516,7 +516,7 @@ def test_a_process_with_tools_disabled_never_resets(monkeypatch):
 
 
 def _memory_tool_branch():
-    """An Unsloth branch as the client replays it after ONE search_conversation call."""
+    """A Tough Customer branch as the client replays it after ONE search_conversation call."""
     return [
         {"role": "system", "content": "you are helpful"},
         {"role": "user", "content": "what did I say about the dataset?"},
@@ -594,7 +594,7 @@ def test_a_real_client_tool_loop_still_takes_the_passthrough():
     assert inference_route._only_studio_tool_history(payload) is False
     assert inference_route._takes_tool_passthrough(payload, _ToolCapableBackend()) is True
 
-    # And a client catalog alongside Unsloth's own history is still the client's request.
+    # And a client catalog alongside Tough Customer's own history is still the client's request.
     with_catalog = ChatCompletionRequest(
         model = "local",
         messages = _memory_tool_branch(),
@@ -650,7 +650,7 @@ def test_the_count_request_declares_the_studio_tool_history_marker():
 
     `ChatCountTokensRequest` sets `extra = "allow"`, so an undeclared marker arrives
     uncoerced: the JSON string "false" would reach `_only_studio_tool_history` as a truthy
-    value and move the count onto the Unsloth tool path the completion never takes.
+    value and move the count onto the Tough Customer tool path the completion never takes.
     """
     from models.inference import ChatCountTokensRequest
     from routes import inference as inference_route
@@ -838,7 +838,7 @@ def test_only_a_checkpoint_fitted_request_is_told_the_conversation_was_reset():
 def test_a_request_that_withdrew_the_tool_loop_never_resets(monkeypatch):
     """The process policy is not the only way `search_conversation` fails to arrive.
 
-    Unsloth honours `tool_choice: "none"` twice over: the tool loop is suppressed, and the
+    Tough Customer honours `tool_choice: "none"` twice over: the tool loop is suppressed, and the
     request is excluded from the checkpoint repair that otherwise re-admits
     search_conversation alone. A caller that sets it sets it every turn, so a reset would
     hide the dropped turns behind a tool that never arrives. Same refusal as
@@ -2754,10 +2754,10 @@ def test_a_caller_owned_carried_forward_tag_is_left_alone():
     """The delimiter is prompt text, and prompt text belongs to whoever wrote it.
 
     A caller whose own system prompt happens to use `<carried_forward>` had that section
-    read as Unsloth's block: stripped on every reset, its bullet lines reintroduced further
+    read as Tough Customer's block: stripped on every reset, its bullet lines reintroduced further
     down as lower-authority quoted USER history, and anything not bullet-shaped deleted
     outright. Silently rewriting a caller's system policy is worse than carrying nothing,
-    so the block is recognised by the header Unsloth itself writes, not by the tag alone.
+    so the block is recognised by the header Tough Customer itself writes, not by the tag alone.
     """
     caller = (
         "You are a support agent.\n"
@@ -2777,7 +2777,7 @@ def test_a_caller_owned_carried_forward_tag_is_left_alone():
     assert (
         "Escalate refunds over 500 dollars." in system
     ), "non-bullet lines of the caller's section were deleted"
-    # And Unsloth's own block is still appended, and still read back on the next reset.
+    # And Tough Customer's own block is still appended, and still read back on the next reset.
     assert system.count("<carried_forward>") == 2
     assert "STATUS::ZQXVARA123-ALPHA" in system
     assert checkpoint._block_items(
@@ -2895,7 +2895,7 @@ def test_a_reset_that_no_longer_holds_stops_reopening_the_tool_loop(monkeypatch)
 
     Reload a checkpointed thread with a bigger window and the whole branch fits again, so
     the fit stops replaying the boundary and records no checkpoint. Scanning back to an
-    older reset then forced the Unsloth tool loop open on every later turn, overriding
+    older reset then forced the Tough Customer tool loop open on every later turn, overriding
     enable_tools = false, and with it the n > 1 and non-streaming guards, to repair a
     compaction that no longer exists.
     """

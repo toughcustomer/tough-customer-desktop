@@ -45,7 +45,7 @@ RELEASES_RATE_LIMIT_MAX_SECONDS = 60 * 60
 RELEASE_NOTES_MAX_CHARS = 20_000
 
 # The repo also publishes llama.cpp prebuilts, legacy month tags and desktop drafts; only an
-# Unsloth version tag is an announcement the popup should show.
+# Tough Customer version tag is an announcement the popup should show.
 # The prebuilt tags look like `b8475` and the legacy month tags like `February-2026`.
 _RELEASE_TAG_PATTERN = re.compile(r"^v\d+(?:\.\d+)+")
 
@@ -122,7 +122,7 @@ _SAFE_VERSION_PATTERN = re.compile(r"^[0-9A-Za-z][0-9A-Za-z.!+-]{0,63}$")
 _GENERATED_TITLES = frozenset({"what's changed", "whats changed", "new contributors"})
 _GENERATED_PREFIXES = ("what's changed in ", "whats changed in ")
 _GENERATED_SUFFIXES = ("zoo changes", "notebooks changes", "changelog")
-# The install block, worded differently in almost every release. Naming Unsloth separates those
+# The install block, worded differently in almost every release. Naming Tough Customer separates those
 # from "Updating models is now 2x faster", which is a change and not instructions.
 _UPGRADE_PREFIXES = ("update", "updating", "to update", "how to update")
 _UPGRADE_SUBJECTS = ("unsloth", "studio")
@@ -573,7 +573,7 @@ def get_release_notes(version: str, refresh: bool = False) -> dict[str, Any]:
     """Return the newest release's notes for the update popup.
 
     `version` is echoed back, not used to select a release: the pip popup offers
-    a PyPI version (`2026.8.7`) and releases are tagged with the Unsloth version
+    a PyPI version (`2026.8.7`) and releases are tagged with the Tough Customer version
     (`v0.1.60-beta`), so no tag could match it.
 
     `refresh` retries a cached failure, so the UI's retry is not stuck behind

@@ -43,7 +43,7 @@ def _infer_studio_home_from_venv() -> Path | None:
 
 
 def studio_root() -> Path:
-    """Unsloth install root.
+    """Tough Customer install root.
 
     Priority: UNSLOTH_STUDIO_HOME, then STUDIO_HOME alias, then sys.prefix
     inference, then legacy ~/.unsloth/studio. UNSLOTH_STUDIO_HOME wins if
@@ -60,7 +60,7 @@ def studio_root() -> Path:
     inferred = _infer_studio_home_from_venv()
     if inferred is not None:
         return inferred
-    # Tough Customer keeps its own runtime root so a stock Unsloth install on
+    # Tough Customer keeps its own runtime root so a stock Tough Customer install on
     # the same machine is never touched.
     return Path.home() / ".toughcustomer" / "studio"
 
@@ -76,7 +76,7 @@ def llama_slot_cache_root() -> Path:
 
 
 def studio_bin_root() -> Path:
-    """Dir for Unsloth-managed executables (the `unsloth` shim, downloaded tools like cloudflared)."""
+    """Dir for Tough Customer-managed executables (the `unsloth` shim, downloaded tools like cloudflared)."""
     return studio_root() / "bin"
 
 
@@ -198,7 +198,7 @@ def project_workspaces_root() -> Path:
     override = (os.environ.get("UNSLOTH_STUDIO_PROJECTS_HOME") or "").strip()
     if override:
         return Path(override).expanduser()
-    return documents_root() / "Unsloth Studio" / "Projects"
+    return documents_root() / "Tough Customer Studio" / "Projects"
 
 
 def tmp_root() -> Path:
@@ -231,7 +231,7 @@ def ensure_dir(path: Path) -> Path:
 
 
 def legacy_hf_cache_dir() -> Path:
-    """Old Unsloth-specific HF hub cache, kept for backward-compat scans."""
+    """Old Tough Customer-specific HF hub cache, kept for backward-compat scans."""
     return cache_root() / "huggingface" / "hub"
 
 
@@ -239,7 +239,7 @@ def hf_default_cache_dir() -> Path:
     """Platform default HuggingFace hub cache (ignoring env overrides).
 
     Where HF caches when no ``HF_HUB_CACHE`` / ``HF_HOME`` is set. Scanned
-    so models downloaded *before* installing Unsloth Studio are discovered.
+    so models downloaded *before* installing Tough Customer Studio are discovered.
     """
     return Path.home() / ".cache" / "huggingface" / "hub"
 
@@ -352,8 +352,8 @@ def well_known_model_dirs() -> list[Path]:
 def _setup_cache_env() -> None:
     """Set cache env vars for HuggingFace, uv, and vLLM.
 
-    Explicit Hugging Face environment variables take precedence over Unsloth's
-    stored location. Unsloth seeds import-time variables once, while each later
+    Explicit Hugging Face environment variables take precedence over Tough Customer's
+    stored location. Tough Customer seeds import-time variables once, while each later
     worker receives its own captured cache location.
     """
     root = cache_root()
@@ -364,7 +364,7 @@ def _setup_cache_env() -> None:
         "UV_CACHE_DIR": str(root / "uv"),
         "VLLM_CACHE_ROOT": str(root / "vllm"),
         # unsloth_zoo defaults this to a bare relative name.
-        # It resolves against the CWD and the Windows launcher runs Unsloth with WorkingDirectory=%USERPROFILE%, so the
+        # It resolves against the CWD and the Windows launcher runs Tough Customer with WorkingDirectory=%USERPROFILE%, so the
         # cache landed in the user home. Must be set before unsloth_zoo.compiler imports: it reads the value at import
         # time and puts it on sys.path.
         "UNSLOTH_COMPILE_LOCATION": str(root.parent / "compiled_cache"),
@@ -536,7 +536,7 @@ def resolve_export_write_dir(path_value: str | None = None) -> Path:
 
     Unlike :func:`resolve_export_dir`, this function passes absolute
     paths through as-is so users can target a different drive when
-    their Unsloth install lives on a constrained system volume
+    their Tough Customer install lives on a constrained system volume
     (see :gh-issue:`6082`). Used only by the export write path.
     """
     if not path_value or not str(path_value).strip():

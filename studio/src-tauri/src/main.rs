@@ -55,7 +55,7 @@ const STAGED_ROLLBACK_RELAUNCH_FLAG: &str = "--staged-rollback-relaunch-wait";
 
 const CLOSE_TO_TRAY_PREFERENCE_FILE: &str = "close-to-tray-v1";
 
-/// The user's answer to "Run Unsloth at login", kept beside the OS entry rather than derived
+/// The user's answer to "Run Tough Customer at login", kept beside the OS entry rather than derived
 /// from it. The Windows entry is one HKCU Run value that outside things delete without asking:
 /// the NSIS uninstaller drops it on any non-update run (installer.nsi), and an antivirus
 /// quarantine or a registry cleaner takes it the same way. Reading the setting back off the
@@ -495,7 +495,7 @@ fn restore_missing_autostart_entry(app: &tauri::AppHandle) -> bool {
         );
         if restore {
             info!(
-                "The \"Run Unsloth at login\" entry is gone but was last set to on; restoring it."
+                "The \"Run Tough Customer at login\" entry is gone but was last set to on; restoring it."
             );
         }
         restore
@@ -1088,7 +1088,7 @@ fn confirm_quit_during_install(app: &tauri::AppHandle) -> bool {
     }
     app.dialog()
         .message(
-            "Unsloth is still installing. Quitting now stops it part-way and \
+            "Tough Customer is still installing. Quitting now stops it part-way and \
              leaves the installation incomplete, so it will need to be repaired before \
              it can start.",
         )
@@ -1114,7 +1114,7 @@ fn confirm_quit_during_update(app: &tauri::AppHandle) -> bool {
     }
     app.dialog()
         .message(
-            "Unsloth is still updating. Quitting now stops it part-way and \
+            "Tough Customer is still updating. Quitting now stops it part-way and \
              leaves the installation incomplete, so it will need to be repaired before \
              it can start.",
         )
@@ -1585,7 +1585,7 @@ fn setup_quit_menu(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
     if let Some(quit) = app_menu.items()?.last() {
         app_menu.remove(quit)?;
     }
-    let quit = MenuItemBuilder::with_id(APP_QUIT_MENU_ID, "Quit Unsloth")
+    let quit = MenuItemBuilder::with_id(APP_QUIT_MENU_ID, "Quit Tough Customer")
         .accelerator("CmdOrCtrl+Q")
         .build(app)?;
     app_menu.append(&quit)?;
@@ -1705,7 +1705,7 @@ fn set_tray_server_status(app: tauri::AppHandle, status: String) {
 }
 
 fn setup_tray(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
-    let open = MenuItemBuilder::with_id("open", "Open Unsloth").build(app)?;
+    let open = MenuItemBuilder::with_id("open", "Open Tough Customer").build(app)?;
     let toggle = MenuItemBuilder::with_id("toggle", "Start/Stop Server").build(app)?;
     let quit = MenuItemBuilder::with_id("quit", "Quit").build(app)?;
     let menu = MenuBuilder::new(app)
@@ -1715,7 +1715,7 @@ fn setup_tray(app: &tauri::App) -> Result<(), Box<dyn std::error::Error>> {
 
     TrayIconBuilder::new()
         .menu(&menu)
-        .tooltip("Unsloth")
+        .tooltip("Tough Customer")
         .icon(app.default_window_icon().unwrap().clone())
         .on_menu_event(move |app, event| match event.id().as_ref() {
             "open" => show_main_window(app),
@@ -1903,7 +1903,7 @@ fn main() {
     let _ = fix_path_env::fix();
 
     setup_logging();
-    info!("Unsloth desktop app starting");
+    info!("Tough Customer desktop app starting");
 
     #[cfg(target_os = "linux")]
     if let Some((variables, reason)) = webkit_rendering_workaround {
@@ -2165,11 +2165,11 @@ mod tests {
 
         #[cfg(unix)]
         let args: Vec<OsString> = vec![
-            OsString::from_vec(b"/opt/\xff\xfe/Unsloth".to_vec()),
+            OsString::from_vec(b"/opt/\xff\xfe/Tough Customer".to_vec()),
             OsString::from("--hidden"),
         ];
         #[cfg(not(unix))]
-        let args: Vec<OsString> = vec![OsString::from("Unsloth.exe"), OsString::from("--hidden")];
+        let args: Vec<OsString> = vec![OsString::from("Tough Customer.exe"), OsString::from("--hidden")];
 
         assert!(args.iter().any(|arg| arg == OsStr::new("--hidden")));
         assert!(!args[..1].iter().any(|arg| arg == OsStr::new("--hidden")));
@@ -2787,11 +2787,11 @@ mod tests {
     #[test]
     fn macos_plist_escapes_xml_metacharacters() {
         let plist = macos_launch_agent_plist(
-            "Unsloth",
-            "/Applications/AI & ML/Unsloth.app/Contents/MacOS/unsloth-studio",
+            "Tough Customer",
+            "/Applications/AI & ML/Tough Customer.app/Contents/MacOS/unsloth-studio",
         );
         assert!(plist.contains(
-            "<string>/Applications/AI &amp; ML/Unsloth.app/Contents/MacOS/unsloth-studio</string>"
+            "<string>/Applications/AI &amp; ML/Tough Customer.app/Contents/MacOS/unsloth-studio</string>"
         ));
         assert!(plist.contains("<string>--hidden</string>"));
         assert!(plist.contains("<key>RunAtLoad</key>"));
@@ -2800,24 +2800,24 @@ mod tests {
     #[test]
     fn windows_run_command_quotes_a_spaced_path() {
         let quoted = quoted_windows_run_command(
-            r"C:\Users\Jane Doe\AppData\Local\Unsloth\Unsloth.exe --hidden",
+            r"C:\Users\Jane Doe\AppData\Local\Tough Customer\Tough Customer.exe --hidden",
         );
         assert_eq!(
             quoted.as_deref(),
-            Some(r#""C:\Users\Jane Doe\AppData\Local\Unsloth\Unsloth.exe" --hidden"#),
+            Some(r#""C:\Users\Jane Doe\AppData\Local\Tough Customer\Tough Customer.exe" --hidden"#),
         );
     }
 
     #[test]
     fn windows_run_command_leaves_quoted_values_alone() {
-        assert!(quoted_windows_run_command(r#""C:\Unsloth\Unsloth.exe" --hidden"#).is_none());
+        assert!(quoted_windows_run_command(r#""C:\Tough Customer\Tough Customer.exe" --hidden"#).is_none());
     }
 
     #[test]
     fn windows_run_command_quotes_a_bare_path() {
         assert_eq!(
-            quoted_windows_run_command(r"C:\Unsloth\Unsloth.exe").as_deref(),
-            Some(r#""C:\Unsloth\Unsloth.exe""#),
+            quoted_windows_run_command(r"C:\Tough Customer\Tough Customer.exe").as_deref(),
+            Some(r#""C:\Tough Customer\Tough Customer.exe""#),
         );
     }
 

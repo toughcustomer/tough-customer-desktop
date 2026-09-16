@@ -1,4 +1,4 @@
-export const INITIAL_STARTUP_MESSAGE = "Starting Unsloth...";
+export const INITIAL_STARTUP_MESSAGE = "Starting Tough Customer...";
 export const MODELS_STARTUP_MESSAGE = "Loading models...";
 export const SERVER_STARTUP_MESSAGE = "Nearly done...";
 export const STATUS_MESSAGE_ROTATION_MS = 5_000;
@@ -18,7 +18,7 @@ const INSTALL_PHASE_MESSAGES: readonly InstallProgressMessage[] = [
     subtitle: "Creating your local environment.",
   },
   {
-    title: "Installing Unsloth...",
+    title: "Installing Tough Customer...",
     subtitle: "Setting up local AI tools...",
   },
   {
@@ -86,7 +86,7 @@ export function startupMessageFromLog(
   }
   if (
     current === INITIAL_STARTUP_MESSAGE &&
-    normalized === "- loading PyTorch, Unsloth and Transformers..."
+    normalized === "- loading PyTorch, Tough Customer and Transformers..."
   ) {
     return MODELS_STARTUP_MESSAGE;
   }

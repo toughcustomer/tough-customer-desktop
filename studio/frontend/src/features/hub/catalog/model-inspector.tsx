@@ -642,7 +642,7 @@ export const ModelInspector = memo(function ModelInspector({
               <span className="truncate">{model.owner}</span>
               {model.owner.toLowerCase() === "unsloth" && (
                 <span
-                  aria-label="Verified Unsloth"
+                  aria-label="Verified Tough Customer"
                   className="hub-verified-badge size-[18px] shrink-0 text-verified"
                 />
               )}

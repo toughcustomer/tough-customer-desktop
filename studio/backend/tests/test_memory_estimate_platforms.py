@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""The Load-Model memory estimate across every platform and accelerator Unsloth ships on.
+"""The Load-Model memory estimate across every platform and accelerator Tough Customer ships on.
 
 ``test_memory_estimate.py`` proves the arithmetic on one host; this file asks whether
 the same number comes out, and stays internally consistent, when the host changes. The

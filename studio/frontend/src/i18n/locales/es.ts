@@ -62,8 +62,8 @@ export const es = {
       truncated: "Esta página es demasiado larga para buscarla por completo.",
     },
     beta: "BETA",
-    brand: "unsloth",
-    product: "Unsloth",
+    brand: "Tough Customer",
+    product: "Tough Customer",
     accountMenu: "Menú de cuenta de {name}",
     updateAvailable: "Actualización disponible",
     resize: {
@@ -72,7 +72,7 @@ export const es = {
       drag: "Arrastra para redimensionar",
     },
     aria: {
-      home: "Inicio de Unsloth",
+      home: "Inicio de Tough Customer",
       closeSidebar: "Cerrar barra lateral",
       openSidebar: "Abrir barra lateral",
       resizeSidebar: "Redimensionar o contraer la barra lateral",
@@ -188,7 +188,7 @@ export const es = {
     title: "Configuración",
     dialog: {
       title: "Configuración",
-      description: "Gestiona tus preferencias de Unsloth.",
+      description: "Gestiona tus preferencias de Tough Customer.",
       closeAriaLabel: "Cerrar configuración",
       searchPlaceholder: "Buscar en la configuración…",
       searchNoResults: "No se encontró ninguna opción.",
@@ -254,7 +254,7 @@ export const es = {
         },
         logOut: {
           label: "Cerrar sesión",
-          description: "Salir de Unsloth",
+          description: "Salir de Tough Customer",
         },
         approveToolRequest: {
           label: "Aprobar solicitud",
@@ -516,7 +516,7 @@ export const es = {
         sttReady: "Cargado en {device}",
         sttLoaded: "Cargado",
         sttUnavailable:
-          "No está instalado en este servidor. Ejecuta `unsloth studio update` para habilitar el dictado local.",
+          "No está instalado en este servidor. Ejecuta the Update action in Settings para habilitar el dictado local.",
         sttRetry: "Reintentar",
         sttDownloadChecking: "Comprobando el estado de la descarga…",
         sttNotDownloaded: "Sin descargar",
@@ -551,7 +551,7 @@ export const es = {
           "Permite el acceso al micrófono para ver los nombres de los dispositivos",
         allowMicrophone: "Permitir el acceso al micrófono",
         micAccessBlocked:
-          "Se bloqueó el acceso al micrófono. Permite el acceso al micrófono para esta página de Unsloth e inténtalo de nuevo.",
+          "Se bloqueó el acceso al micrófono. Permite el acceso al micrófono para esta página de Tough Customer e inténtalo de nuevo.",
         micAccessBlockedDesktop:
           "Se bloqueó el acceso al micrófono. Inténtalo de nuevo y elige Permitir, o activa el micrófono en la configuración de privacidad del sistema.",
         micAccessUnsupported:
@@ -657,7 +657,7 @@ export const es = {
     },
     general: {
       title: "General",
-      description: "Preferencias globales de Unsloth.",
+      description: "Preferencias globales de Tough Customer.",
       account: "Cuenta",
       huggingFaceToken: "Token de Hugging Face",
       huggingFaceTokenDescription:
@@ -669,7 +669,7 @@ export const es = {
       tokenValidated: "Token validado",
       password: "Contraseña",
       passwordDescription:
-        "Cambia la contraseña de esta cuenta de Unsloth.",
+        "Cambia la contraseña de esta cuenta de Tough Customer.",
       passwordDialog: {
         trigger: "Cambiar contraseña",
         title: "Cambiar contraseña",
@@ -678,7 +678,7 @@ export const es = {
         setTrigger: "Establecer contraseña remota",
         setTitle: "Establecer contraseña remota",
         setDescription:
-          "Elige la contraseña con la que los navegadores remotos inician sesión como unsloth (al menos {minLength} caracteres). La app de escritorio de Unsloth sigue iniciando sesión automáticamente.",
+          "Elige la contraseña con la que los navegadores remotos inician sesión como unsloth (al menos {minLength} caracteres). La app de escritorio de Tough Customer sigue iniciando sesión automáticamente.",
         setSubmit: "Establecer contraseña",
         setting: "Estableciendo...",
         setDone: "Contraseña establecida.",
@@ -749,7 +749,7 @@ export const es = {
           "Guarda la caché KV antes de liberar el modelo por inactividad para que los chats reanudados no vuelvan a leer el historial. Hasta 10 GB en disco.",
         apiOnly: "Liberar solo los modelos cargados por la API",
         apiOnlyDescription:
-          "La liberación por inactividad mantiene en memoria el modelo que cargaste desde Unsloth y solo libera los que cargó una solicitud a la API.",
+          "La liberación por inactividad mantiene en memoria el modelo que cargaste desde Tough Customer y solo libera los que cargó una solicitud a la API.",
       },
       previewSharing: {
         sectionTitle: "Compartir vista previa",
@@ -783,13 +783,13 @@ export const es = {
       },
       startup: {
         sectionTitle: "Inicio",
-        launchAtLogin: "Ejecutar Unsloth al iniciar sesión",
+        launchAtLogin: "Ejecutar Tough Customer al iniciar sesión",
         launchAtLoginDescription:
-          "Inicia Unsloth en segundo plano cuando inicias sesión. Permanece en la barra de menús o en la bandeja del sistema hasta que lo abras.",
+          "Inicia Tough Customer en segundo plano cuando inicias sesión. Permanece en la barra de menús o en la bandeja del sistema hasta que lo abras.",
 
         closeToTray: "Cerrar en la bandeja del sistema",
         closeToTrayDescription:
-          "Mantén Unsloth y su servidor ejecutándose en segundo plano al cerrar la ventana principal.",
+          "Mantén Tough Customer y su servidor ejecutándose en segundo plano al cerrar la ventana principal.",
         closeToTraySaveError:
           "No se pudo actualizar el ajuste de cierre en la bandeja del sistema.",
         loadError: "No se pudo cargar el ajuste de inicio automático.",
@@ -886,22 +886,22 @@ export const es = {
         action: "Restablecer preferencias",
         confirmTitle: "¿Restablecer todas las preferencias locales?",
         confirmDescription:
-          "Borra las preferencias solo locales y recarga Unsloth. Se conservan los chats, el acceso a la API y la configuración almacenada en la base de datos.",
+          "Borra las preferencias solo locales y recarga Tough Customer. Se conservan los chats, el acceso a la API y la configuración almacenada en la base de datos.",
         confirmAction: "Restablecer y recargar",
       },
       permissions: {
         sectionTitle: "Permisos",
         bypassLabel: "Permisos de herramientas",
         bypassDescription:
-          "Cómo aprueba Unsloth las llamadas a herramientas del chat (terminal, python, web, MCP) antes de ejecutarlas. El modo «Full access» desactiva las aprobaciones y el sandbox de código.",
+          "Cómo aprueba Tough Customer las llamadas a herramientas del chat (terminal, python, web, MCP) antes de ejecutarlas. El modo «Full access» desactiva las aprobaciones y el sandbox de código.",
       },
     },
     profile: {
       title: "Perfil",
-      description: "Cómo aparece tu perfil en Unsloth.",
+      description: "Cómo aparece tu perfil en Tough Customer.",
       changePicture: "Cambiar foto de perfil",
       displayName: "Nombre visible",
-      nickname: "¿Cómo debería llamarte Unsloth?",
+      nickname: "¿Cómo debería llamarte Tough Customer?",
       nicknamePlaceholder: "Apodo",
       nicknameSaved: "Nombre preferido guardado",
       avatarShape: "Forma de la foto de perfil",
@@ -928,10 +928,10 @@ export const es = {
       stats: {
         title: "Tus estadísticas",
         subtitle:
-          "Todo lo que aparece a continuación se calcula a partir de tu propio historial. No se recopila ni se envía nada a Unsloth.",
+          "Todo lo que aparece a continuación se calcula a partir de tu propio historial. No se recopila ni se envía nada a Tough Customer.",
         retry: "Volver a intentar",
         privacyNote:
-          "Las estadísticas se calculan a partir del historial local de chats, uso de la API y entrenamientos de tu instalación de Unsloth. Nunca se guardan solicitudes, respuestas ni claves de API para las estadísticas. No se envía nada a Unsloth ni a terceros.",
+          "Las estadísticas se calculan a partir del historial local de chats, uso de la API y entrenamientos de tu instalación de Tough Customer. Nunca se guardan solicitudes, respuestas ni claves de API para las estadísticas. No se envía nada a Tough Customer ni a terceros.",
         emptyChats:
           "Todavía no hay uso de chats ni de la API. Empieza una conversación o haz una solicitud autenticada a la API local.",
         lifetimeTokens: "Tokens acumulados",
@@ -956,7 +956,7 @@ export const es = {
         tokensIn: "Tokens enviados",
         tokensOut: "Tokens generados",
         totalTokens: "Tokens totales",
-        studioChatTokens: "Tokens de Unsloth Chat",
+        studioChatTokens: "Tokens de Tough Customer Chat",
         apiTokens: "Tokens de la API",
         cachedTokens: "Tokens en caché",
         cachedValue: "{tokens} ({percent}% de la entrada)",
@@ -987,7 +987,7 @@ export const es = {
     },
     appearance: {
       title: "Apariencia",
-      description: "Cómo se ve Unsloth en este dispositivo.",
+      description: "Cómo se ve Tough Customer en este dispositivo.",
       theme: {
         title: "Tema",
         label: "Esquema de color",
@@ -998,7 +998,7 @@ export const es = {
       },
       palette: {
         label: "Paleta de colores",
-        description: "Colores usados en Unsloth, en modo claro y oscuro.",
+        description: "Colores usados en Tough Customer, en modo claro y oscuro.",
         standard: "Estándar",
         classic: "Clásica",
         minimal: "Minimalista",
@@ -1056,7 +1056,7 @@ export const es = {
         },
         uiFontSize: {
           label: "Tamaño de fuente de la interfaz",
-          description: "Ajusta el tamaño base usado en la interfaz de Unsloth.",
+          description: "Ajusta el tamaño base usado en la interfaz de Tough Customer.",
         },
         codeFontSize: {
           label: "Tamaño de fuente del código",
@@ -1086,7 +1086,7 @@ export const es = {
       language: {
         title: "Idioma",
         label: "Idioma de la interfaz",
-        description: "El idioma que usa Unsloth.",
+        description: "El idioma que usa Tough Customer.",
         autoDetect: "Detección automática",
       },
       layout: {
@@ -1114,7 +1114,7 @@ export const es = {
     resources: {
       title: "Sistema",
       description:
-        "Monitorea el hardware y el almacenamiento de este servidor de Unsloth.",
+        "Monitorea el hardware y el almacenamiento de este servidor de Tough Customer.",
       liveUpdates: "Actualizaciones en vivo",
       floatingWindow: "Ventana flotante",
       disableOverlay: "Desactivar superposición",
@@ -1179,7 +1179,7 @@ export const es = {
           description: "Usa tu propia compilación de llama-server.",
           hint: "Elige la carpeta de llama.cpp que contiene llama-server o una compilación donde esté en build/bin. El runtime personalizado se usa para chat GGUF, embeddings y modelos de voz compatibles. Las variables de entorno siguen teniendo prioridad.",
           automatic: "Automático (incluido)",
-          bundled: "Usa el runtime de llama.cpp instalado por Unsloth.",
+          bundled: "Usa el runtime de llama.cpp instalado por Tough Customer.",
           active: "Tu llama-server personalizado se usará la próxima vez que cargues un modelo.",
           environmentManaged: "Gestionado por la variable de entorno {variable}.",
           missingBinary: "llama-server ya no está disponible en esta carpeta. Elige otra carpeta o usa el runtime incluido.",
@@ -1202,7 +1202,7 @@ export const es = {
         },
         unsupported: {
           notInstalled: "No se encontró una instalación de llama.cpp gestionada, así que no hay backend que cambiar.",
-          localLink: "llama.cpp es un directorio local que enlazaste tú, así que Unsloth no lo reemplazará.",
+          localLink: "llama.cpp es un directorio local que enlazaste tú, así que Tough Customer no lo reemplazará.",
           sourceBuild: "Este llama.cpp se compiló desde el código fuente, así que su backend no se puede cambiar desde aquí.",
           customPath: "Hay una carpeta personalizada de llama.cpp seleccionada. Su compilación determina el backend de cómputo.",
           unresolved: "No se pudieron consultar los backends disponibles. Revisa tu conexión e inténtalo de nuevo.",
@@ -1273,7 +1273,7 @@ export const es = {
       description:
         "Conecta agentes de programación como Claude Code y Codex a un modelo local con unsloth start.",
       intro:
-        "conecta Claude Code, Codex, DeepSeek Harness, Hermes, OpenClaw, OpenCode y otros agentes a un modelo servido localmente por Unsloth, totalmente sin conexión. Ejecuta un servidor compatible con OpenAI y nunca modifica los archivos de configuración de tu agente.",
+        "conecta Claude Code, Codex, DeepSeek Harness, Hermes, OpenClaw, OpenCode y otros agentes a un modelo servido localmente por Tough Customer, totalmente sin conexión. Ejecuta un servidor compatible con OpenAI y nunca modifica los archivos de configuración de tu agente.",
       readDocs: "Leer la documentación",
       copy: "Copiar",
       copied: "Copiado",
@@ -1299,28 +1299,28 @@ export const es = {
       // sentence below is assembled in a fixed order around an inline link, so
       // it needs restructuring before it can be translated well.
       automaticSettingsNote:
-        "Unsloth automatically applies the model’s recommended settings if you have not set any flags.",
+        "Tough Customer automatically applies the model’s recommended settings if you have not set any flags.",
       configurationNote:
         "You can also adjust any configuration. See further below or",
       configurationDocs: "docs",
       configurationFlagsSuffix: "for flags.",
       modelNote:
-        "Codex requiere un modelo GGUF servido por llama-server. Otros agentes también pueden usar modelos basados en transformers; quita --model para usar el modelo ya cargado en Unsloth.",
+        "Codex requiere un modelo GGUF servido por llama-server. Otros agentes también pueden usar modelos basados en transformers; quita --model para usar el modelo ya cargado en Tough Customer.",
       subagent: {
         title: "Usar un modelo local como subagente",
         description:
-          "Mantén {agent} en su modelo actual y delega tareas concretas en este modelo local de Unsloth.",
+          "Mantén {agent} en su modelo actual y delega tareas concretas en este modelo local de Tough Customer.",
         setupCommand: "Comando de configuración",
         copySetupCommand: "Copiar el comando de configuración del subagente",
         usagePrompt: "Luego, en {agent}, escribe:",
         copyUsagePrompt: "Copiar el prompt de uso del subagente",
         defaultPrompt: "Crea un agente local para implementar esta función.",
-        opencodePrompt: "@unsloth encuentra la causa de este fallo en las pruebas",
+        opencodePrompt: "@toughcustomer encuentra la causa de este fallo en las pruebas",
       },
       quickstart: {
         title: "Crear un comando",
         description:
-          "Inicia un agente con el modelo cargado actualmente en Unsloth. Carga primero un modelo y luego cambia claude por cualquiera de los agentes compatibles que aparecen abajo.",
+          "Inicia un agente con el modelo cargado actualmente en Tough Customer. Carga primero un modelo y luego cambia claude por cualquiera de los agentes compatibles que aparecen abajo.",
         noneDetected:
           "No se encontró ninguna CLI de agente compatible en tu PATH.",
         installed: "Instalado",
@@ -1340,9 +1340,9 @@ export const es = {
       options: {
         title: "Opciones comunes",
         description:
-          "Primero se procesan las opciones de Unsloth; todo lo que Unsloth no reconoce se pasa directamente al agente.",
+          "Primero se procesan las opciones de Tough Customer; todo lo que Tough Customer no reconoce se pasa directamente al agente.",
         model:
-          "Selecciona un modelo. Sin --model, unsloth start usa el modelo cargado actualmente en Unsloth y da error si no hay ninguno.",
+          "Selecciona un modelo. Sin --model, unsloth start usa el modelo cargado actualmente en Tough Customer y da error si no hay ninguno.",
         contextLength:
           "Define la longitud de contexto solicitada (alias: --max-seq-length).",
         ggufVariant: "Elige la variante de cuantización GGUF.",
@@ -1353,10 +1353,10 @@ export const es = {
         serve: "Activa o desactiva el servidor local automático.",
         launch: "Inicia el agente, o solo imprime el comando y el entorno.",
         persist:
-          "Conserva entre ejecuciones el almacenamiento de agentes que gestiona Unsloth.",
+          "Conserva entre ejecuciones el almacenamiento de agentes que gestiona Tough Customer.",
         asSubagent:
-          "Mantén el agente principal en su modelo actual y registra Unsloth como subagente local (Claude Code, Codex y OpenCode).",
-        apiKey: "Indica tu clave de API de Unsloth (o define UNSLOTH_API_KEY).",
+          "Mantén el agente principal en su modelo actual y registra Tough Customer como subagente local (Claude Code, Codex y OpenCode).",
+        apiKey: "Indica tu clave de API de Tough Customer (o define UNSLOTH_API_KEY).",
         reasoning:
           "Usar razonamiento en el chat: on, off o auto. Auto sigue la plantilla de chat del modelo, lo que suele significar on.",
         reasoningEffort:
@@ -1365,14 +1365,14 @@ export const es = {
           "Omite las solicitudes de aprobación. Úsalo solo en entornos de confianza.",
       },
       remote: {
-        title: "Conectar con un Unsloth Studio remoto",
+        title: "Conectar con un Tough Customer Studio remoto",
         description:
-          "Apunta unsloth start a un Unsloth Studio que se ejecuta en otro lugar definiendo estas variables antes de iniciar el agente (o pasa --api-key directamente):",
+          "Apunta unsloth start a un Tough Customer Studio que se ejecuta en otro lugar definiendo estas variables antes de iniciar el agente (o pasa --api-key directamente):",
       },
       passthrough: {
         title: "Pasar argumentos al agente",
         description:
-          "Los argumentos que van después de las opciones de Unsloth se reenvían al propio agente, así que comandos nativos como resume siguen funcionando:",
+          "Los argumentos que van después de las opciones de Tough Customer se reenvían al propio agente, así que comandos nativos como resume siguen funcionando:",
       },
       dryRun: {
         title: "Previsualizar sin iniciar",
@@ -1462,7 +1462,7 @@ export const es = {
         title: "Búsqueda web",
         images: "Mostrar imágenes de la búsqueda web",
         imagesDescription:
-          "Permite que la búsqueda web devuelva imágenes y obtiene una por cada elemento que enumera una respuesta. Unsloth descarga y redimensiona las miniaturas, así que el navegador nunca contacta con los servidores de imágenes.",
+          "Permite que la búsqueda web devuelva imágenes y obtiene una por cada elemento que enumera una respuesta. Tough Customer descarga y redimensiona las miniaturas, así que el navegador nunca contacta con los servidores de imágenes.",
       },
       artifacts: {
         title: "Canvas",
@@ -1614,11 +1614,11 @@ export const es = {
     remoteLan: {
       title: "Remoto y LAN",
       description:
-        "Accede a este Unsloth desde tus otros dispositivos, por tu red local o mediante una URL pública temporal.",
+        "Accede a este Tough Customer desde tus otros dispositivos, por tu red local o mediante una URL pública temporal.",
     },
     apiKeys: {
       title: "API",
-      description: "Accede a Unsloth mediante la API compatible con OpenAI.",
+      description: "Accede a Tough Customer mediante la API compatible con OpenAI.",
       readDocs: "Leer la documentación de la API",
       noAccess: "Aún no hay acceso a la API.",
       accessTokens: "Tokens de acceso",
@@ -1646,7 +1646,7 @@ export const es = {
       osWindows: "Windows",
       secureHttps: "HTTPS seguro",
       secureHttpsHint:
-        "El puerto 0.0.0.0 sigue siendo accesible globalmente. Para máxima seguridad, inicia Unsloth con --secure para exponer solo este enlace HTTPS.",
+        "El puerto 0.0.0.0 sigue siendo accesible globalmente. Para máxima seguridad, inicia Tough Customer con --secure para exponer solo este enlace HTTPS.",
       copyTunnelUrl: "Copiar URL del túnel",
       copySnippet: "Copiar fragmento",
       copy: "Copiar",
@@ -1681,7 +1681,7 @@ export const es = {
       title: "Acerca de",
       description:
         "Documentación, notas de la versión, comentarios e información de compilación.",
-      studioVersion: "Versión de Unsloth",
+      studioVersion: "Versión de Tough Customer",
       packageVersion: "Versión del paquete",
       desktopAppVersion: "Versión de la app de escritorio",
       desktopAppVersionUnavailable: "No disponible",
@@ -1700,27 +1700,27 @@ export const es = {
       reportIssue: "Reportar un problema",
       license: {
         sectionTitle: "Licencia",
-        studioLabel: "Unsloth",
+        studioLabel: "Tough Customer",
         studioLicense: "AGPL-3.0",
         studioDescription: "Código abierto bajo la GNU AGPL v3.0.",
-        libraryLabel: "Unsloth Core",
+        libraryLabel: "Tough Customer Core",
         libraryLicense: "Apache-2.0",
         libraryDescription: "Con licencia Apache 2.0.",
       },
       dangerZone: "Zona de peligro",
-      shutDownStudio: "Apagar Unsloth",
+      shutDownStudio: "Apagar Tough Customer",
       shutDownStudioDescription:
-        "Detiene el servidor de Unsloth y finaliza tu sesión.",
+        "Detiene el servidor de Tough Customer y finaliza tu sesión.",
       shutDown: "Apagar",
       update: {
-        title: "Actualizar Unsloth",
+        title: "Actualizar Tough Customer",
         commandText: "Texto de {label}",
         copied: "Copiado",
         copyCommand: "Copiar comando",
         commandCopied: "{label} copiado",
         copyNamedCommand: "Copiar {label}",
-        checkingInstall: "Comprobando cómo se instaló Unsloth...",
-        installIntro: "Para instalar o actualizar Unsloth:",
+        checkingInstall: "Comprobando cómo se instaló Tough Customer...",
+        installIntro: "Para instalar o actualizar Tough Customer:",
         localUpdateHeading: "Actualización local",
         installCommandUnix: "Comando de instalación para macOS/Linux",
         installCommandWindows: "Comando de instalación para Windows",
@@ -1734,7 +1734,7 @@ export const es = {
           "Instalación de paquete desde código fuente o VCS detectada. Reinstala desde la ruta local original o la URL de Git.",
         repoCheckoutFallback:
           "Si aún tienes el checkout del repositorio, ejecuta el instalador local desde él:",
-        restartAfterUpdate: "Reinicia Unsloth después de actualizar.",
+        restartAfterUpdate: "Reinicia Tough Customer después de actualizar.",
         desktopManaged:
           "La app de escritorio busca nuevas versiones automáticamente. También puedes buscar o instalar una actualización aquí en cualquier momento.",
         desktopReady: "Actualizaciones de la app de escritorio",
@@ -1747,7 +1747,7 @@ export const es = {
         desktopAvailableDescription:
           "Actualiza ahora para prepararla en segundo plano. Puedes seguir trabajando y reiniciar cuando esté lista.",
         desktopExternalServer:
-          "Ejecuta `unsloth studio update` desde el terminal que inició el servidor.",
+          "Ejecuta the Update action in Settings desde el terminal que inició el servidor.",
         desktopManualInstall:
           "Abre la página de versiones para instalar el paquete más reciente para Linux.",
         desktopCheckFailed: "No se pudo buscar actualizaciones",
@@ -1755,7 +1755,7 @@ export const es = {
           "Comprueba la conexión e inténtalo de nuevo.",
         desktopCurrent: "La app de escritorio está actualizada",
         desktopCurrentDescription:
-          "Unsloth seguirá buscando actualizaciones automáticamente.",
+          "Tough Customer seguirá buscando actualizaciones automáticamente.",
         desktopPreparingDescription:
           "La actualización se está preparando en segundo plano. Puedes seguir trabajando.",
         desktopReadyToRestartDescription:
@@ -1772,7 +1772,7 @@ export const es = {
         finishUpdate: "Finalizar actualización",
         openReleasePage: "Abrir la página de versiones",
         unknownInstall:
-          "No se pudo detectar cómo se instaló Unsloth. Para instalaciones con el instalador o desde PyPI, usa los comandos anteriores.",
+          "No se pudo detectar cómo se instaló Tough Customer. Para instalaciones con el instalador o desde PyPI, usa los comandos anteriores.",
         localCheckout:
           "Para instalaciones desde un checkout local, ejecuta el instalador local desde ese checkout:",
         docs: "Documentación de instalación:",
@@ -2288,7 +2288,7 @@ export const es = {
       },
       startFailed: "No se pudo iniciar el entrenamiento",
       startUnconfirmed:
-        "Unsloth no pudo confirmar si el entrenamiento se inició. Se está comprobando el estado en segundo plano.",
+        "Tough Customer no pudo confirmar si el entrenamiento se inició. Se está comprobando el estado en segundo plano.",
       stopFailed: "No se pudo detener el entrenamiento",
       trainingStillActiveTitle: "El entrenamiento sigue activo",
       stopBeforeConfig:

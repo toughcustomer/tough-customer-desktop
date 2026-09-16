@@ -2394,7 +2394,7 @@ class TestNormalizeAnthropicOpenAIImages:
 
 
 # =====================================================================
-# Unsloth-tool alias detection (/v1/messages tool routing)
+# Tough Customer-tool alias detection (/v1/messages tool routing)
 # =====================================================================
 
 
@@ -2412,7 +2412,7 @@ class TestAnthropicRequestedStudioTools:
 
     def test_client_tool_named_python_is_not_misclassified(self):
         # input_schema is the client-tool discriminator; its presence must
-        # prevent the name from being treated as an Unsloth alias.
+        # prevent the name from being treated as a Tough Customer alias.
         tools = [
             {
                 "name": "python",
@@ -3067,9 +3067,9 @@ class TestAnthropicMessagesToolRouting:
         assert "name" in exc.value.detail
 
     def test_alias_named_client_tool_without_schema_rejected_with_400(self, monkeypatch):
-        # Regression: a typo'd client tool whose name collides with an Unsloth
+        # Regression: a typo'd client tool whose name collides with a Tough Customer
         # alias (e.g. a custom "python" tool missing input_schema) must
-        # surface a 400, not silently switch into Unsloth's built-in python
+        # surface a 400, not silently switch into Tough Customer's built-in python
         # execution.
         _mock_backend(monkeypatch)
         payload = _basic_payload(tools = [{"name": "python"}])
@@ -3090,7 +3090,7 @@ class TestAnthropicMessagesToolRouting:
 
     def test_disable_tools_policy_overrides_server_tool_alias(self, monkeypatch):
         # CLI `unsloth run --disable-tools` sets policy=False. A request with
-        # an Unsloth server-tool alias must NOT enter the agentic loop then.
+        # a Tough Customer server-tool alias must NOT enter the agentic loop then.
         backend = _mock_backend(monkeypatch)
         set_tool_policy(False)
         payload = _basic_payload(
@@ -4064,7 +4064,7 @@ def assert_anthropic_stream_conformant(lines):
     for name, data in events[1:]:
         assert data.get("type") == name, f"event {name} carries data.type {data.get('type')}"
         if name in ("ping", "tool_result"):
-            # tool_result is Unsloth's own event for a server-executed tool; real
+            # tool_result is Tough Customer's own event for a server-executed tool; real
             # SDKs ignore it, and it must never claim a content block index.
             assert "index" not in data, "tool_result must not consume a block index"
             continue

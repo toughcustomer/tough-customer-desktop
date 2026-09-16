@@ -42,7 +42,7 @@ LEGACY_STORED = [
 def test_a_stored_flag_denied_after_the_fact_is_dropped_not_kept(stored):
     # The validator itself still refuses: it is the boundary, and it has no idea
     # whether its caller is a request or a stored row.
-    with pytest.raises(ValueError, match = "managed by Unsloth Studio"):
+    with pytest.raises(ValueError, match = "managed by Tough Customer Studio"):
         _lsa.validate_extra_args(stored)
 
 
@@ -603,7 +603,7 @@ def test_a_padded_flag_is_carried_over_by_dropping_it_with_its_value():
 def test_parallel_denials_point_at_the_supported_knob(flag):
     # Why (#9510): the parallel slot count IS user-settable, just not through extra args --
     # refusing `--parallel 1` without naming n_parallel sent users to undocumented env hacks.
-    with pytest.raises(ValueError, match = "managed by Unsloth Studio.*n_parallel"):
+    with pytest.raises(ValueError, match = "managed by Tough Customer Studio.*n_parallel"):
         _lsa.validate_extra_args([flag, "1"])
 
 

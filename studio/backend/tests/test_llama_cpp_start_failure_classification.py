@@ -90,7 +90,7 @@ class TestDiffusionArchitectures:
         msg = _classify(out, f"/models/{arch}.gguf", f"local/{arch}")
         assert arch in msg
         assert "neither the Images page nor the Video page" in msg
-        assert "Use Unsloth's image generation page" not in msg
+        assert "Use Tough Customer's image generation page" not in msg
         assert "Open it from" not in msg
         assert "cannot run" in msg.lower()
         assert "enough memory" not in msg.lower()
@@ -512,7 +512,7 @@ class TestMissingSharedLibrary:
 
 
 class TestBundledHipRocrMismatch:
-    """Unsloth prepends system ROCm, the prebuilt still binds its bundled HIP,
+    """Tough Customer prepends system ROCm, the prebuilt still binds its bundled HIP,
     and glibc exits 127 on the symbol lookup (#8998). That used to read as a
     missing llama-server and get retried as a VRAM miss. Neither is true.
     """
@@ -944,7 +944,7 @@ class TestMacOSLoaderEdgeCases:
         assert len(msg) < 1000
 
     def test_the_health_timeout_marker_is_not_absorbed_into_a_dyld_reason(self):
-        # Unsloth appends its own marker to the captured output; it must not be
+        # Tough Customer appends its own marker to the captured output; it must not be
         # quoted back to the user as part of dyld's diagnosis.
         out = (
             "dyld[1]: Library not loaded: @rpath/libllama.dylib\n"
@@ -964,7 +964,7 @@ class TestMacOSLoaderEdgeCases:
 
 class TestDiagnosticsDoNotLeak:
     """The output tail is llama-server's own stdout, and llama-server inherits
-    nearly all of Unsloth's environment."""
+    nearly all of Tough Customer's environment."""
 
     _OUT = "build: 9415\nenv dump: OPENAI_API_KEY=sk-owner-secret-1234567890\nabort"
 
@@ -1354,7 +1354,7 @@ class TestOutputIsNeverTrustedForBeingOurOwnFraming:
     message: printing "llama-server output:" as its first line returned its
     stdout verbatim, past the redaction and past the 2000-character cap. The
     fixed point was for a caller that does not exist; the bypass was reachable
-    by anything Unsloth launches.
+    by anything Tough Customer launches.
     """
 
     _LOG = "/Users/me/.unsloth/studio/logs/llama-server/llama-1-port-8080.log"
@@ -1719,7 +1719,7 @@ class TestRejectedArguments:
         assert "memory" not in msg.lower()
 
     def test_a_flag_unsloth_set_itself_is_covered_by_the_same_message(self):
-        # Nothing reaching the classifier says whose flag it was, and Unsloth emits
+        # Nothing reaching the classifier says whose flag it was, and Tough Customer emits
         # its own conditionally on the capability probe, so a binary swapped under a
         # cached probe lands here too. The message has to serve that reader as well
         # as the one who mistyped something in the box.
@@ -1759,7 +1759,7 @@ class TestRejectedArguments:
         assert "stoi" not in msg
 
     def test_a_value_error_on_a_flag_the_user_did_not_set_stays_neutral(self):
-        # Unsloth emits its own options conditionally on the capability probe, so a
+        # Tough Customer emits its own options conditionally on the capability probe, so a
         # build that reads "--flash-attn on" differently rejects a value the box
         # never held. Sending that reader to edit their extra arguments points them
         # at a setting they cannot use to fix it.
@@ -1868,7 +1868,7 @@ class TestArgumentErrorsAreQuotedShort:
 
 class TestTensorSplitQuantizedKvUnsupported:
     """llama.cpp before ggml-org/llama.cpp#23792 (b9455) refused a quantized KV
-    cache under --split-mode tensor. Unsloth no longer pre-empts that refusal, so
+    cache under --split-mode tensor. Tough Customer no longer pre-empts that refusal, so
     the message has to name the remedy: the generic invalid-GGUF/OOM fallback sends
     the user to check their file or buy VRAM, neither of which is the problem."""
 

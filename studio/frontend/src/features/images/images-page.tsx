@@ -360,7 +360,7 @@ function exportFilename(image: GalleryImage, format: ImageExportFormat = "png"):
     `-${p(d.getHours())}${p(d.getMinutes())}${p(d.getSeconds())}`;
   const suffix = image.batch_index > 0 ? `_${image.batch_index}` : "";
   const ext = format === "jpeg" ? "jpg" : format;
-  return `Unsloth_${stamp}_${image.seed}${suffix}.${ext}`;
+  return `ToughCustomer_${stamp}_${image.seed}${suffix}.${ext}`;
 }
 
 // PNG saves the stored bytes verbatim (keeping the embedded recipe); JPEG / WebP re-encode client-side, JPEG flattened onto white.
@@ -601,7 +601,7 @@ function SliderField({
   );
 }
 
-// Matches the field-label style used across Unsloth (export/chat settings).
+// Matches the field-label style used across Tough Customer (export/chat settings).
 function Field({
   label,
   hint,

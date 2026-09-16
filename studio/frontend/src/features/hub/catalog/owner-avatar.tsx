@@ -21,7 +21,7 @@ const SIZES: Record<AvatarSize, string> = {
 
 const UNSLOTH_OWNER_LOGO: ProviderLogo = {
   id: "unsloth",
-  name: "Unsloth",
+  name: "unsloth",
   logoPath: "/rounded.png",
   treatment: "original",
   background: "transparent",
@@ -29,8 +29,9 @@ const UNSLOTH_OWNER_LOGO: ProviderLogo = {
   prefixes: [],
 };
 
-function isUnslothOwner(owner: string): boolean {
-  return owner.trim().toLowerCase() === "unsloth";
+function isUnslothOwner(_owner: string): boolean {
+  // Tough Customer: third-party HF orgs get the generic avatar, never our mark.
+  return false;
 }
 
 const AVATAR_IMAGE_RETRY_BASE_MS = 60_000;
@@ -60,7 +61,7 @@ export function OwnerAvatar({
   /**
    * Repo name (after `owner/`). For an eligible owner (currently "unsloth"),
    * renders the matched upstream provider's logo instead of the HF profile pic
-   * (e.g. an Unsloth Qwen2.5 re-upload shows the Qwen logo).
+   * (e.g. a Tough Customer Qwen2.5 re-upload shows the Qwen logo).
    */
   repoName?: string;
   size?: AvatarSize;

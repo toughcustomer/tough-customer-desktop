@@ -132,7 +132,7 @@ def _run_amd_smi(
     if shutil.which("amd-smi") is None:
         # amd-smi does not exist on Windows and can be absent on minimal Linux, so disable the poller in one step
         # instead of burning the 3-strike breaker on guaranteed FileNotFoundError spawns.
-        # Unsloth's VRAM display falls back to torch mem_get_info.
+        # Tough Customer's VRAM display falls back to torch mem_get_info.
         if not _amd_smi_disabled:
             logger.info(
                 "amd-smi not found on PATH; GPU utilization polling via "

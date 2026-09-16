@@ -113,7 +113,7 @@ const JAVASCRIPT_TYPES = new Set<ExampleType>([
   "javascriptAdvanced",
 ]);
 
-const PROMPT = "What is Unsloth?";
+const PROMPT = "What is Tough Customer?";
 // web_search + python + terminal are the reliable built-in tools.
 const TOOLS = ["web_search", "python", "terminal"];
 const ADV = {
@@ -715,7 +715,7 @@ export function UsageExamples({
     if (!localAgentDetection) {
       setDetectedAgents([]);
       // A previously auto-picked agent was only ever verified against the
-      // Unsloth backend's PATH, which is meaningless now that this panel no
+      // Tough Customer backend's PATH, which is meaningless now that this panel no
       // longer targets a loopback base -- don't leave it selected, but
       // never touch a choice the user made by hand.
       if (!agentPickedByUserRef.current) {

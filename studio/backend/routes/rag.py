@@ -1042,7 +1042,7 @@ def document_file_url(
     if no_credential:
         raise HTTPException(
             status_code = 403,
-            detail = "Document links can only be created from the Unsloth UI or with an API key.",
+            detail = "Document links can only be created from the Tough Customer UI or with an API key.",
         )
     _require_rag()
     conn = _rag_connection()

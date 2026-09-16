@@ -777,7 +777,7 @@ def _ollama_links_dir(ollama_dir: Path) -> Optional[Path]:
     """Return a writable directory for Ollama ``.gguf`` symlinks.
 
     Prefers ``<ollama_dir>/.studio_links/`` so links sit next to their
-    blobs; falls back to a per-ollama-dir namespace under Unsloth's cache
+    blobs; falls back to a per-ollama-dir namespace under Tough Customer's cache
     when the models dir is read-only (common for system installs).
     """
     from utils.paths.storage_roots import cache_root
@@ -788,7 +788,7 @@ def _ollama_links_dir(ollama_dir: Path) -> Optional[Path]:
         return primary
     except OSError as e:
         logger.debug(
-            "Ollama dir %s not writable for .studio_links (%s); falling back to Unsloth cache",
+            "Ollama dir %s not writable for .studio_links (%s); falling back to Tough Customer cache",
             ollama_dir,
             e,
         )
@@ -826,7 +826,7 @@ def _scan_ollama_dir(ollama_dir: Path, limit: Optional[int] = None) -> List[Loca
     model, keyed by a short hash of the manifest path, so
     ``detect_mmproj_file`` only sees that model's projector). Links are
     symlinks when possible, else hardlinks; the link dir is
-    ``.studio_links/`` when writable, else Unsloth's cache.
+    ``.studio_links/`` when writable, else Tough Customer's cache.
     """
     manifests_root = ollama_dir / "manifests"
     if not manifests_root.is_dir():
@@ -1713,7 +1713,7 @@ def _build_browse_allowlist(
     """Return the root directories the folder browser may walk.
 
     The same list seeds the sidebar suggestion chips, so chip targets are
-    always reachable. Roots: HOME, resolved HF cache dirs, Unsloth's
+    always reachable. Roots: HOME, resolved HF cache dirs, Tough Customer's
     outputs/exports/studio root, registered scan folders, and well-known
     local-LLM dirs (LM Studio, Ollama, ``~/models``); each added only if
     it resolves to a real directory.
@@ -2001,7 +2001,7 @@ def browse_folders(
             "Directory to list. If omitted, defaults to the current user's "
             "home directory. Tilde (`~`) and relative paths are expanded. "
             "Must resolve inside the allowlist of browseable roots (HOME, "
-            "HF cache, Unsloth dirs, registered scan folders, well-known "
+            "HF cache, Tough Customer dirs, registered scan folders, well-known "
             "model dirs)."
         ),
     ),
@@ -3187,15 +3187,15 @@ async def delete_finetuned_model(
     gguf_variant: Optional[str] = Body(None),
     current_subject: str = Depends(get_current_subject),
 ):
-    """Delete an Unsloth-trained or exported model from disk.
+    """Delete a Tough Customer-trained or exported model from disk.
 
-    Only paths under Unsloth's outputs/exports roots are accepted.
+    Only paths under Tough Customer's outputs/exports roots are accepted.
     Exported GGUF entries can delete one quant variant at a time.
     """
     if source not in {"training", "exported"}:
         raise HTTPException(
             status_code = 400,
-            detail = "Only trained or exported Unsloth models can be deleted",
+            detail = "Only trained or exported Tough Customer models can be deleted",
         )
 
     if not model_path or not model_path.strip():
@@ -3227,14 +3227,14 @@ async def delete_finetuned_model(
         if not _is_path_under_lexically(delete_path, allowed_root):
             raise HTTPException(
                 status_code = 400,
-                detail = "Model path is outside Unsloth storage",
+                detail = "Model path is outside Tough Customer storage",
             )
         if export_type == "gguf" and gguf_variant:
             target_path = delete_path.resolve()
             if not _is_path_under(target_path, allowed_root):
                 raise HTTPException(
                     status_code = 400,
-                    detail = "Model path is outside Unsloth storage",
+                    detail = "Model path is outside Tough Customer storage",
                 )
         else:
             target_path = delete_path
@@ -3247,7 +3247,7 @@ async def delete_finetuned_model(
     if should_check_resolved_path and not _is_path_under(target_path, allowed_root):
         raise HTTPException(
             status_code = 400,
-            detail = "Model path is outside Unsloth storage",
+            detail = "Model path is outside Tough Customer storage",
         )
     if target_path == allowed_root:
         raise HTTPException(
@@ -4999,7 +4999,7 @@ def _preferred_gguf_copy(
 
 @router.get("/cached-gguf")
 async def list_cached_gguf(current_subject: str = Depends(get_current_subject)):
-    """List GGUF repos downloaded to HF cache, legacy Unsloth cache, and HF default cache."""
+    """List GGUF repos downloaded to HF cache, legacy Tough Customer cache, and HF default cache."""
     try:
         return {"cached": cached_gguf_rows()}
     except Exception as e:
@@ -5107,7 +5107,7 @@ async def list_cached_models(
     current_subject: str = Depends(get_current_subject),
     hf_token: HfTokenArg = Depends(get_request_hf_token),
 ):
-    """List non-GGUF model repos downloaded to HF cache, legacy Unsloth cache, and HF default cache."""
+    """List non-GGUF model repos downloaded to HF cache, legacy Tough Customer cache, and HF default cache."""
     try:
         return {"cached": cached_model_rows()}
     except Exception as e:
@@ -5129,7 +5129,7 @@ def _snapshot_can_serve_a_load(snapshot: Path) -> bool:
 
     huggingface_hub keeps one snapshot per commit, so a partial fetch leaves an unloadable
     dir with a newer mtime than the complete one beside it. Both halves happen: metadata
-    only (AutoConfig/AutoTokenizer at a newer revision) and weights only (Unsloth's base
+    only (AutoConfig/AutoTokenizer at a newer revision) and weights only (Tough Customer's base
     model pre-warm fetches the shards plus index, no config.json).
     """
     if _local_pipeline_index(snapshot):
@@ -5582,7 +5582,7 @@ _EXPORT_SIZE_CACHE: dict[str, tuple[int, int, str]] = {}
 
 
 def _is_sizable_local_path(model: str) -> bool:
-    """True only for local paths under an Unsloth data root.
+    """True only for local paths under a Tough Customer data root.
 
     Containment is decided lexically (no filesystem access) before the path is
     touched, then the path is symlink-resolved and re-checked so a symlink

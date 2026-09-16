@@ -131,7 +131,7 @@ def _contained_link_path(link_dir: Path, link_name: str) -> Optional[Path]:
 
 
 def _ollama_links_dir(ollama_dir: Path) -> Optional[Path]:
-    """Writable directory for Ollama ``.gguf`` symlinks. Prefers ``<ollama_dir>/.studio_links/`` next to the blobs; falls back to Unsloth's cache (read-only system installs), then the temp dir (sandboxed installs)."""
+    """Writable directory for Ollama ``.gguf`` symlinks. Prefers ``<ollama_dir>/.studio_links/`` next to the blobs; falls back to Tough Customer's cache (read-only system installs), then the temp dir (sandboxed installs)."""
 
     def _ensure_writable_dir(path: Path) -> Optional[Path]:
         try:
@@ -301,7 +301,7 @@ def _ollama_model_info_from_manifest(
         rendered_layers = ", ".join(unsupported_layers)
         if reject_unsupported_layers:
             raise ValueError(
-                "Ollama manifest contains unsupported runtime layers that Unsloth cannot preserve: "
+                "Ollama manifest contains unsupported runtime layers that Tough Customer cannot preserve: "
                 f"{rendered_layers}"
             )
         logger.debug(

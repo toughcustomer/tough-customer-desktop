@@ -1,4 +1,4 @@
-; Unsloth NSIS installer hooks
+; Tough Customer NSIS installer hooks
 
 !macro NSIS_HOOK_PREINSTALL
   ; Windows bundles carry only install.ps1 now. NSIS writes the current resource manifest
@@ -6,7 +6,7 @@
   ; install.sh forever and make the non-recursive RMDir "$INSTDIR" fail at uninstall.
   ; Gated on our own executable being there: this hook runs before the user can still cancel,
   ; and the directory can be one they picked themselves, so only a directory that already
-  ; holds an Unsloth install is ours to tidy.
+  ; holds an Tough Customer install is ours to tidy.
   ${If} ${FileExists} "$INSTDIR\${MAINBINARYNAME}.exe"
     Delete "$INSTDIR\install.sh"
   ${EndIf}
@@ -24,5 +24,5 @@
   ; installers also use that tree for environments, models, outputs, and
   ; configuration, and there has been no prior public desktop release whose
   ; private state needs cleanup here.
-  DetailPrint "Preserved shared Unsloth data at $PROFILE\.unsloth"
+  DetailPrint "Preserved shared Tough Customer data at $PROFILE\.unsloth"
 !macroend

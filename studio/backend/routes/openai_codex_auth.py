@@ -178,7 +178,7 @@ async def list_subscription_models(
             provider_id, token, account_id, force = refresh
         )
     except (codex_auth.CodexAuthError, codex_client.CodexReauthorizationError) as exc:
-        # Say it in the answer rather than through a 401: the client's authFetch reads every 401 as an expired Unsloth
+        # Say it in the answer rather than through a 401: the client's authFetch reads every 401 as an expired Tough Customer
         # session and retries, and the retry looks healthy.
         # resolve_access has already marked the connection as needing reauthorization, so a source the picker does not
         # treat as authoritative carries the signal instead.

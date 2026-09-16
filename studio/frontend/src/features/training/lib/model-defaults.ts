@@ -41,7 +41,7 @@ function toStringArray(value: unknown): string[] | undefined {
 // The spellings studio/backend/core/training/trainer.py accepts, so a file means
 // the same thing to the picker as it does to the trainer. A quoted "false" read
 // as "leave it at the default" is how a config asking for no checkpointing ended
-// up training with Unsloth GC.
+// up training with Tough Customer GC.
 const GRADIENT_CHECKPOINTING_ALIASES = new Map<
   string,
   TrainingConfigState["gradientCheckpointing"]
@@ -69,7 +69,7 @@ function toGradientCheckpointing(
     value.trim().toLowerCase(),
   );
   if (resolved === undefined) return undefined;
-  // On Mac, map "unsloth" → "mlx" since Unsloth GC is GPU-only
+  // On Mac, map "unsloth" → "mlx" since Tough Customer GC is GPU-only
   if (
     resolved === "unsloth" &&
     usePlatformStore.getState().deviceType === "mac"

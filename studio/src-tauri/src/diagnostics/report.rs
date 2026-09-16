@@ -26,7 +26,7 @@ pub(crate) fn render_report(
     let mut warnings = Vec::new();
     let mut raw = String::new();
 
-    raw.push_str("Unsloth Support Diagnostics\n");
+    raw.push_str("Tough Customer Support Diagnostics\n");
     raw.push_str(&format!("diag_report_schema={SCHEMA_VERSION}\n"));
     raw.push_str(&format!("created_at_ms={}\n", now_ms()));
     raw.push_str(&format!("app_version={}\n", env!("CARGO_PKG_VERSION")));
@@ -422,7 +422,7 @@ const SERVER_LOG_TAIL_MAX_BYTES: usize = 64 * 1024;
 ///
 /// run.py's `_setup_server_disk_logging` aims faulthandler here, so when the GPU
 /// runtime aborts this holds the Python stack naming the call that died, and no
-/// other file Unsloth keeps does.
+/// other file Tough Customer keeps does.
 ///
 /// Only two are collected, so an entry is rejected HERE rather than later in
 /// `read_tail`: one that merely matches the name would otherwise spend a slot and
@@ -1024,7 +1024,7 @@ mod tests {
     #[test]
     fn a_truncated_report_still_carries_the_crash_stack() {
         let stack = "Current thread 0x1 (most recent call first):";
-        let mut body = String::from("Unsloth Support Diagnostics\n\n== Log tails ==\n");
+        let mut body = String::from("Tough Customer Support Diagnostics\n\n== Log tails ==\n");
         body.push_str(&format!(
             "file=server.log source=backend-session-log\n```text\n{stack}\n```\n"
         ));

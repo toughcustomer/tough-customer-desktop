@@ -159,7 +159,7 @@ def test_the_floor_is_the_only_thing_keeping_the_fallback_out_of_placement(
 
     assert outcome["awarded"] is expect_award
     if expect_award:
-        # Residency awarded: Unsloth owns placement and llama.cpp's fitter is off.
+        # Residency awarded: Tough Customer owns placement and llama.cpp's fitter is off.
         assert outcome["fit"] == "off"
         assert outcome["devices"] == (0,)
     else:

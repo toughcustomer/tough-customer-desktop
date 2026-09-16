@@ -166,7 +166,7 @@ def test_xet_worker_is_sized_from_the_machine(monkeypatch):
 
 
 def test_the_zoo_decides_and_studio_does_not_second_guess_it(monkeypatch):
-    """Unsloth used to force the flag off here. Two copies of one rule drifted, and on a 2TB host the
+    """Tough Customer used to force the flag off here. Two copies of one rule drifted, and on a 2TB host the
     worker ended up with a 24GB laptop's buffer, 3.4x slower than the machine's own setting."""
     import utils.hf_xet_fallback as shim
 
@@ -198,7 +198,7 @@ def test_the_zoo_decides_and_studio_does_not_second_guess_it(monkeypatch):
 def test_high_performance_is_cleared_even_without_the_tuning_module(monkeypatch):
     """An unsloth_zoo with no `hf_xet_tuning` is exactly the version that sets
     HF_XET_HIGH_PERFORMANCE=1 at import, so routing the clear through the (then empty) overrides
-    would hand the worker a 64GB buffer ceiling on the installs Unsloth alone cannot fix."""
+    would hand the worker a 64GB buffer ceiling on the installs Tough Customer alone cannot fix."""
     import utils.hf_xet_fallback as shim
 
     monkeypatch.setattr(shim, "apply_xet_env", lambda *a, **k: None)
@@ -418,7 +418,7 @@ def test_optional_loader_retries_with_gpu_init_disabled(monkeypatch):
         seen = os.environ.get("UNSLOTH_ZOO_DISABLE_GPU_INIT")
         attempts.append(seen)
         if seen != "1":
-            raise NotImplementedError("Unsloth cannot find any torch accelerator? You need a GPU.")
+            raise NotImplementedError("Tough Customer cannot find any torch accelerator? You need a GPU.")
         return sentinel
 
     monkeypatch.setattr(importlib, "import_module", _fake_import)
@@ -467,7 +467,7 @@ def test_capabilities_read_does_not_load_zoo(monkeypatch):
 
     assert caps.xet.available is True
     assert caps.auto_resolves_to == download_registry.TRANSPORT_XET
-    assert loaded == [], "a read-only capability request imported Unsloth Zoo"
+    assert loaded == [], "a read-only capability request imported Tough Customer Zoo"
 
 
 def test_download_start_probe_loads_health_after_cached_browse(monkeypatch):

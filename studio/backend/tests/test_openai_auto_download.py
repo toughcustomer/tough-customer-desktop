@@ -422,7 +422,7 @@ def test_the_cache_is_per_token(hub):
 
 
 def test_the_gated_message_names_the_header_that_actually_works(hub):
-    # Auto-download never uses the server's token, so an Unsloth setting would loop the caller.
+    # Auto-download never uses the server's token, so a Tough Customer setting would loop the caller.
     hub["info"] = _Info(_gguf_repo_info().siblings, gated = "manual")
     hub["auth_denied"] = True
     refusal = _run("meta-llama/Llama-2-7b-hf")
@@ -479,7 +479,7 @@ def test_remote_code_repo_is_refused(hub):
     hub["auto_map"] = True
     refusal = _run("someone/custom-arch-GGUF")
     assert refusal.status == 403 and refusal.code == "remote_code_consent_required"
-    assert "Unsloth Studio" in refusal.message
+    assert "Tough Customer Studio" in refusal.message
     assert hub["started"] == []
 
 
@@ -814,7 +814,7 @@ def _download_rows():
 
 def test_a_ui_session_download_is_not_marked_as_api_traffic(hub):
     """The monitor overlay auto-opens on via_api_key, which exists to separate
-    "someone is serving other clients" from "someone is using Unsloth". Unsloth's
+    "someone is serving other clients" from "someone is using Tough Customer". Tough Customer's
     own chat hits these same /v1 endpoints with a session JWT, so hardcoding the
     flag on the download row popped the panel open mid-chat."""
     from fastapi import HTTPException
@@ -852,18 +852,18 @@ def test_an_api_key_download_keeps_the_attribution_and_names_its_caller(hub):
 
 
 def test_an_api_key_caller_waiting_on_someone_elses_download_gets_a_row(hub):
-    """A download started by Unsloth's own chat is attributed to the session, so an
+    """A download started by Tough Customer's own chat is attributed to the session, so an
     API-key client that asks for the same repo while it runs is refused before the
     handler's own api_monitor.start. Without a row of its own that call is invisible:
     the only row is the session's via_api_key=False download, so the overlay stays
-    shut and the monitor presents API traffic as Unsloth's own."""
+    shut and the monitor presents API traffic as Tough Customer's own."""
     from fastapi import HTTPException
     from auth.authentication import API_KEY_PREFIX
     from core.inference.api_monitor import api_monitor
 
     api_monitor.clear()
     with pytest.raises(HTTPException):
-        # Unsloth's chat (session JWT) starts the download and takes the slot.
+        # Tough Customer's chat (session JWT) starts the download and takes the slot.
         _hook("unsloth/x-GGUF", _Req(), enabled = True, current_subject = "unsloth")
     seeded = {row["id"] for row in api_monitor.snapshot(subject = "unsloth")}
 

@@ -259,7 +259,7 @@ function makeMapModel(
   };
 }
 
-/** Unsloth results pulled up-front before yielding general results. */
+/** Tough Customer results pulled up-front before yielding general results. */
 const UNSLOTH_PREFETCH = 20;
 /** With a typed query, float only a few unsloth results before the general listing. */
 const UNSLOTH_QUERY_PREFETCH = 3;
@@ -650,7 +650,7 @@ export function useHubModelSearch(
         const channelTags = channelTagsKey
           ? channelTagsKey.split("|")
           : undefined;
-        // Unsloth-only scope on an ownerless tag/format channel: hard-restrict to unsloth-owned repos.
+        // Tough Customer-only scope on an ownerless tag/format channel: hard-restrict to unsloth-owned repos.
         if (unslothOnly && !channelOwner) {
           return createChannelIterator(
             {
@@ -712,7 +712,7 @@ export function useHubModelSearch(
           normalizeTaskFilter(task),
           (task, taskSignal) =>
             listModels({
-              // Unsloth-only scope restricts the plain sort browse to the org.
+              // Tough Customer-only scope restricts the plain sort browse to the org.
               search: {
                 ...(unslothOnly ? { owner: "unsloth" } : {}),
                 ...(task ? { task } : {}),
@@ -725,7 +725,7 @@ export function useHubModelSearch(
           signal,
         );
       }
-      // Unsloth-only typed query: search within the org rather than floating a few hits globally.
+      // Tough Customer-only typed query: search within the org rather than floating a few hits globally.
       if (unslothOnly) {
         return listModels({
           search: { query: searchQuery, owner: "unsloth" },
@@ -737,7 +737,7 @@ export function useHubModelSearch(
       }
       // Typed query: drop the task filter so searched models appear despite wrong/missing HF task
       // metadata. For an "owner/repo" query, strip the org prefix so unsloth variants surface, then
-      // pin the original publisher model. Unsloth-owned queries are left as-is.
+      // pin the original publisher model. Tough Customer-owned queries are left as-is.
       return mergedModelIterator(
         searchQuery,
         undefined,

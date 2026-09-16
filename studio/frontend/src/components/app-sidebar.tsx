@@ -1,5 +1,6 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
+import { TcBalancePill } from "@/features/sales/balance-pill";
 
 import {
   Sidebar,
@@ -312,7 +313,7 @@ const menuRadioItemClass =
   "pl-9 pr-3 [&>[data-slot=dropdown-menu-radio-item-indicator]]:right-auto [&>[data-slot=dropdown-menu-radio-item-indicator]]:left-3";
 
 // Whether cmd or ctrl adds a row to the selection. This is the user's own
-// keyboard, not the host Unsloth runs on, so it reads the browser rather than
+// keyboard, not the host Tough Customer runs on, so it reads the browser rather than
 // the platform store: a Mac browser on a Linux host still uses cmd. Ctrl is
 // left alone on macOS, where ctrl click is the right click chord.
 const SELECT_WITH_META =
@@ -830,10 +831,10 @@ export function AppSidebar() {
       ? // The gate is all-or-nothing across mlx, mlx-lm and mlx-vlm, and a resolver
         // backtrack leaves a stack that is present but unusable. Naming the package
         // that is missing, too old, or refusing to import is what makes this
-        // actionable to someone whose `unsloth studio update` has already run.
+        // actionable to someone whose the Update action in Settings has already run.
         chatOnlyDetail
-        ? `Training needs MLX: ${chatOnlyDetail}. Run \`unsloth studio update\` to enable Train.`
-        : "Training needs MLX. Run `unsloth studio update` to enable Train."
+        ? `Training needs MLX: ${chatOnlyDetail}. use the Update action in Settings to enable Train.`
+        : "Training needs MLX. use the Update action in Settings to enable Train."
       : chatOnlyReason === "intel_mac"
         ? "Training needs Apple Silicon or a GPU. Intel Macs are chat-only."
         : chatOnlyReason === "torch_cpu_build" ||
@@ -3517,7 +3518,7 @@ export function AppSidebar() {
                   {/* Logo lockup follows the UI font size at half rate:
                       base + (root scale - 1) * 8px. Exact base sizes at 16px. */}
                   <img
-                    src="/tc-logo.svg"
+                    src="/tc-mark.png"
                     alt="Tough Customer"
                     className="relative top-px h-[calc(22px+0.5rem*var(--ui-font-scale,1))] w-[calc(22px+0.5rem*var(--ui-font-scale,1))] shrink-0 rounded-full object-cover"
                   />
@@ -4428,7 +4429,7 @@ export function AppSidebar() {
                       pr on the button reserves room for the settings cog */}
                   <div className="flex min-w-0 flex-1 flex-col gap-px leading-tight group-data-[collapsible=icon]:hidden">
                     <span className="truncate font-heading text-ui-13p5 tracking-[0.025em] dark:tracking-[0.04em] font-semibold text-nav-fg">{displayTitle}</span>
-                    <span className="truncate text-ui-11p5 tracking-nav text-muted-foreground">Tough Customer</span>
+                    <TcBalancePill className="truncate text-ui-11p5 tracking-nav text-muted-foreground" />
                   </div>
                 </SidebarMenuButton>
               </DropdownMenuTrigger>

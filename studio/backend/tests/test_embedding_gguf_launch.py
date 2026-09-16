@@ -250,5 +250,5 @@ def test_user_extra_args_still_cannot_pass_the_flag(flag):
     # header probe is the only thing allowed to turn it on.
     from core.inference.llama_server_args import is_managed_flag, validate_extra_args
     assert is_managed_flag(flag) is True
-    with pytest.raises(ValueError, match = "managed by Unsloth Studio"):
+    with pytest.raises(ValueError, match = "managed by Tough Customer Studio"):
         validate_extra_args([flag])

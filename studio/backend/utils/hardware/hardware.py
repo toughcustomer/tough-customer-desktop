@@ -43,7 +43,7 @@ logger = get_logger(__name__)
 
 # ── GPU index ordering ──────────────────────────────────────────────────────
 # CUDA defaults to CUDA_DEVICE_ORDER=FASTEST_FIRST, numbering GPUs by compute
-# performance. nvidia-smi -- and every free-VRAM probe in Unsloth -- numbers GPUs
+# performance. nvidia-smi -- and every free-VRAM probe in Tough Customer -- numbers GPUs
 # by PCI bus id instead. On a mixed-GPU host (e.g. an RTX 5090 alongside an RTX
 # PRO 6000) the two orderings disagree, so an index picked from nvidia-smi data
 # ("the emptiest card is GPU 1") gets written into CUDA_VISIBLE_DEVICES and then
@@ -55,7 +55,7 @@ logger = get_logger(__name__)
 # and spawn workers copy os.environ. setdefault so an explicit user override wins.
 os.environ.setdefault("CUDA_DEVICE_ORDER", "PCI_BUS_ID")
 
-# Unsloth workers can import MLX without importing unsloth first, so mirror the
+# Tough Customer workers can import MLX without importing unsloth first, so mirror the
 # package bootstrap here. Keep an explicit user value authoritative.
 if platform.system() == "Darwin" and platform.machine() == "arm64":
     os.environ.setdefault("AGX_RELAX_CDM_CTXSTORE_TIMEOUT", "1")
@@ -290,7 +290,7 @@ _MLX_BLOCKERS_MEASURED: Optional[list[str]] = None
 
 
 def _has_usable_mlx_stack() -> bool:
-    """True only when the FULL Unsloth MLX training/export stack is usable
+    """True only when the FULL Tough Customer MLX training/export stack is usable
     (mlx + mlx-lm + mlx-vlm at the minimum versions unsloth-zoo requires), not
     just a bare ``import mlx.core``. A backtracked/old mlx-vlm still imports but
     breaks VLM Train/Export, so the training gate must match the self-heal's own
@@ -1795,7 +1795,7 @@ def _detect_hardware_locked() -> DeviceType:
                 xpu_ok = False
             if xpu_ok:
                 # Forced XPU on a hybrid host: unsloth's device_type picks
-                # CUDA before XPU and ignores this Unsloth-only env var, so
+                # CUDA before XPU and ignores this Tough Customer-only env var, so
                 # hide CUDA or spawned workers would silently train on CUDA.
                 if force_xpu and not cuda_hidden and not cuda_unavailable:
                     os.environ["CUDA_VISIBLE_DEVICES"] = ""
@@ -2083,20 +2083,20 @@ def _gpu_present_but_unusable_message(
         return (
             f"This host has a GPU, but the installed PyTorch is a CPU-only build{installed}, "
             f"so {feature} cannot use it. Reinstall the GPU build: use Repair installation "
-            f"in Settings in the desktop app, or re-run the Unsloth installer."
+            f"in Settings in the desktop app, or re-run the Tough Customer installer."
         )
     return (
         f"This host has a GPU, but the installed PyTorch{installed} cannot initialise it, so "
         f"{feature} cannot use it. This is usually a driver or runtime mismatch; reinstalling "
         f"a matching PyTorch build fixes it. Use Repair installation in Settings in the "
-        f"desktop app, or re-run the Unsloth installer."
+        f"desktop app, or re-run the Tough Customer installer."
     )
 
 
 def export_capability() -> dict:
     """Whether model export can run here, with a torch-aware reason when it cannot.
 
-    Export runs through Unsloth, which hard-requires an accelerator (it calls ``torch.cuda`` at
+    Export runs through Tough Customer, which hard-requires an accelerator (it calls ``torch.cuda`` at
     import and has no CPU path), so it is supported iff ``get_device() in {CUDA, XPU, MLX}``. The
     reason distinguishes a --no-torch install from a bare-CPU host. Safe to call without torch.
 
@@ -2115,7 +2115,7 @@ def export_capability() -> dict:
         reason = "detection_failed"
         message = (
             "Hardware detection failed on this host, so export is disabled. The server log records "
-            "the underlying error; restart Unsloth Studio to retry detection."
+            "the underlying error; restart Tough Customer Studio to retry detection."
         )
     elif is_apple_silicon():
         reason = "mlx_unavailable"
@@ -2138,7 +2138,7 @@ def export_capability() -> dict:
         reason = "no_accelerator"
         message = (
             "Export requires an NVIDIA, AMD, or Intel GPU, or Apple Silicon (MLX). No supported "
-            "accelerator was found on this host. (PyTorch is installed, but Unsloth cannot export "
+            "accelerator was found on this host. (PyTorch is installed, but Tough Customer cannot export "
             "on CPU only.)"
         )
     return {
@@ -2171,7 +2171,7 @@ def video_capability() -> dict:
         reason = "detection_failed"
         message = (
             "Hardware detection failed on this host, so video generation is disabled. The server "
-            "log records the underlying error; restart Unsloth Studio to retry detection."
+            "log records the underlying error; restart Tough Customer Studio to retry detection."
         )
     elif is_apple_silicon() or get_device() == DeviceType.MLX:
         # The MLX arm covers an Apple host whose platform probe somehow disagrees.
@@ -6929,7 +6929,7 @@ def dataset_map_num_proc(
     Return a safe ``num_proc`` for ``Dataset.map()`` and ``Dataset.filter()``.
 
     Returns ``None`` on spawn platforms (Windows, macOS). ``None`` -- not ``1``
-    -- is the disable sentinel: ``datasets`` >= 4.1 (Unsloth pins 4.3.0) takes
+    -- is the disable sentinel: ``datasets`` >= 4.1 (Tough Customer pins 4.3.0) takes
     the pool branch for any ``num_proc >= 1``, so ``1`` still builds a
     ``Pool(1)``.
 
@@ -7086,7 +7086,7 @@ def _num_proc_override_is_set() -> bool:
 def _bounded_by_the_shared_policy(
     desired: Optional[int], serial_as_none: bool = True
 ) -> Optional[int]:
-    """Apply the training-side num_proc policy to an Unsloth request.
+    """Apply the training-side num_proc policy to a Tough Customer request.
 
     ``format_conversion.py`` and ``chat_templates.py`` hand this straight to
     ``Dataset.map``, so without it a container with 2GB and eight cores still got
@@ -7098,7 +7098,7 @@ def _bounded_by_the_shared_policy(
     auto path reads this process's CPU affinity and cgroup quota while
     ``safe_num_proc`` reads the host's ``os.cpu_count()``: a 2-core container on
     a 64-core box asked for 21 workers and got them bounded only by memory.
-    Unsloth's own caps are then applied to whatever the policy chose, since the
+    Tough Customer's own caps are then applied to whatever the policy chose, since the
     multi-GPU fork-deadlock cap is knowledge the policy does not have -- except
     over the escape hatch, which is uncapped by contract.
     """

@@ -5,14 +5,14 @@
 
 The request flag is explicit at every boundary. ``None`` follows the shared
 process default from ``passthrough_healing.nudge_enabled`` (off unless
-``UNSLOTH_TOOL_CALL_NUDGE=1``), while Unsloth may opt in by sending ``True``.
+``UNSLOTH_TOOL_CALL_NUDGE=1``), while Tough Customer may opt in by sending ``True``.
 
 Mechanism (verified here without loading a model):
 
-  * the GGUF loop and external Unsloth loop use the same normalizer;
+  * the GGUF loop and external Tough Customer loop use the same normalizer;
   * the external route forwards the request flag into ``ToolLoopPolicy``;
   * the API request models default the flag to ``None`` (opt-in / off);
-  * the Unsloth-facing routes forward the request's flag, and the Unsloth frontend
+  * the Tough Customer-facing routes forward the request's flag, and the Tough Customer frontend
     sends ``nudge_tool_calls: true`` -- exercised behaviourally in
     ``test_safetensors_tool_loop.py`` and ``test_llama_cpp_tool_loop.py``.
 """
@@ -107,7 +107,7 @@ def test_api_request_models_default_the_flag_off():
 
 
 def test_studio_routes_forward_the_request_flag():
-    # The Unsloth chat frontend posts to /v1/chat/completions and /v1/messages
+    # The Tough Customer chat frontend posts to /v1/chat/completions and /v1/messages
     # with nudge_tool_calls=true; the route handlers forward the request value
     # (external API clients that omit it fall back to the opt-in default).
     from routes import inference as routes_inference

@@ -239,7 +239,7 @@ def _first_file(paths: list[Path]) -> Optional[str]:
 
 # keyed by the file itself rather than the path alone
 # Identity verdicts, keyed by the file itself rather than by the path alone, so replacing a binary in place re-probes it
-# while a rebuild elsewhere on PATH is unaffected. Bounded: an Unsloth session sees a handful of candidates, and a
+# while a rebuild elsewhere on PATH is unaffected. Bounded: a Tough Customer session sees a handful of candidates, and a
 # runaway key set would only ever come from a path being rewritten under us, which is exactly the case that must not be
 # served from here.
 _IDENTITY_MEMO: dict[tuple[str, int, int, int], tuple[bool, float]] = {}
@@ -368,16 +368,16 @@ def _is_legacy_sd_cpp_binary(binary: str) -> bool:
 
 
 def managed_install_root() -> Path:
-    """The directory the prebuilt installer owns, so callers can tell an Unsloth-managed binary
+    """The directory the prebuilt installer owns, so callers can tell a Tough Customer-managed binary
     from a user-supplied one (SD_CLI_PATH / UNSLOTH_SD_CPP_PATH / PATH / an in-tree build).
 
     Only a copy under this root may be reinstalled over: replacing anything else would delete
     a build the user chose. Honors UNSLOTH_STUDIO_HOME / STUDIO_HOME like the installer, so
-    side-by-side Unsloth instances stay isolated.
+    side-by-side Tough Customer instances stay isolated.
 
     ``<studio home>/stable-diffusion.cpp``, which is where every other managed component lives
     (``default_managed_llama_dir``, ``managed_whisper_dir``, ``managed_node_dir`` all place their
-    tree *under* the Unsloth home). The legacy default home ``~/.unsloth/studio`` keeps mapping to
+    tree *under* the Tough Customer home). The legacy default home ``~/.unsloth/studio`` keeps mapping to
     ``~/.unsloth/stable-diffusion.cpp`` so existing installs are still found."""
     return _studio_component_root("stable-diffusion.cpp")
 
@@ -405,14 +405,14 @@ def _studio_component_root(name: str) -> Path:
 def legacy_sibling_install_root() -> Optional[Path]:
     """The pre-fix managed root, ``<studio home>/../stable-diffusion.cpp``, or None.
 
-    Older builds derived the sd.cpp root from the *parent* of the Unsloth home, which put the tree
-    outside the Unsloth home entirely. Two problems: a relative ``UNSLOTH_STUDIO_HOME`` collapsed
+    Older builds derived the sd.cpp root from the *parent* of the Tough Customer home, which put the tree
+    outside the Tough Customer home entirely. Two problems: a relative ``UNSLOTH_STUDIO_HOME`` collapsed
     that parent to the working directory, so an unrelated ``stable-diffusion.cpp`` checkout sitting
     there became "the managed install" and the installer refused to run; and it disagreed with
     every other component, which install under the home.
 
     Kept only so a tree an older build really did install still resolves. Returned solely when it
-    carries the ownership marker, so a checkout that merely happens to sit next to the Unsloth home
+    carries the ownership marker, so a checkout that merely happens to sit next to the Tough Customer home
     is never adopted.
 
     The LEXICAL parent first, because that is the one the old code took: ``Path(home).parent`` does
@@ -478,7 +478,7 @@ def owning_managed_root(binary: Optional[str]) -> Optional[Path]:
     """The installer-owned root ``binary`` lives under, or None when it is not ours.
 
     Both locations are checked, current first, because a tree an older build installed beside the
-    Unsloth home is still discovered by the finder. Callers that read per-install state (the
+    Tough Customer home is still discovered by the finder. Callers that read per-install state (the
     accelerator record) must read it from the root the binary is actually in: reading the current
     root while the binary came from the legacy one reports "unrecorded", which a GPU target treats
     as a mismatch and answers by re-downloading a bundle that is already installed."""
@@ -522,14 +522,14 @@ def _find_binary(
 
     # default install root honors UNSLOTH_STUDIO_HOME / STUDIO_HOME like the installer
     # 3. Default install root: <studio home>/stable-diffusion.cpp (honors UNSLOTH_STUDIO_HOME / STUDIO_HOME like the
-    # installer so side-by-side Unsloth instances stay isolated), else ~/.unsloth/....
+    # installer so side-by-side Tough Customer instances stay isolated), else ~/.unsloth/....
     default_root = managed_install_root()
     hit = _first_file(_layout_candidates(default_root, layout_stem))
     if hit:
         return hit
 
-    # a tree an older build installed beside the Unsloth home
-    # 3b. A tree an older build installed beside the Unsloth home. Marker-gated (see legacy_sibling_install_root), so
+    # a tree an older build installed beside the Tough Customer home
+    # 3b. A tree an older build installed beside the Tough Customer home. Marker-gated (see legacy_sibling_install_root), so
     # only a real previous install is picked up here.
     legacy_root = legacy_sibling_install_root()
     if legacy_root is not None:

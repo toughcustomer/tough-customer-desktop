@@ -380,7 +380,7 @@ def local_load_dir(path: Optional[str]) -> Optional[str]:
 def _build_index() -> dict[str, _LocalGgufEntry]:
     """Map normalized id/model_id/display_name -> local model entry.
 
-    Scans the same roots Unsloth's model picker lists (./models, the active plus
+    Scans the same roots Tough Customer's model picker lists (./models, the active plus
     legacy/default HF caches, LM Studio dirs, and user scan folders) so a named
     local model is never missed and silently served as the loaded one. Ollama's
     scanner is skipped: it creates symlinks as a side effect and this runs on the
@@ -470,7 +470,7 @@ def _build_index() -> dict[str, _LocalGgufEntry]:
         raw_id = getattr(info, "id", None)
         if not raw_id:
             continue
-        # Skip what Unsloth hides from its pickers (validation probe, RAG embed weights): not chat models, so never an
+        # Skip what Tough Customer hides from its pickers (validation probe, RAG embed weights): not chat models, so never an
         # auto-switch target.
         if _is_hidden_model(
             raw_id,

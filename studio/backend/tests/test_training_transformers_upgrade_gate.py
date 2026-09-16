@@ -106,7 +106,7 @@ def test_installable_upgrade_is_reported_with_its_version(monkeypatch):
 
 
 def test_dev_only_upgrade_does_not_claim_16bit(monkeypatch):
-    # Unsloth never installs a transformers dev build, so nothing about the run changes.
+    # Tough Customer never installs a transformers dev build, so nothing about the run changes.
     inf_mod = _stub(
         monkeypatch,
         upgrade = {**UPGRADE, "supported_in_pypi": False},
@@ -345,7 +345,7 @@ def test_an_already_active_sidecar_is_not_blamed_on_the_install(monkeypatch):
 
 
 def test_route_is_off_the_openai_compatible_mount():
-    # /v1 is the OpenAI-compatible surface; an Unsloth preflight has no business there.
+    # /v1 is the OpenAI-compatible surface; a Tough Customer preflight has no business there.
     inf_mod = _route()
     paths = {route.path for route in inf_mod.studio_router.routes}
     assert "/transformers-upgrade-check" in paths

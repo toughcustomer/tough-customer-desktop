@@ -105,7 +105,7 @@ export interface LoadModelRequest {
   cache_ram?: number | null;
   /**
    * Pass-through llama-server args, one argv token per entry, appended after
-   * Unsloth's own flags so llama.cpp's last-wins parser takes these. Flags Unsloth
+   * Tough Customer's own flags so llama.cpp's last-wins parser takes these. Flags Tough Customer
    * manages are refused with a 4xx naming the flag. Omit/null inherits the stored
    * per-model value; [] launches with none. GGUF only.
    */
@@ -122,7 +122,7 @@ export interface LoadModelRequest {
    * text generation is unaffected.
    */
   disable_vision?: boolean | null;
-  /** GPU memory strategy for GGUF models. "auto" (default): Unsloth selects GPUs
+  /** GPU memory strategy for GGUF models. "auto" (default): Tough Customer selects GPUs
    *  and caps context to fit VRAM. "manual": you own the offload -- gpu_layers
    *  -1 (Auto) hands sizing to llama.cpp's --fit, >= 0 pins layers/n_cpu_moe. */
   gpu_memory_mode?: "auto" | "manual";
@@ -286,7 +286,7 @@ export interface LoadModelResponse {
   gpu_layers?: number;
   /** Set when an automatic Vulkan startup crash was recovered by loading on CPU. */
   cpu_fallback_reason?: CpuFallbackReason | null;
-  /** How Unsloth recovered after a multimodal projector failed at startup. */
+  /** How Tough Customer recovered after a multimodal projector failed at startup. */
   mmproj_fallback_reason?: MmprojFallbackReason | null;
   n_cpu_moe?: number;
   tensor_split?: number[] | null;

@@ -727,7 +727,7 @@ def test_regional_compile_arms_cache_hook_inners(monkeypatch):
 
 
 # ── the inductor runtime gate ────────────────────────────────────────────────
-# The Unsloth workers already refuse torch.compile when Triton is missing on Windows; the diffusion
+# The Tough Customer workers already refuse torch.compile when Triton is missing on Windows; the diffusion
 # and video backends run in the SERVER process, which those gates never reach.
 
 

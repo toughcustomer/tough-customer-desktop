@@ -287,7 +287,7 @@ def test_device_defaults_to_cpu_on_an_accelerator_host(monkeypatch):
     """A GPU must not be used just because it is there.
 
     This embedder loads in the backend process, where the first CUDA allocation pins a
-    primary context nothing can hand back, so an idle Unsloth that indexed one document
+    primary context nothing can hand back, so an idle Tough Customer that indexed one document
     would carry it for the rest of the session.
     """
     monkeypatch.setattr(embeddings.config, "EMBED_DEVICE", "auto")

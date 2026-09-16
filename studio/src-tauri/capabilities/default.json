@@ -1,6 +1,6 @@
 {
   "identifier": "default",
-  "description": "Default capabilities for Unsloth",
+  "description": "Default capabilities for Tough Customer",
   "windows": ["main"],
   "permissions": [
     "core:default",

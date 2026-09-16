@@ -43,7 +43,7 @@ Everything here fails CLOSED for the same reason. ``apply_activation_rotation`` 
 it cannot find, on a module that is not a Linear, on an ``in_features`` the group does not
 divide, and on a rotation kind it does not implement. Its caller (the prequant loader) turns that
 into a refused checkpoint and a dense fallback, which is slow but correct. Rotated artifacts also
-carry their own format tag, so an Unsloth old enough to predate this module rejects them outright
+carry their own format tag, so a Tough Customer old enough to predate this module rejects them outright
 instead of running them unrotated.
 
 torch is imported inside the functions, matching the other lazily-loaded inference helpers, so
@@ -57,7 +57,7 @@ from typing import Any, Iterable, Optional
 
 # the rotation KIND; an unimplemented value is refused
 # ── the metadata contract, carried in the prequant checkpoint's own ``metadata`` dict ────────── The rotation KIND. A
-# value this module does not implement is refused, so a future scheme can be added without a released Unsloth silently
+# value this module does not implement is refused, so a future scheme can be added without a released Tough Customer silently
 # treating it as this one.
 # ── the metadata contract, carried in the prequant checkpoint's own ``metadata`` dict ──────────
 CONVROT_KIND = "convrot_hadamard_v1"
@@ -98,7 +98,7 @@ def is_power_of_four(size: Any) -> bool:
 
 # ── the rotation itself ─────────────────────────────────────────────────────────────────────── Mirrors comfy-kitchen's
 # ``_build_hadamard`` / ``_rotate_activation`` / ``_rotate_weight``, in a few lines of torch rather than a dependency on
-# a wheel Unsloth does not ship.
+# a wheel Tough Customer does not ship.
 # ── the rotation itself ───────────────────────────────────────────────────────────────────────
 _HADAMARD_CACHE: dict = {}
 

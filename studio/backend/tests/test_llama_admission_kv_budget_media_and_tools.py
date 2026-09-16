@@ -3,14 +3,14 @@
 
 """Media and tool-loop cases that the KV reservation has to charge for.
 
-Media: Unsloth's composer sends the current image in both a message-level
+Media: Tough Customer's composer sends the current image in both a message-level
 ``image_url`` part and the legacy top-level ``image_base64`` field. The generation
 path splices legacy media into the prompt AFTER admission is decided. Admission must
 charge the resulting image once, without treating base64 bytes as prompt text.
 
 Tool loop: the server-side loop opens on ``enable_tools`` / ``mcp_enabled`` / the CLI
 policy / a checkpoint repair, none of which require a client ``tools`` array, so a
-predicate keyed on ``payload.tools`` charged Unsloth's own tool traffic the opening
+predicate keyed on ``payload.tools`` charged Tough Customer's own tool traffic the opening
 estimate for a lease that runs up to 25 growing rounds.
 """
 
@@ -225,7 +225,7 @@ class TestMediaIsCharged:
     def test_the_allowance_follows_a_raised_image_token_cap(self):
         """A load can raise the projector ceiling, and the reservation has to follow it.
 
-        ``--image-max-tokens`` is not Unsloth-managed, so ``llama_extra_args`` forwards
+        ``--image-max-tokens`` is not Tough Customer-managed, so ``llama_extra_args`` forwards
         it verbatim. Measured on b10639 with ``--image-max-tokens 8192``: a 4096x4096
         Qwen3-VL image costs 8102, against 4098 at the default. Reserving the default
         against that backend admits concurrent requests the cache cannot hold.
@@ -376,7 +376,7 @@ class TestTheToolLoopOpensAtAnEqualShare:
         """enable_tools / mcp_enabled / CLI policy open the loop with no `tools` array.
 
         The amount changed, not the recognition: keying on payload.tools would still
-        undercharge Unsloth's own tool traffic.
+        undercharge Tough Customer's own tool traffic.
         """
         payload = _Payload(
             messages = [{"role": "user", "content": "search my notes"}],

@@ -43,7 +43,7 @@ from core.inference.providers import (
 from core.inference.pricing import pricing_snapshot
 from core.inference.external_provider import ExternalProviderClient
 
-from core.inference import openai_codex_auth, openai_codex_client
+from core.inference import openai_codex_auth, openai_codex_client, toughcustomer_auth
 from models.providers import (
     ProviderCreate,
     ProviderCredentialMigration,
@@ -74,10 +74,16 @@ def _provider_response(row: dict) -> ProviderResponse:
             credential_secrets.PROVIDER_API_KEY_KIND,
             row["id"],
         ),
-        auth_kind = ("chatgpt_oauth" if row["provider_type"] == "openai_codex" else "api_key"),
+        auth_kind = (
+            "chatgpt_oauth"
+            if row["provider_type"] == "openai_codex"
+            else ((get_provider_info(row["provider_type"]) or {}).get("auth_kind") or "api_key")
+        ),
         auth_status = (
             openai_codex_auth.auth_status(row["id"])
             if row["provider_type"] == "openai_codex"
+            else toughcustomer_auth.auth_status(row["id"])
+            if row["provider_type"] == toughcustomer_auth.PROVIDER_TYPE
             else (
                 "connected"
                 if credential_secrets.has_secret(

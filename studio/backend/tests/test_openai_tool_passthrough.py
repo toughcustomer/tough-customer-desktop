@@ -131,7 +131,7 @@ class TestFriendlyUpstreamError:
         raw = '{"error":{"code":400,"message":"Failed to initialize samplers: failed to parse grammar","type":"invalid_request_error"}}'
         msg = _friendly_upstream_error(raw)
         assert "failed to parse grammar" not in msg  # raw body is not surfaced verbatim
-        assert "compile a grammar" in msg and "Update Unsloth" in msg
+        assert "compile a grammar" in msg and "Update Tough Customer" in msg
 
     def test_sampler_failure_without_a_grammar_keeps_its_own_text(self):
         # llama-server prefixes every sampler failure the same way, so a bad penalty
@@ -480,7 +480,7 @@ class TestChatMessageToolRoles:
 
     def test_tool_empty_content_accepted(self):
         # Empty tool output (mkdir, git add, ...) is routine in agentic loops;
-        # OpenAI and llama-server both accept it, so Unsloth must not 400.
+        # OpenAI and llama-server both accept it, so Tough Customer must not 400.
         msg = ChatMessage(role = "tool", tool_call_id = "call_1", content = "")
         assert msg.content == ""
 
@@ -622,7 +622,7 @@ class TestChatCompletionRequestToolFields:
         assert req.session_id == "abc"
 
     def test_stream_defaults_false_matching_openai_spec(self):
-        # OpenAI defaults `stream` to false. Unsloth used to default true,
+        # OpenAI defaults `stream` to false. Tough Customer used to default true,
         # breaking naive curl/.NET clients (#5047) that omit it. Pin the fix.
         req = self._make()
         assert req.stream is False
@@ -879,7 +879,7 @@ class TestChatCompletionRequestToolFields:
     def test_the_gguf_tool_loop_refuses_a_contract_it_cannot_forward(
         self, monkeypatch, enabled_tools
     ):
-        """Unsloth's loop runs its own turns and never forwards response_format, so
+        """Tough Customer's loop runs its own turns and never forwards response_format, so
         serving the request would answer with text that violates the contract while
         the client has no way to tell. A selection that resolves to no tool routes to
         the ordinary generator, which forwards it no more than the loop does, and the
@@ -1946,7 +1946,7 @@ class TestChatCompletionRequestToolFields:
                 raise AssertionError("client tools must use passthrough")
 
             def generate_chat_completion_with_tools(self, **_kwargs):
-                raise AssertionError("Unsloth tool loop must stay disabled")
+                raise AssertionError("Tough Customer tool loop must stay disabled")
 
         async def fake_passthrough(llama_backend, payload, model_name, **kwargs):
             captured["body"] = inference_route._build_openai_passthrough_body(
@@ -1989,11 +1989,11 @@ class TestChatCompletionRequestToolFields:
         assert monitor.active_count() == 0
 
     def test_permission_mode_does_not_reject_client_tool_passthrough(self, monkeypatch):
-        # A non-streaming client-tool passthrough (client tools, no Unsloth tool
+        # A non-streaming client-tool passthrough (client tools, no Tough Customer tool
         # loop) that also carries permission_mode "ask"/"auto" must reach the
         # provider passthrough, not the confirm-without-stream guard: the
         # validator leaves confirm_tool_calls unset for passthrough, and a bare
-        # permission_mode only gates Unsloth's own local tool loop. An explicit
+        # permission_mode only gates Tough Customer's own local tool loop. An explicit
         # confirm_tool_calls=True still forces the local-confirm rejection.
         # The pre-switch guard only runs when an automatic load may run, so force
         # that predicate on to exercise it against a resident passthrough backend.
@@ -2014,7 +2014,7 @@ class TestChatCompletionRequestToolFields:
                 raise AssertionError("client tools must use passthrough")
 
             def generate_chat_completion_with_tools(self, **_kwargs):
-                raise AssertionError("Unsloth tool loop must stay disabled")
+                raise AssertionError("Tough Customer tool loop must stay disabled")
 
         async def fake_passthrough(llama_backend, payload, model_name, **kwargs):
             inference_route.api_monitor.finish(kwargs.get("monitor_id"))
@@ -2039,7 +2039,7 @@ class TestChatCompletionRequestToolFields:
             return self._v1_client(monkeypatch, _GGUFBackend())
 
         # A process --enable-tools policy must not turn a client-tool passthrough
-        # into an Unsloth local loop, so a policy of None or True both keep the
+        # into a Tough Customer local loop, so a policy of None or True both keep the
         # passthrough (the guard mirrors _explicit_studio_tool_loop_requested).
         for policy in (None, True):
             for mode in ("ask", "auto"):
@@ -2092,7 +2092,7 @@ class TestChatCompletionRequestToolFields:
         assert "requires stream=true" in resp.json()["error"]["message"]
 
     def test_permission_mode_policy_forced_local_loop_rejected_before_switch(self, monkeypatch):
-        # A process --enable-tools policy forces Unsloth's own tool loop on even
+        # A process --enable-tools policy forces Tough Customer's own tool loop on even
         # when the request omits enable_tools and carries no client tools. A
         # non-streaming ask/auto request is then confirm-gated with no stream to
         # prompt on, so it must 400 at the pre-switch guard -- before
@@ -2145,7 +2145,7 @@ class TestChatCompletionRequestToolFields:
     def test_enable_tools_on_non_tool_backend_keeps_client_tools_on_passthrough(self, monkeypatch):
         # DiffusionGemma forces supports_tools off while passthrough stays
         # available (#6851): enable_tools=True must not steal client tools
-        # from the passthrough into an Unsloth tool loop that cannot run.
+        # from the passthrough into a Tough Customer tool loop that cannot run.
         import routes.inference as inference_route
 
         captured = {}
@@ -2165,7 +2165,7 @@ class TestChatCompletionRequestToolFields:
                 raise AssertionError("client tools must use passthrough")
 
             def generate_chat_completion_with_tools(self, **_kwargs):
-                raise AssertionError("Unsloth tool loop cannot run on a non-tool backend")
+                raise AssertionError("Tough Customer tool loop cannot run on a non-tool backend")
 
         async def fake_passthrough(llama_backend, payload, model_name, **kwargs):
             captured["body"] = inference_route._build_openai_passthrough_body(
@@ -4690,7 +4690,7 @@ class TestGgufVisionToolRouting:
             raise AssertionError("plain GGUF path should not be used")
 
         def _tools(**_kwargs):
-            raise AssertionError("Unsloth tool loop should not steal response_format")
+            raise AssertionError("Tough Customer tool loop should not steal response_format")
 
         backend = SimpleNamespace(
             is_loaded = True,
@@ -4763,7 +4763,7 @@ class TestGgufVisionToolRouting:
             raise AssertionError("plain GGUF path should not be used")
 
         def _tools(**_kwargs):
-            raise AssertionError("Unsloth tool loop should not replace client tools")
+            raise AssertionError("Tough Customer tool loop should not replace client tools")
 
         backend = SimpleNamespace(
             is_loaded = True,
@@ -4835,7 +4835,7 @@ class TestGgufVisionToolRouting:
             yield "plain response"
 
         def _tools(**_kwargs):
-            raise AssertionError("tool_choice='none' must not start Unsloth's tool loop")
+            raise AssertionError("tool_choice='none' must not start Tough Customer's tool loop")
 
         backend = SimpleNamespace(
             is_loaded = True,
@@ -4889,7 +4889,7 @@ class TestGgufVisionToolRouting:
             raise AssertionError("plain GGUF path should not be used")
 
         def _tools(**_kwargs):
-            raise AssertionError("enabled_tools alone must not start Unsloth's tool loop")
+            raise AssertionError("enabled_tools alone must not start Tough Customer's tool loop")
 
         backend = SimpleNamespace(
             is_loaded = True,
@@ -4953,7 +4953,7 @@ class TestGgufVisionToolRouting:
             raise AssertionError("plain GGUF path should not be used")
 
         def _tools(**_kwargs):
-            raise AssertionError("enabled_tools alone must not start Unsloth's tool loop")
+            raise AssertionError("enabled_tools alone must not start Tough Customer's tool loop")
 
         backend = SimpleNamespace(
             is_loaded = True,

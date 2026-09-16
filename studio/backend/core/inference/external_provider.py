@@ -756,7 +756,7 @@ def _apply_ollama_reasoning_controls(
 # handles every provider without storing credentials.
 def _create_shared_http_client() -> httpx.AsyncClient:
     # Unsupported env proxy schemes (socks:// etc) raise at construction and
-    # would crash Unsloth startup (#6090); retry ignoring env proxies instead.
+    # would crash Tough Customer startup (#6090); retry ignoring env proxies instead.
     try:
         return httpx.AsyncClient()
     except (ImportError, ValueError) as exc:
@@ -1149,7 +1149,7 @@ class ExternalProviderClient:
         if not self._is_openai_compatible():
             # Gemini speaks its own native REST shape (contents/parts);
             # `_stream_gemini` translates request/response into the OpenAI
-            # Chat Completions chunk format the rest of Unsloth expects.
+            # Chat Completions chunk format the rest of Tough Customer expects.
             # API ref: https://ai.google.dev/gemini-api/docs
             if self.provider_type == "gemini":
                 async for line in self._stream_gemini(
@@ -1571,7 +1571,7 @@ class ExternalProviderClient:
                                                         continue
                                                     for ann in envelope.get("annotations") or []:
                                                         _record_or_url_citation(ann)
-                        # Verbatim relay, minus Unsloth's own UI control protocol:
+                        # Verbatim relay, minus Tough Customer's own UI control protocol:
                         # the frames this server writes to paint tool cards ride
                         # the same stream, so an endpoint that echoes them forges
                         # a card for a tool that never ran.
@@ -1824,7 +1824,7 @@ class ExternalProviderClient:
                                 break
                             if line.strip():
                                 # Same rule as the main relay: never let the
-                                # endpoint speak Unsloth's control vocabulary.
+                                # endpoint speak Tough Customer's control vocabulary.
                                 relayed = sanitize_provider_sse_line(line)
                                 if relayed is not None:
                                     yield relayed
@@ -1965,7 +1965,7 @@ class ExternalProviderClient:
                                                         str(ann.get("type") or "?")
                                                     )
                         # Same rule as the main relay: never let the endpoint
-                        # speak Unsloth's control vocabulary.
+                        # speak Tough Customer's control vocabulary.
                         relayed = sanitize_provider_sse_line(line)
                         if relayed is None:
                             continue
@@ -2079,7 +2079,7 @@ class ExternalProviderClient:
                 # Translate OpenAI multimodal parts -> Anthropic native shapes.
                 # - `image_url`     -> `{type:"image", source:...}`
                 # - `input_document` -> `{type:"document", source:...}`
-                #   (Unsloth extension; mirrors Anthropic's document block,
+                #   (Tough Customer extension; mirrors Anthropic's document block,
                 #   which supports PDFs as base64 or URL per
                 #   https://platform.claude.com/docs/en/build-with-claude/vision)
                 anthropic_parts: list[dict[str, Any]] = []
@@ -2122,7 +2122,7 @@ class ExternalProviderClient:
                                 }
                             )
                     elif part.get("type") == "input_document":
-                        # Unsloth's normalised PDF/doc type (file_data data-URI or
+                        # Tough Customer's normalised PDF/doc type (file_data data-URI or
                         # file_url) -> Anthropic's native `document` block.
                         url = part.get("file_url") or ""
                         data_uri = part.get("file_data") or ""
@@ -5058,7 +5058,7 @@ class ExternalProviderClient:
                 # OpenAI requires the reasoning items that came back alongside a
                 # tool call to be replayed with the function_call /
                 # function_call_output pair whenever the history is managed by
-                # hand, which is exactly what the Unsloth tool loop does: "any
+                # hand, which is exactly what the Tough Customer tool loop does: "any
                 # reasoning items returned in model responses with tool calls
                 # must also be passed back with tool call outputs"
                 # (https://developers.openai.com/api/docs/guides/function-calling).
@@ -5137,7 +5137,7 @@ class ExternalProviderClient:
                                 {"type": "image_generation_call", "id": call_id}
                             )
                     elif part_type == "input_document":
-                        # Map Unsloth's `input_document` onto Responses' `input_file`.
+                        # Map Tough Customer's `input_document` onto Responses' `input_file`.
                         # https://developers.openai.com/api/docs/guides/images-vision
                         file_url = part.get("file_url")
                         file_data = part.get("file_data")
@@ -6609,7 +6609,7 @@ class ExternalProviderClient:
             if not models and self.provider_type == "ollama":
                 models = await self._list_ollama_native_models()
             # Gemini's native /v1beta/models uses a different shape; repackage
-            # into the OpenAI-compatible one Unsloth expects.
+            # into the OpenAI-compatible one Tough Customer expects.
             if not models and self.provider_type == "gemini":
                 models = self._parse_gemini_models(data)
             return models
@@ -6812,7 +6812,7 @@ def _friendly_provider_error_text(
     *,
     model: str | None = None,
 ) -> str:
-    """Rewrite common provider errors into actionable Unsloth copy."""
+    """Rewrite common provider errors into actionable Tough Customer copy."""
     if status_code == 404 and model:
         lowered = raw_message.lower()
         if "not found" in lowered or "not_found" in lowered:

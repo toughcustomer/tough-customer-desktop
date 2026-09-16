@@ -254,7 +254,7 @@ def _layout_from_reader(reader) -> ModelLayout:
     # trailing nextn/MTP blocks are not loaded unless a draft is engaged
     # Trailing nextn/MTP blocks are NOT part of the target model and are not loaded unless a draft is engaged, so an -ot
     # naming them moves nothing: measured, spilling only blk.<nextn> leaves the host buffer at exactly token_embd and
-    # the device buffer unchanged. Counting them spillable would credit bytes that can never be freed. Unsloth prices
+    # the device buffer unchanged. Counting them spillable would credit bytes that can never be freed. Tough Customer prices
     # the drafter separately anyway.
     all_block_indices = set(spill) | set(resident)
     block_indices = sorted(i for i in all_block_indices if i < n_layers)

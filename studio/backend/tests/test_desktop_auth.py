@@ -561,7 +561,7 @@ def test_remote_password_refuses_credentials_that_are_not_the_desktop_app():
         )
         # Distinguishable from the pre-existing "Password change required" refusal.
         assert response.status_code == 403
-        assert response.json()["detail"] == "This action requires the Unsloth desktop app."
+        assert response.json()["detail"] == "This action requires the Tough Customer desktop app."
     assert storage.requires_password_change(storage.DEFAULT_ADMIN_USERNAME) is True
 
 

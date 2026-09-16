@@ -223,7 +223,7 @@ def _operator_sampling_override(field: str):
 
 @lru_cache(maxsize = 128)
 def _recommended_sampling(model_id: str) -> Dict[str, Any]:
-    """Per-model recommended sampling, resolved through the SAME path the Unsloth Chat UI uses.
+    """Per-model recommended sampling, resolved through the SAME path the Tough Customer Chat UI uses.
 
     The Chat UI seeds its sampling from the ``.inference`` block of the load/status responses,
     which is exactly :func:`load_inference_config` (model-specific YAML -> family defaults

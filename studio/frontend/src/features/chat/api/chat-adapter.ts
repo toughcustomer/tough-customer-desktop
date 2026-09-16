@@ -1,5 +1,12 @@
 // SPDX-License-Identifier: AGPL-3.0-only
 // Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
+import {
+  publishTcUsage,
+  refreshTcBalance,
+  type TcUsageExtension,
+} from "@/features/sales/balance-store";
+import { StreamProviderError } from "./chat-api";
+import { openLink } from "@/lib/open-link";
 
 import { mlxRuntimeStateFrom } from "../lib/mlx-runtime-state";
 import {
@@ -2566,7 +2573,7 @@ function isGgufLocalRow(row: LocalModelInfo): boolean {
 function runsOnThisPlatform(row: LocalModelInfo): boolean {
   const platform = usePlatformStore.getState();
   // Until the backend reports it, chatOnly is a BROWSER guess: a Mac browser on
-  // a remote Linux Unsloth would hide every local safetensors model and fetch
+  // a remote Linux Tough Customer would hide every local safetensors model and fetch
   // the default. Failing open is safe: validation refuses an ineligible pick.
   if (!platform.fetched || !platform.isChatOnly()) return true;
   if (isGgufLocalRow(row)) {
@@ -2838,7 +2845,7 @@ async function ensureDefaultModelDownloaded(
   };
   const totalLabel = formatDownloadBytes(expectedBytes);
   const description =
-    `Unsloth couldn’t find an existing model. Unsloth is now getting ` +
+    `Tough Customer couldn’t find an existing model. Tough Customer is now getting ` +
     `${DEFAULT_CHAT_MODEL_LABEL} ready for use. You can stop the download or ` +
     `manage models later in the 'Model hub'`;
   setToast(
@@ -3144,7 +3151,7 @@ async function autoLoadSmallestModel(options?: AutoLoadOptions): Promise<{
       label,
       // Older backends and non-Error throws carry no detail; still name the model that failed.
       detail:
-        detail || "The server did not report a reason. Check the Unsloth logs.",
+        detail || "The server did not report a reason. Check the Tough Customer logs.",
       blamesModel,
     };
   }
@@ -4406,7 +4413,7 @@ export function createOpenAIStreamAdapter(
             ) !== true)
         ) {
           throw new Error(
-            "Deep research requires a selected local model or a connection whose provider supports Unsloth tools.",
+            "Deep research requires a selected local model or a connection whose provider supports Tough Customer tools.",
           );
         }
         const reasoningRequested =
@@ -4853,7 +4860,8 @@ export function createOpenAIStreamAdapter(
           isGeminiCustomOpenAICompatBase(externalProvider.baseUrl),
       );
       const externalProviderUsesOAuth =
-        externalProvider?.authKind === "chatgpt_oauth";
+        externalProvider?.authKind === "chatgpt_oauth" ||
+        externalProvider?.authKind === "toughcustomer_device";
 
       if (
         isExternalRequest &&
@@ -4923,7 +4931,7 @@ export function createOpenAIStreamAdapter(
       // Which side of the connection the Code pill runs code on. Hosted
       // `code_execution` and local `python` / `terminal` are two trust
       // boundaries, not two spellings of one feature, so the stored pill keeps
-      // meaning the provider's sandbox wherever it meant that before the Unsloth
+      // meaning the provider's sandbox wherever it meant that before the Tough Customer
       // loop reached these providers. See code-tool-placement.ts.
       const {
         local: studioLocalCodeTools,
@@ -6202,7 +6210,7 @@ export function createOpenAIStreamAdapter(
               ...(externalCapabilities?.presencePenalty
                 ? { presence_penalty: params.presencePenalty }
                 : {}),
-              // Unsloth executes the calls for any provider that advertises the
+              // Tough Customer executes the calls for any provider that advertises the
               // capability. Providers that do not keep their provider-hosted
               // tool envelope in the branch below.
               // studioLocalCodeTools, not codeToolsEnabled: a Code pill that
@@ -6229,13 +6237,13 @@ export function createOpenAIStreamAdapter(
                         : []),
                       ...(toolsEnabled ? ["web_search"] : []),
                       ...studioLocalCodeTools,
-                      // Hosted tools Unsloth has no local stand-in for. Their
-                      // pills stay lit whether or not an Unsloth tool is on, so
+                      // Hosted tools Tough Customer has no local stand-in for. Their
+                      // pills stay lit whether or not a Tough Customer tool is on, so
                       // listing only the local names here would silently drop
                       // Images (or Fetch) the moment Search, Code, MCP or a
                       // project's automatic RAG selected this branch. Search
                       // deliberately does not ride along: that is the one
-                      // Unsloth runs itself just above. Code rides along only
+                      // Tough Customer runs itself just above. Code rides along only
                       // when it resolved to the provider's sandbox, which is
                       // mutually exclusive with the local names above.
                       ...(imageGenerationEnabledForThisTurn
@@ -6768,7 +6776,7 @@ export function createOpenAIStreamAdapter(
                         "context. They are saved and searchable, and relevant parts are " +
                         "brought back automatically."
                       : "The full conversation is still visible and saved. " +
-                        "Unsloth removed complete older turns from this request so the chat can continue.",
+                        "Tough Customer removed complete older turns from this request so the chat can continue.",
                     duration: 8000,
                   });
                 }
@@ -6817,9 +6825,9 @@ export function createOpenAIStreamAdapter(
                 chunk as unknown as { _toolEvent?: Record<string, unknown> }
               )._toolEvent;
               if (toolEvent !== undefined) {
-                // Unsloth's own tool events end the turn that asked for them; finish_reason
+                // Tough Customer's own tool events end the turn that asked for them; finish_reason
                 // alone is not enough. A hosted tool runs INSIDE the turn and rides a whole
-                // chunk, where Unsloth's are bare {"type": "tool_start"} frames.
+                // chunk, where Tough Customer's are bare {"type": "tool_start"} frames.
                 if (!chunk.choices) {
                   endProviderTurn();
                 }
@@ -7311,6 +7319,12 @@ export function createOpenAIStreamAdapter(
                     | ServerTimings
                     | undefined,
                 };
+                // Tough Customer Cloud appends retail cost + remaining balance.
+                publishTcUsage(
+                  (chunk.usage as Record<string, unknown>).toughcustomer as
+                    | TcUsageExtension
+                    | undefined,
+                );
                 if (chunk.choices?.length === 0) continue;
               }
 
@@ -7445,7 +7459,7 @@ export function createOpenAIStreamAdapter(
                     typeof call.function?.arguments === "string"
                       ? call.function.arguments
                       : "";
-                  // Unsloth's local Codex loop follows the OpenAI tool-call delta with
+                  // Tough Customer's local Codex loop follows the OpenAI tool-call delta with
                   // tool_start/tool_end events. Resolve the backend id now so all three
                   // event shapes update one run-unique card instead of leaving the raw
                   // provisional card beside a second execution card.
@@ -8377,6 +8391,40 @@ export function createOpenAIStreamAdapter(
                     'Increase "Context Length" in the chat Settings panel (⚙ in the top-right), ' +
                     "or start a new chat.",
               duration: 8000,
+            });
+          } else if (
+            err instanceof StreamProviderError &&
+            err.code === "credit_exhausted"
+          ) {
+            // Tough Customer Cloud: out of credits → native top-up action.
+            void refreshTcBalance();
+            toast.error("Out of Tough Customer credits", {
+              description: msg || "Add credits to keep going.",
+              duration: 10000,
+              action: {
+                label: "Add credits",
+                onClick: () =>
+                  openLink(err.topUpUrl ?? "https://toughcustomer.ai/billing"),
+              },
+            });
+          } else if (
+            err instanceof StreamProviderError &&
+            err.code === "reauth_required"
+          ) {
+            void refreshTcBalance();
+            toast.error("Sign in to Tough Customer again", {
+              description:
+                "Your device sign-in expired. Open Settings → Connections → Tough Customer and sign in.",
+              duration: 10000,
+            });
+          } else if (
+            err instanceof StreamProviderError &&
+            err.code === "rate_limited"
+          ) {
+            toast.error("Tough Customer is busy", {
+              description: err.retryAfter
+                ? `Too many requests in flight. Try again in ${err.retryAfter}s.`
+                : msg || "Too many requests in flight. Try again shortly.",
             });
           } else {
             toast.error("Generation failed", {

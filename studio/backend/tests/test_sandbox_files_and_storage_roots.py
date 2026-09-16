@@ -368,7 +368,7 @@ def test_clearing_the_compiled_cache_covers_the_configured_location(tmp_path, mo
     from utils import cache_cleanup
 
     assert pinned in cache_cleanup.get_existing_cache_dirs()
-    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Unsloth*Trainer.py"])
+    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Tough Customer*Trainer.py"])
     assert not (pinned / "unsloth_compiled_module_gemma3.py").exists()
     assert (pinned / "UnslothSFTTrainer.py").is_file()
 
@@ -693,7 +693,7 @@ def test_a_configured_cache_that_holds_other_files_is_never_deleted(tmp_path, mo
     cache_cleanup.clear_unsloth_compiled_cache()
     assert (shared / "important" / "notes.txt").read_text() == "user data"
 
-    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Unsloth*Trainer.py"])
+    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Tough Customer*Trainer.py"])
     assert (shared / "important" / "notes.txt").read_text() == "user data"
 
 
@@ -942,7 +942,7 @@ def test_a_directory_of_plain_python_files_is_not_a_cache(tmp_path, monkeypatch)
 
 
 def test_a_marked_directory_is_cleared(tmp_path, monkeypatch):
-    """Unsloth writes the marker when it creates the location."""
+    """Tough Customer writes the marker when it creates the location."""
     cache = tmp_path / "compiled_cache"
     cache.mkdir()
     (cache / "helper.py").write_text("print(1)\n")
@@ -962,7 +962,7 @@ def test_generated_modules_identify_a_cache_without_a_marker(tmp_path, monkeypat
     cache = tmp_path / "old_cache"
     cache.mkdir()
     (cache / "unsloth_compiled_module_gemma3.py").write_text("x = 1\n", encoding = "utf-8")
-    # Their own file, and Unsloth*Trainer.py is a name a user's subclass can
+    # Their own file, and Tough Customer*Trainer.py is a name a user's subclass can
     # carry: without the marker there is nothing to say we wrote it.
     (cache / "UnslothCustomTrainer.py").write_text("class X: pass\n", encoding = "utf-8")
     monkeypatch.setenv("UNSLOTH_COMPILE_LOCATION", str(cache))
@@ -1044,7 +1044,7 @@ def test_a_shared_compile_location_keeps_preserved_patterns(tmp_path, monkeypatc
 
     from utils import cache_cleanup
 
-    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Unsloth*Trainer.py"])
+    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Tough Customer*Trainer.py"])
     assert (shared / "UnslothSFTTrainer.py").is_file()
     assert not (shared / "unsloth_compiled_module_llama.py").exists()
     # Not ours to remove in a directory we do not own.
@@ -1052,7 +1052,7 @@ def test_a_shared_compile_location_keeps_preserved_patterns(tmp_path, monkeypatc
 
 
 def test_a_marked_shared_directory_is_still_cleared_whole(tmp_path, monkeypatch):
-    """The marker means Unsloth made the directory, so the old behaviour stands."""
+    """The marker means Tough Customer made the directory, so the old behaviour stands."""
     cache = tmp_path / "marked"
     cache.mkdir()
 
@@ -1261,14 +1261,14 @@ def test_the_marker_survives_a_cache_clear(tmp_path, monkeypatch):
     # Still ours on the next pass, so a __pycache__ left by the compiler goes too.
     (pinned / "__pycache__").mkdir()
     (pinned / "UnslothSFTTrainer.py").write_text("trainer\n", encoding = "utf-8")
-    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Unsloth*Trainer.py"])
+    cache_cleanup.clear_unsloth_compiled_cache(preserve_patterns = ["Tough Customer*Trainer.py"])
     assert not (pinned / "__pycache__").exists()
     assert (pinned / "UnslothSFTTrainer.py").is_file()
     assert (pinned / cache_cleanup.CACHE_MARKER).is_file()
 
 
 def test_an_unrelated_cache_named_folder_in_the_cwd_is_not_ours(tmp_path, monkeypatch):
-    """Unsloth is launched from wherever the shell happens to be, so the name
+    """Tough Customer is launched from wherever the shell happens to be, so the name
     alone cannot license an rmtree."""
     launch_dir = tmp_path / "someproject"
     cache = launch_dir / "unsloth_compiled_cache"
@@ -1526,7 +1526,7 @@ def test_a_pre_existing_compile_directory_is_never_marked_as_ours(tmp_path, monk
     from utils import cache_cleanup
     from utils.paths import storage_roots
 
-    # Where Unsloth would pin it, already there and holding someone else's files.
+    # Where Tough Customer would pin it, already there and holding someone else's files.
     pinned = Path(storage_roots.cache_root()).parent / "compiled_cache"
     pinned.mkdir(parents = True)
     (pinned / "someones_notes.txt").write_text("keep me")
@@ -1822,7 +1822,7 @@ def test_a_real_project_workspace_is_still_left_alone(tmp_path, monkeypatch):
 
 
 def test_a_foreign_tool_result_keeps_its_own_fields():
-    """Unsloth's wrapper always carries images; anything else with text and
+    """Tough Customer's wrapper always carries images; anything else with text and
     sessionId is someone else's result and must not be reduced to its text."""
     # The predicate lives beside the rest of the sandbox contract, and the
     # adapter and both tool cards share that one copy.
@@ -2322,7 +2322,7 @@ def test_a_link_inside_the_root_is_stepped_around(tmp_path, monkeypatch):
 
 
 def test_an_unowned_cache_of_trainers_is_not_put_on_sys_path(tmp_path, monkeypatch):
-    """Unsloth*Trainer.py is a name a user's own subclass carries, and anything
+    """Tough Customer*Trainer.py is a name a user's own subclass carries, and anything
     else in that directory would then shadow real modules for every worker."""
     import sys as _sys
 
@@ -2588,7 +2588,7 @@ def test_a_symlinked_cache_marker_does_not_license_a_delete(tmp_path, monkeypatc
 
 
 def test_a_real_cache_marker_still_counts(tmp_path):
-    """The other half: a directory Unsloth made is still cleaned out."""
+    """The other half: a directory Tough Customer made is still cleaned out."""
     from utils import cache_cleanup
 
     ours = tmp_path / "unsloth_compiled_cache"

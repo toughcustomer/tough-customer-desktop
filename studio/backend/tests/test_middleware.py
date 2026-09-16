@@ -332,7 +332,7 @@ class TestMaxBodyMiddleware:
 
     def test_v1_surface_is_body_protected(self, main_module):
         # /images/generations is mounted at both /api/inference and /v1, and every /v1 POST must be body-capped via the blanket
-        # prefix or an unbounded prompt buffers outside the Unsloth request limit. Also confirms /v1 chat/completions stays protected.
+        # prefix or an unbounded prompt buffers outside the Tough Customer request limit. Also confirms /v1 chat/completions stays protected.
         for path in (
             "/v1/images/generations",
             "/v1/audio/generate",
@@ -649,7 +649,7 @@ class TestSecurityHeadersMiddleware:
         assert 'spec-url="/studio/openapi.json"' in redoc
         assert "/studio/docs-assets/redoc.standalone.js" in redoc
 
-        # Unprefixed deployments, which is every default Unsloth, stay unprefixed.
+        # Unprefixed deployments, which is every default Tough Customer, stay unprefixed.
         plain = TestClient(main_module.app).get("/docs").text
         assert "/studio/" not in plain
         assert "'/openapi.json'" in plain

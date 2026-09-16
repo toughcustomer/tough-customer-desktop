@@ -1,7 +1,7 @@
 # SPDX-License-Identifier: AGPL-3.0-only
 # Copyright 2026-present the Unsloth AI Inc. team. All rights reserved. See /studio/LICENSE.AGPL-3.0
 
-"""Fail-closed admission policy for serving Unsloth without an API key.
+"""Fail-closed admission policy for serving Tough Customer without an API key.
 
 Off by default. When an admin turns it on, a request that sends no usable
 credential authenticates as the local admin, so ``curl`` and the OpenAI SDKs reach
@@ -21,7 +21,7 @@ runs that tool loop on this machine, so it is a bigger grant than chat itself.
 
 Public tunnels and Colab never receive keyless access. Private-LAN inference is
 accepted only through a live settings listener or the launch-managed bind that
-matches the ASGI accepting address and port. Signing in to Unsloth is unaffected.
+matches the ASGI accepting address and port. Signing in to Tough Customer is unaffected.
 """
 
 from __future__ import annotations
@@ -669,7 +669,7 @@ def asgi_request_is_keyless(asgi_scope, settings: Optional[tuple[str, bool]] = N
     """Whether this ASGI request is admitted by the setting rather than by a credential.
 
     Middleware-side twin of ``auth.authentication.admitted_without_credential``, reading
-    the raw scope because it runs before the request object exists. An Unsloth session and
+    the raw scope because it runs before the request object exists. A Tough Customer session and
     a working API key both authenticate as themselves, so neither is keyless: applying
     the tool restriction to an existing API client would take away tools it already had.
     """

@@ -172,7 +172,7 @@ class TestLauncherDefaultOnly:
 class TestSafetensorsGateHonorsStatedIntent:
     """The safetensors path has no llama-server passthrough to fall back on, so
     the launcher default must not withdraw tool_choice: "none" or take a client
-    catalog into Unsloth's own loop."""
+    catalog into Tough Customer's own loop."""
 
     def test_plain_chat_still_gets_the_default(self):
         set_tool_policy_default(True)

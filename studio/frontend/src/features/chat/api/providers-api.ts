@@ -6,7 +6,12 @@ import { authFetch } from "@/features/auth/api";
 import { formatFastApiDetail } from "@/lib/format-fastapi-error";
 
 
-export type ProviderAuthKind = "api_key" | "chatgpt_oauth";
+export type ProviderAuthKind = "api_key" | "chatgpt_oauth" | "toughcustomer_device";
+
+/** Auth kinds that never show an API-key field: the backend holds the credential. */
+export function isManagedAuthKind(kind: ProviderAuthKind | undefined | null): boolean {
+  return kind === "chatgpt_oauth" || kind === "toughcustomer_device";
+}
 export type ProviderAuthStatus =
   | "disconnected"
   | "connected"
@@ -22,7 +27,7 @@ export interface ProviderRegistryEntry {
   supports_streaming: boolean;
   supports_vision: boolean;
   supports_tool_calling: boolean;
-  /** Unsloth runs its own tool loop (search/code/MCP/RAG) against this provider. */
+  /** Tough Customer runs its own tool loop (search/code/MCP/RAG) against this provider. */
   supports_studio_tools?: boolean;
   /** Backend-only entry, surfaced through a custom preset rather than the dropdown. */
   hidden?: boolean;
@@ -400,4 +405,63 @@ export async function disconnectCodexOAuth(providerId: string): Promise<void> {
     const body = await response.json().catch(() => null);
     throw new Error(parseErrorText(response.status, body));
   }
+}
+
+
+// ── Tough Customer Cloud (device sign-in, balance, checkout) ─────────────────
+
+export interface TcSignInFlow {
+  flow_id: string;
+  status: "pending" | "connected" | "error" | "cancelled";
+  user_code?: string | null;
+  verification_uri?: string | null;
+  verification_uri_complete?: string | null;
+  expires_at: number;
+  message?: string | null;
+}
+
+export interface TcBalance {
+  balance_micros: number;
+  currency: string;
+  trial: boolean;
+  top_up_url?: string;
+}
+
+export async function startTcSignIn(providerId: string): Promise<TcSignInFlow> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/auth/start`, { method: "POST" });
+  return parseJsonOrThrow<TcSignInFlow>(response);
+}
+
+export async function getTcSignInFlow(providerId: string, flowId: string): Promise<TcSignInFlow> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/auth/flows/${flowId}`);
+  return parseJsonOrThrow<TcSignInFlow>(response);
+}
+
+export async function cancelTcSignInFlow(providerId: string, flowId: string): Promise<void> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/auth/flows/${flowId}`, { method: "DELETE" });
+  if (!response.ok) throw new Error(parseErrorText(response.status, await response.json().catch(() => null)));
+}
+
+export async function tcSignOut(providerId: string): Promise<void> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/auth`, { method: "DELETE" });
+  if (!response.ok) throw new Error(parseErrorText(response.status, await response.json().catch(() => null)));
+}
+
+export async function getTcSignInStatus(providerId: string): Promise<{ status: ProviderAuthStatus; email: string | null }> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/auth/status`);
+  return parseJsonOrThrow(response);
+}
+
+export async function getTcBalance(providerId: string): Promise<TcBalance> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/account/balance`);
+  return parseJsonOrThrow<TcBalance>(response);
+}
+
+export async function startTcCheckout(providerId: string, pack: string): Promise<{ url: string }> {
+  const response = await authFetch(`/api/toughcustomer/providers/${providerId}/billing/checkout`, {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ pack }),
+  });
+  return parseJsonOrThrow<{ url: string }>(response);
 }

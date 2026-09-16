@@ -1415,7 +1415,7 @@ export function AudioPage({
           await startSttDownload(sidecarKey, hfApiToken(getHfToken()), engine);
           // STT owns its specialized transfer, but the existing mirror gives
           // it the same global Downloads row, progress and Cancel action as
-          // every other Unsloth model download. Do not reset an adopted row.
+          // every other Tough Customer model download. Do not reset an adopted row.
           if (!isTrackingSttDownload(sidecarKey, engine)) {
             trackSttDownload(sidecarKey, {
               // Audio owns the final load through its active/selection
@@ -2526,7 +2526,7 @@ export function AudioPage({
               onValueChange={(v) => {
                 if (v !== "train") return;
                 toast.info(
-                  "Audio fine-tuning lives on the Train page. Unsloth trains TTS and STT models there. Pick an audio model and appropriate dataset.",
+                  "Audio fine-tuning lives on the Train page. Tough Customer trains TTS and STT models there. Pick an audio model and appropriate dataset.",
                   { duration: 8000 },
                 );
                 void navigateSelf({ to: "/studio" });
@@ -2773,7 +2773,7 @@ export function AudioPage({
                   hint={
                     recordingSupported
                       ? "Record a clip and it is transcribed when you stop."
-                      : "This browser cannot record. Open Unsloth over https or on localhost, or upload a file below."
+                      : "This browser cannot record. Open Tough Customer over https or on localhost, or upload a file below."
                   }
                 >
                   <Button

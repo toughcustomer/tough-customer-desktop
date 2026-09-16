@@ -1,4 +1,4 @@
-; Unsloth custom NSIS template.
+; Tough Customer custom NSIS template.
 ; Source: https://raw.githubusercontent.com/tauri-apps/tauri/tauri-cli-v2.10.1/crates/tauri-bundler/src/bundle/windows/nsis/installer.nsi
 ; Source tags tauri-cli-v2.10.1 and tauri-bundler-v2.8.1 resolve to commit 9b17a7aeae9a83222ffe829aa4e2d8a5ba6bed8c.
 ; Verified release CLI: @tauri-apps/cli 2.10.1 / tauri-cli 2.10.1
@@ -59,7 +59,7 @@ ${StrLoc}
 !define PRODUCTNAME "{{product_name}}"
 
 ; Stable across display-name changes.
-!define INSTALLIDENTITY "Unsloth Studio (Desktop)"
+!define INSTALLIDENTITY "Tough Customer Studio (Desktop)"
 !define VERSION "{{version}}"
 !define VERSIONWITHBUILD "{{version_with_build}}"
 !define HOMEPAGE "{{homepage}}"
